@@ -17,12 +17,4 @@ git add .
 git commit -am "Merge %branch% into master"
 git push github master
 
-rem delete from openshift
-git fetch -p origin
-git push origin :%branch%
-git push origin master
-
-rem delete branch from github
-git push github :%branch%
-
 pause

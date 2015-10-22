@@ -15,9 +15,3 @@ git pull origin master
 git add .
 git commit -am "Merge $branch into master"
 git push github master
-
-git fetch -p origin
-git push origin :$branch
-git push origin master
-
-git push github :$branch

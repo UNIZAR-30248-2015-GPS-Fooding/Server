@@ -1,5 +1,5 @@
 /*
- * DbConnection.java v1.0 19/10/2015
+ * DbConnection.java v1.1 19/10/2015
  */
 
 package db;
@@ -13,7 +13,9 @@ public class DbConnection {
 	/**
 	 * Clase para establecer una conexion con la base de datos de MySQL asociada
 	 * 
-	 * @version 1.0
+	 * @version 1.1
+	 * 	- Abrir conexion con la BD
+	 * 	- Agregado cerrar conexion con la BD
 	 * @date 19/10/2015
 	 */
 
@@ -26,6 +28,8 @@ public class DbConnection {
 	 * 
 	 * @return <true> si la conexion se ha establecido satisfactoriamente o
 	 *         <false> en caso contrario
+	 *         
+	 * @version 1.0
 	 */
 	public static boolean initConnection() {
 		try {
@@ -44,8 +48,7 @@ public class DbConnection {
 			String password = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
 
 			// crear la conexion con la bd
-			conexion = (Connection) DriverManager.getConnection(url, user,
-					password);
+			conexion = (Connection) DriverManager.getConnection(url, user, password);
 
 			return true;
 
@@ -60,5 +63,20 @@ public class DbConnection {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Cierra la conexion con la base de datos de MySQL
+	 * 
+	 * @version 1.1
+	 */
+	public static void closeConnection() {
+		if (conexion != null) {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

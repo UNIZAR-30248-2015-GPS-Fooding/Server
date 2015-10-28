@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 
 import data.Ingrediente;
 import data.Receta;
+import data.Data;
 
 public class Listener extends HttpServlet {
 
@@ -39,12 +40,6 @@ public class Listener extends HttpServlet {
 
 	/* serial version */
 	private static final long serialVersionUID = 1473037731466545577L;
-
-	/* codigos de las request */
-	private final int ING_CODE = 0;
-	private final int RECETA_CODE = 1;
-	private final int USER_CODE = 2;
-	private final int GRUPO_CODE = 3;
 
 	/**
 	 * Metodo para recibir las peticiones GET de la aplicacion
@@ -90,15 +85,15 @@ public class Listener extends HttpServlet {
 
 			// hacer distintas cosas dependiendo del identificador
 			switch (id) {
-			case ING_CODE: /* ingredientes de la bd */
+			case Data.ING_CODE: /* ingredientes de la bd */
 				get_ingredientes(resp);
 				break;
-			case RECETA_CODE: /* receta */
+			case Data.RECETA_CODE: /* receta */
 				get_recetas(doc, resp);
 				break;
-			case USER_CODE: /* usuario */
+			case Data.USER_CODE: /* usuario */
 				break;
-			case GRUPO_CODE: /* grupo */
+			case Data.GRUPO_CODE: /* grupo */
 				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
@@ -140,7 +135,7 @@ public class Listener extends HttpServlet {
 
 		try {
 			PrintWriter out = resp.getWriter();
-			out.println("<response id=\"" + ING_CODE + "\">");
+			out.println("<response id=\"" + Data.ING_CODE + "\">");
 
 			// escribir ingredientes
 			for (String ing : ingredientes) {
@@ -178,7 +173,7 @@ public class Listener extends HttpServlet {
 		// escribir las recetas en la respuesta
 		try {
 			PrintWriter out = resp.getWriter();
-			out.println("<responde id=\"" + RECETA_CODE + "\">");
+			out.println("<responde id=\"" + Data.RECETA_CODE + "\">");
 
 			for (Receta r : recetas) {
 				out.println("<receta>");

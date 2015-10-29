@@ -80,16 +80,16 @@ public class Listener extends HttpServlet {
 
 		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
-		String ss = URLDecoder.decode(s, "UTF-8");
+//		String ss = URLDecoder.decode(s, "UTF-8");
 		out.println(s);
-		out.println(ss);
+//		out.println(ss);
 		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(ss);
+			Document doc = db.parse(req.getInputStream());
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request

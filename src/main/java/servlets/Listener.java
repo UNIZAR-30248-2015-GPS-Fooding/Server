@@ -48,6 +48,8 @@ public class Listener extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		out.println("GET");
 		manageRequest(req, resp);
 	}
 
@@ -58,6 +60,8 @@ public class Listener extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		out.println("POST");
 		manageRequest(req, resp);
 	}
 

@@ -6,6 +6,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -79,7 +80,9 @@ public class Listener extends HttpServlet {
 
 		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
+		String ss = URLDecoder.decode(s, "UTF-8");
 		out.println(s);
+		out.println(ss);
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;

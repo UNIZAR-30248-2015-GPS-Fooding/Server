@@ -81,8 +81,8 @@ public class Listener extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
 		String ss = URLDecoder.decode(s, "UTF-8");
-//		out.println(s);
-//		out.println(ss);
+		out.println(s);
+		out.println(ss);
 		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

@@ -7,6 +7,7 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringBufferInputStream;
+import java.io.StringReader;
 import java.net.URLDecoder;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,8 +83,8 @@ public class Listener extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
 		String ss = URLDecoder.decode(s, "UTF-8");
-		out.println(s);
-		out.println(ss);
+//		out.println(s);
+//		out.println(ss);
 		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -97,12 +98,12 @@ public class Listener extends HttpServlet {
 			int id = Integer.parseInt(doc.getDocumentElement().getAttribute("id"));
 			
 			
-			out.println("ID: " + id);
+//			out.println("ID: " + id);
 
 			// hacer distintas cosas dependiendo del identificador
 			switch (id) {
 			case Data.ING_CODE: /* ingredientes de la bd */
-				out.println("INGS");
+//				out.println("INGS");
 				get_ingredientes(resp);
 				break;
 			case Data.RECETA_CODE: /* receta */

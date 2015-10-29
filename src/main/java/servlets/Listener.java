@@ -51,7 +51,7 @@ public class Listener extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
-		out.println("GET");
+		//out.println("GET");
 		manageRequest(req, resp);
 	}
 
@@ -63,7 +63,7 @@ public class Listener extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
-		out.println("POST");
+		//out.println("POST");
 		manageRequest(req, resp);
 	}
 
@@ -81,14 +81,15 @@ public class Listener extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
 		String ss = URLDecoder.decode(s, "UTF-8");
-		out.println(s);
-		out.println(ss);
+//		out.println(s);
+//		out.println(ss);
+		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(req.getInputStream());
+			Document doc = db.parse(ss);
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request

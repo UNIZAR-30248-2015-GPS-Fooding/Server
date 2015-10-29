@@ -6,6 +6,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringBufferInputStream;
 import java.net.URLDecoder;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,16 +81,16 @@ public class Listener extends HttpServlet {
 
 		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
-//		String ss = URLDecoder.decode(s, "UTF-8");
+		String ss = URLDecoder.decode(s, "UTF-8");
 		out.println(s);
-//		out.println(ss);
+		out.println(ss);
 		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(req.getInputStream());
+			Document doc = db.parse(new StringBufferInputStream(ss));
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request

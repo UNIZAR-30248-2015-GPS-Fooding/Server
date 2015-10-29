@@ -78,8 +78,8 @@ public class Listener extends HttpServlet {
 	private void manageRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		PrintWriter out = resp.getWriter();
-//		String s = getBody(req);
-//		out.println(s);
+		String s = getBody(req);
+		out.println(s);
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;

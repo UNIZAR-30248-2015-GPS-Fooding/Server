@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.mysql.jdbc.Connection;
 
+import data.Ingrediente;
 import data.Receta;
 
 public class DbMethods {
@@ -65,14 +66,63 @@ public class DbMethods {
 	 * @param ings
 	 *            : ingredientes de la receta (vacio si no hay ingredientes)
 	 * @return una lista con las recetas que coinciden con la query en la BD
+	 * 
+	 * @version 1.1 -- Devuelve toda la informacion relativa a una receta.
+	 * 				Filtros disponibles:
+	 * 					-Nombre (parcial o completo)
 	 */
 	public static List<Receta> get_recetas(String nombre, String tipo, List<String> ings) {
 		// abrir conexion
 		DbConnection.initConnection();
-		
-		List<Receta> recetas = new LinkedList<Receta>();
+		Connection conexion = DbConnection.getConnection();
 		
 		// obtener lista de recetas
+		List<Receta> recetas = new LinkedList<Receta>();
+		String query = "SELECT * FROM receta, receta-ingrediente, usuario-valora-receta"
+						+ " WHERE receta.id = receta-ingrediente.idReceta"
+						+ " AND receta.id = usuario-valora-receta.id";
+		
+		// aplica los distintos filtros a la consulta
+		if (nombre != null) {
+			query = query + " AND receta.nombre LIKE '%" + nombre + "%'";
+		}
+		
+		Statement st,st2;
+		
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			Receta rec;
+			
+			// Obtiene toda la informacion de cada receta
+			while(res.next()) {
+				rec = new Receta();
+				int id = res.getInt("id");
+				rec.setNombre(res.getString("nombre"));
+				rec.setTipo(res.getString("tipo"));
+				rec.setInstrucciones(res.getString("instrucciones"));
+				
+				// Obtiene la informacion de los ingredientes de cada receta
+				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
+				String query2 = "SELECT * FROM receta-ingrediente"
+								+ " WHERE idReceta = " + id;
+				st2 = conexion.createStatement();
+				ResultSet res2 = st2.executeQuery(query2);
+				Ingrediente ing;
+				
+				while(res2.next()) {
+					ing = new Ingrediente();
+					ing.setNombre(res.getString("nombreIngrediente"));
+					ing.setCantidad(res.getInt("cantidad"));
+					ing.setUds(res.getString("medida"));
+					ingredientes.add(ing);
+				}
+				recetas.add(rec);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		// cerrar conexion
 		DbConnection.closeConnection();

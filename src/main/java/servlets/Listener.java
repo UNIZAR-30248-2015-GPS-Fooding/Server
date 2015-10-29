@@ -81,15 +81,17 @@ public class Listener extends HttpServlet {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
-			
+			PrintWriter out = resp.getWriter();
+			String s = getBody(req);
+			out.println(s);
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(getBody(req));
+			Document doc = db.parse(s);
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request
 			int id = Integer.parseInt(doc.getDocumentElement().getAttribute("id"));
 			
-			PrintWriter out = resp.getWriter();
+			
 			out.println("ID: " + id);
 
 			// hacer distintas cosas dependiendo del identificador
@@ -116,7 +118,6 @@ public class Listener extends HttpServlet {
 		} catch (SAXException e) {
 			PrintWriter out = resp.getWriter();
 			out.println("SAXException: " + e.getMessage());
-			req.getInputStream().reset();
 			out.println(req.getInputStream());
 			default_message(resp);
 		} catch (ParserConfigurationException e) {

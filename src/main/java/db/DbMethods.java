@@ -4,8 +4,13 @@
 
 package db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.mysql.jdbc.Connection;
 
 import data.Receta;
 
@@ -22,16 +27,29 @@ public class DbMethods {
 	/**
 	 * @return una lista con los ingredientes de la BD
 	 * 
-	 * @version 1.0 -- Metodo vacio
+	 * @version 1.1 -- Devuelve una lista con todos los ingredientes
 	 */
 	public static List<String> get_lista_ingredientes() {
 		// abrir conexion
 		DbConnection.initConnection();
-
-		List<String> ings = new LinkedList<String>();
+		Connection conexion = DbConnection.getConnection();
 
 		// obtener lista de ingredientes
-
+		List<String> ings = new LinkedList<String>();
+		String query = "SELECT * FROM INGREDIENTE";
+		Statement st;
+		
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			while(res.next()) {
+				String nombre = res.getString("nombre");
+				ings.add(nombre);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		// cerrar conexion
 		DbConnection.closeConnection();
 

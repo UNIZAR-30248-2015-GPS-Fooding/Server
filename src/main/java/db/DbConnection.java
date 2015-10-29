@@ -64,6 +64,15 @@ public class DbConnection {
 
 		return false;
 	}
+	
+	/**
+	 * Devuelve una conexion con la base de datos de MySQL
+	 * 
+	 * @version 1.0
+	 */
+	public static Connection getConnection() {
+		return conexion;
+	}
 
 	/**
 	 * Cierra la conexion con la base de datos de MySQL

@@ -52,8 +52,6 @@ public class Listener extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		PrintWriter out = resp.getWriter();
-		//out.println("GET");
 		manageRequest(req, resp);
 	}
 
@@ -64,8 +62,6 @@ public class Listener extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		PrintWriter out = resp.getWriter();
-		//out.println("POST");
 		manageRequest(req, resp);
 	}
 
@@ -80,11 +76,8 @@ public class Listener extends HttpServlet {
 	 */
 	private void manageRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		PrintWriter out = resp.getWriter();
 		String s = getBody(req);
 		String ss = URLDecoder.decode(s, "UTF-8");
-//		out.println(s);
-//		out.println(ss);
 		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -97,37 +90,29 @@ public class Listener extends HttpServlet {
 			// obtener identificador de la request
 			int id = Integer.parseInt(doc.getDocumentElement().getAttribute("id"));
 			
-			
-//			out.println("ID: " + id);
-
 			// hacer distintas cosas dependiendo del identificador
 			switch (id) {
 			case Data.ING_CODE: /* ingredientes de la bd */
-//				out.println("INGS");
 				get_ingredientes(resp);
 				break;
 			case Data.RECETA_CODE: /* receta */
-				out.println("RECETA");
 				get_recetas(doc, resp);
 				break;
 			case Data.USER_CODE: /* usuario */
-				out.println("USER");
 				break;
 			case Data.GRUPO_CODE: /* grupo */
-				out.println("GRUPO");
 				break;
 			default: /* no se reconoce el mensaje */
-				out.println("DEFAULT");
 				default_message(resp);
 			}
 
 		} catch (SAXException e) {
-//			PrintWriter out = resp.getWriter();
+			PrintWriter out = resp.getWriter();
 			out.println("SAXException: " + e.getMessage());
 			out.println(req.getInputStream());
 			default_message(resp);
 		} catch (ParserConfigurationException e) {
-//			PrintWriter out = resp.getWriter();
+			PrintWriter out = resp.getWriter();
 			out.println("ParserException: " + e.getMessage());
 			default_message(resp);
 		}

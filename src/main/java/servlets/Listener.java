@@ -93,22 +93,31 @@ public class Listener extends HttpServlet {
 			// hacer distintas cosas dependiendo del identificador
 			switch (id) {
 			case Data.ING_CODE: /* ingredientes de la bd */
+				out.println("INGS");
 				get_ingredientes(resp);
 				break;
 			case Data.RECETA_CODE: /* receta */
+				out.println("RECETA");
 				get_recetas(doc, resp);
 				break;
 			case Data.USER_CODE: /* usuario */
+				out.println("USER");
 				break;
 			case Data.GRUPO_CODE: /* grupo */
+				out.println("GRUPO");
 				break;
 			default: /* no se reconoce el mensaje */
+				out.println("DEFAULT");
 				default_message(resp);
 			}
 
 		} catch (SAXException e) {
+			PrintWriter out = resp.getWriter();
+			out.println("SAXException");
 			default_message(resp);
 		} catch (ParserConfigurationException e) {
+			PrintWriter out = resp.getWriter();
+			out.println("ParserException");
 			default_message(resp);
 		}
 	}

@@ -37,14 +37,14 @@ public class DbMethods {
 
 		// obtener lista de ingredientes
 		List<String> ings = new LinkedList<String>();
-		String query = "SELECT * FROM INGREDIENTE";
+		String query = "SELECT * FROM Ingrediente";
 		Statement st;
 		
 		try {
 			st = conexion.createStatement();
 			ResultSet res = st.executeQuery(query);
 			while(res.next()) {
-				String nombre = res.getString("nombre");
+				String nombre = res.getString("Nombre");
 				ings.add(nombre);
 			}
 			st.close();
@@ -80,13 +80,13 @@ public class DbMethods {
 		
 		// obtener lista de recetas
 		List<Receta> recetas = new LinkedList<Receta>();
-		String query = "SELECT * FROM receta, receta-ingrediente, usuario-valora-receta"
-						+ " WHERE receta.id = receta-ingrediente.idReceta"
-						+ " AND receta.id = usuario-valora-receta.id";
+		String query = "SELECT * FROM Receta, Receta-Ingrediente, Usuario-Valora-Receta"
+						+ " WHERE Receta.id = Receta-Ingrediente.idReceta"
+						+ " AND Receta.id = Usuario-Valora-Receta.idReceta";
 		
 		// aplica los distintos filtros a la consulta
 		if (nombre != null) {
-			query = query + " AND receta.nombre LIKE '%" + nombre + "%'";
+			query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
 		}
 		
 		Statement st,st2;
@@ -106,7 +106,7 @@ public class DbMethods {
 				
 				// Obtiene la informacion de los ingredientes de cada receta
 				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
-				String query2 = "SELECT * FROM receta-ingrediente"
+				String query2 = "SELECT * FROM Receta-Ingrediente"
 								+ " WHERE idReceta = " + id;
 				st2 = conexion.createStatement();
 				ResultSet res2 = st2.executeQuery(query2);

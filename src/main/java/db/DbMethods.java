@@ -47,11 +47,13 @@ public class DbMethods {
 				String nombre = res.getString("nombre");
 				ings.add(nombre);
 			}
+			st.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		// cerrar conexion
+		
 		DbConnection.closeConnection();
 
 		return ings;
@@ -118,7 +120,10 @@ public class DbMethods {
 					ingredientes.add(ing);
 				}
 				recetas.add(rec);
+				st2.close();
 			}
+			
+			st.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

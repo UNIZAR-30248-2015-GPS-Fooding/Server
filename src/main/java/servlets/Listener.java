@@ -77,13 +77,13 @@ public class Listener extends HttpServlet {
 	 */
 	private void manageRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+		PrintWriter out = resp.getWriter();
+		String s = getBody(req);
+		out.println(s);
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
-			PrintWriter out = resp.getWriter();
-			String s = getBody(req);
-			out.println(s);
 			db = dbf.newDocumentBuilder();
 			Document doc = db.parse(s);
 			doc.getDocumentElement().normalize();
@@ -116,12 +116,12 @@ public class Listener extends HttpServlet {
 			}
 
 		} catch (SAXException e) {
-			PrintWriter out = resp.getWriter();
+//			PrintWriter out = resp.getWriter();
 			out.println("SAXException: " + e.getMessage());
 			out.println(req.getInputStream());
 			default_message(resp);
 		} catch (ParserConfigurationException e) {
-			PrintWriter out = resp.getWriter();
+//			PrintWriter out = resp.getWriter();
 			out.println("ParserException: " + e.getMessage());
 			default_message(resp);
 		}

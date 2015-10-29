@@ -82,9 +82,8 @@ public class Listener extends HttpServlet {
 		DocumentBuilder db;
 		try {
 			
-			String inputStreamString = new Scanner(req.getInputStream(),"UTF-8").useDelimiter("\\A").next();
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(inputStreamString);
+			Document doc = db.parse(getBody(req));
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request
@@ -125,6 +124,18 @@ public class Listener extends HttpServlet {
 			out.println("ParserException: " + e.getMessage());
 			default_message(resp);
 		}
+	}
+	
+	private String getBody(HttpServletRequest req){
+		Scanner s;
+		try {
+			s = new Scanner(req.getInputStream(), "UTF-8").useDelimiter("\\A");
+			return s.hasNext() ? s.next() : "";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	/**

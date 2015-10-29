@@ -51,7 +51,8 @@ public class Listener extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
 		out.println("GET");
-		manageRequest(req, resp);
+//		manageRequest(req, resp);
+		doPost(req, resp);
 	}
 
 	/**

@@ -21,9 +21,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import data.Data;
 import data.Ingrediente;
 import data.Receta;
-import data.Data;
 
 public class Listener extends HttpServlet {
 
@@ -82,6 +82,9 @@ public class Listener extends HttpServlet {
 
 			// obtener identificador de la request
 			int id = Integer.parseInt(doc.getDocumentElement().getAttribute("id"));
+			
+			PrintWriter out = resp.getWriter();
+			out.println("ID: " + id);
 
 			// hacer distintas cosas dependiendo del identificador
 			switch (id) {

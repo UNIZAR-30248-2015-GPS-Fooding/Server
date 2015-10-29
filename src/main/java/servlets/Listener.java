@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -80,8 +81,10 @@ public class Listener extends HttpServlet {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
+			
+			String inputStreamString = new Scanner(req.getInputStream(),"UTF-8").useDelimiter("\\A").next();
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(req.getInputStream());
+			Document doc = db.parse(inputStreamString);
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request
@@ -114,6 +117,8 @@ public class Listener extends HttpServlet {
 		} catch (SAXException e) {
 			PrintWriter out = resp.getWriter();
 			out.println("SAXException: " + e.getMessage());
+			req.getInputStream().reset();
+			out.println(req.getInputStream());
 			default_message(resp);
 		} catch (ParserConfigurationException e) {
 			PrintWriter out = resp.getWriter();

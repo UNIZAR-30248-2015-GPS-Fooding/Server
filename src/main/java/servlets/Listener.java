@@ -191,12 +191,6 @@ public class Listener extends HttpServlet {
 		try {
 			PrintWriter out = resp.getWriter();
 			out.println("<responde id=\"" + Data.RECETA_CODE + "\">");
-
-			out.println("REQUEST INFO");
-			out.println("Dimension recetas: " + recetas.size());
-			out.println("Nombre: " + nombre);
-			out.println("Tipo: " + tipo);
-			out.println("Dimension ingredientes: " + ings.size());
 			
 			for (Receta r : recetas) {
 				out.println("<receta>");

@@ -140,6 +140,8 @@ public class DbMethods {
 		//test
 		Receta r = new Receta();
 		r.setNombre(query);
+		r.setTipo("");
+		r.setIngredientes(new LinkedList<Ingrediente>());
 		recetas.add(r);
 		
 		return recetas;

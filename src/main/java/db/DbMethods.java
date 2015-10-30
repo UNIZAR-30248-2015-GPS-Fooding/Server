@@ -125,6 +125,7 @@ public class DbMethods {
 					ing.setUds(res2.getString("medida"));
 					ingredientes.add(ing);
 				}
+				rec.setIngredientes(ingredientes);
 				recetas.add(rec);
 				st2.close();
 			}

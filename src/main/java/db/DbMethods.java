@@ -105,7 +105,7 @@ public class DbMethods {
 			while(res.next()) {
 				
 				Receta r = new Receta();
-				r.setNombre(query);
+				r.setNombre(res.getString(2));
 				r.setTipo("");
 				r.setIngredientes(new LinkedList<Ingrediente>());
 				recetas.add(r);

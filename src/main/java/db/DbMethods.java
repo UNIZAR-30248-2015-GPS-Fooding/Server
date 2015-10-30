@@ -137,6 +137,11 @@ public class DbMethods {
 		// cerrar conexion
 		DbConnection.closeConnection();
 		
+		//test
+		Receta r = new Receta();
+		r.setNombre(query);
+		recetas.add(r);
+		
 		return recetas;
 	}
 }

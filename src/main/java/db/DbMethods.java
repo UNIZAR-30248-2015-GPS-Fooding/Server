@@ -103,6 +103,13 @@ public class DbMethods {
 			
 			// Obtiene toda la informacion de cada receta
 			while(res.next()) {
+				
+				Receta r = new Receta();
+				r.setNombre(query);
+				r.setTipo("");
+				r.setIngredientes(new LinkedList<Ingrediente>());
+				recetas.add(r);
+				
 				rec = new Receta();
 				int id = res.getInt("id");
 				rec.setNombre(res.getString("nombre"));

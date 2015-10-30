@@ -1,5 +1,5 @@
 /*
- * DbMethodsTest.java v1.0 30/10/2015
+ * DbMethodsTest.java v1.1 30/10/2015
  */
 
 package test;
@@ -17,9 +17,10 @@ public class DbMethodsTest {
 	/**
 	 * Clase para tests sobre los metodos de acceso
 	 * 
-	 * @version 1.0 
+	 * @version 1.1 
 	 * 	- Test de lista de ingredientes 
-	 * 	- Test de lista de recetas
+	 * 	- Test de lista de recetas (generico)
+	 * 	- Test de lista de recetas (nombre)
 	 * @date 23/10/2015
 	 */
 
@@ -50,6 +51,16 @@ public class DbMethodsTest {
 	@Test
 	public void test_recetas_nombre() {
 		List<Receta> recetas = DbMethods.get_recetas("mac", null, null);
+		assertTrue(recetas != null && recetas.size() > 0);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener recetas por tipo no
+	 * devuelve <null> o lista vacia
+	 */
+	@Test
+	public void test_recetas_tipo(){
+		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 

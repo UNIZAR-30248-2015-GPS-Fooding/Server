@@ -4,14 +4,13 @@
 
 package servlets;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,11 +33,8 @@ public class Listener extends HttpServlet {
 	/**
 	 * Clase para obtener las peticiones de la aplicacion
 	 * 
-	 * @version 1.1
-	 * 	- GET, POST redirigidos a otro metodo
-	 * 	- Default message agregado
-	 * 	- Obtener ingredientes
-	 * 	- Obtener recetas
+	 * @version 1.1 - GET, POST redirigidos a otro metodo - Default message
+	 *          agregado - Obtener ingredientes - Obtener recetas
 	 * @date 22/10/2015
 	 */
 
@@ -52,7 +48,9 @@ public class Listener extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		manageRequest(req, resp);
+		String xml = req.getParameter("xml");
+		InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+		manageRequest(is, resp);
 	}
 
 	/**
@@ -62,7 +60,7 @@ public class Listener extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		manageRequest(req, resp);
+		manageRequest(req.getInputStream(), resp);
 	}
 
 	/**
@@ -74,22 +72,19 @@ public class Listener extends HttpServlet {
 	 * 
 	 * @version 1.0
 	 */
-	private void manageRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	private void manageRequest(InputStream is, HttpServletResponse resp) throws IOException {
 
-//		String s = getBody(req);
-//		String ss = URLDecoder.decode(s, "UTF-8");
-		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(req.getInputStream());//new StringBufferInputStream(ss));
+			Document doc = db.parse(is);
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request
 			int id = Integer.parseInt(doc.getDocumentElement().getAttribute("id"));
-			
+
 			// hacer distintas cosas dependiendo del identificador
 			switch (id) {
 			case Data.ING_CODE: /* ingredientes de la bd */
@@ -109,25 +104,12 @@ public class Listener extends HttpServlet {
 		} catch (SAXException e) {
 			PrintWriter out = resp.getWriter();
 			out.println("SAXException: " + e.getMessage());
-			out.println(req.getInputStream());
 			default_message(resp);
 		} catch (ParserConfigurationException e) {
 			PrintWriter out = resp.getWriter();
 			out.println("ParserException: " + e.getMessage());
 			default_message(resp);
 		}
-	}
-	
-	private String getBody(HttpServletRequest req){
-		Scanner s;
-		try {
-			s = new Scanner(req.getInputStream(), "UTF-8").useDelimiter("\\A");
-			return s.hasNext() ? s.next() : "";
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "";
 	}
 
 	/**

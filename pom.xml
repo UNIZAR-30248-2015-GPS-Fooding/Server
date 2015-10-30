@@ -77,7 +77,6 @@
 						<configuration>
 							<outputDirectory>webapps</outputDirectory>
 							<warName>ROOT</warName>
-							<skip>false</skip>
 						</configuration>
 					</plugin>
 				</plugins>

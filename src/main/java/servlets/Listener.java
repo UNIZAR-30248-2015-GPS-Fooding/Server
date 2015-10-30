@@ -145,9 +145,7 @@ public class Listener extends HttpServlet {
 
 			// escribir ingredientes
 			for (String ing : ingredientes) {
-				out.println("<ingrediente>");
-				out.print(ing);
-				out.println("</ingrediente>");
+				out.println("<ingrediente>" + ing + "</ingrediente>");
 			}
 
 			out.println("</response>");

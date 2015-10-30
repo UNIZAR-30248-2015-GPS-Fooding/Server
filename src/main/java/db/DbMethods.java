@@ -104,12 +104,6 @@ public class DbMethods {
 			// Obtiene toda la informacion de cada receta
 			while(res.next()) {
 				
-				Receta r = new Receta();
-				r.setNombre(res.getString(2));
-				r.setTipo("");
-				r.setIngredientes(new LinkedList<Ingrediente>());
-				recetas.add(r);
-				
 				rec = new Receta();
 				int id = res.getInt("id");
 				rec.setNombre(res.getString("nombre"));
@@ -126,9 +120,9 @@ public class DbMethods {
 				
 				while(res2.next()) {
 					ing = new Ingrediente();
-					ing.setNombre(res.getString("nombreIngrediente"));
-					ing.setCantidad(res.getInt("cantidad"));
-					ing.setUds(res.getString("medida"));
+					ing.setNombre(res2.getString("nombreIngrediente"));
+					ing.setCantidad(res2.getInt("cantidad"));
+					ing.setUds(res2.getString("medida"));
 					ingredientes.add(ing);
 				}
 				recetas.add(rec);
@@ -143,13 +137,6 @@ public class DbMethods {
 		
 		// cerrar conexion
 		DbConnection.closeConnection();
-		
-		//test
-		Receta r = new Receta();
-		r.setNombre(query);
-		r.setTipo("");
-		r.setIngredientes(new LinkedList<Ingrediente>());
-		recetas.add(r);
 		
 		return recetas;
 	}

@@ -17,7 +17,9 @@ public class DbMethodsTest {
 	/**
 	 * Clase para tests sobre los metodos de acceso
 	 * 
-	 * @version 1.0 - Test de lista de ingredientes - Test de lista de recetas
+	 * @version 1.0 
+	 * 	- Test de lista de ingredientes 
+	 * 	- Test de lista de recetas
 	 * @date 23/10/2015
 	 */
 

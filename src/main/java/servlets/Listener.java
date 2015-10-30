@@ -162,13 +162,26 @@ public class Listener extends HttpServlet {
 	 */
 	private void get_recetas(Document doc, HttpServletResponse resp) {
 		// parsear la consulta
-		String nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
-		String tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
+		String nombre = null;
+		String tipo = null;
+		
+		if(doc.getElementsByTagName("nombre") != null
+				&& doc.getElementsByTagName("nombre").getLength() > 0){
+			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
+		}
+		
+		if(doc.getElementsByTagName("tipo") != null
+				&& doc.getElementsByTagName("tipo").getLength() > 0){
+			tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
+		}
+		
 		List<String> ings = new LinkedList<String>();
 
 		NodeList ingredientes = doc.getElementsByTagName("ingrediente");
-		for (int i = 0; i < ingredientes.getLength(); i++) {
-			ings.add(ingredientes.item(i).getTextContent());
+		if(ingredientes != null){
+			for (int i = 0; i < ingredientes.getLength(); i++) {
+				ings.add(ingredientes.item(i).getTextContent());
+			}
 		}
 
 		// conseguir las recetas de la bd

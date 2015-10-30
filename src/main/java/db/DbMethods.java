@@ -93,6 +93,11 @@ public class DbMethods {
 		if (tipo != null) {
 			query = query + " AND Receta.tipo = " + tipo;
 		}
+//		if (ings.size() > 0){
+//			for(int i = 0; i < ings.size(); i++){
+//				query = query + " AND RecetaIngrediente.nombreIngrediente = " + ings.get(i);
+//			}
+//		}
 		
 		Statement st,st2;
 		

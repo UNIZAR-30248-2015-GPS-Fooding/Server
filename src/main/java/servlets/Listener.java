@@ -190,7 +190,7 @@ public class Listener extends HttpServlet {
 		// escribir las recetas en la respuesta
 		try {
 			PrintWriter out = resp.getWriter();
-			out.println("<responde id=\"" + Data.RECETA_CODE + "\">");
+			out.println("<response id=\"" + Data.RECETA_CODE + "\">");
 			
 			for (Receta r : recetas) {
 				out.println("<receta>");

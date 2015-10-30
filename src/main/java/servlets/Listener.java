@@ -76,15 +76,15 @@ public class Listener extends HttpServlet {
 	 */
 	private void manageRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		String s = getBody(req);
-		String ss = URLDecoder.decode(s, "UTF-8");
+//		String s = getBody(req);
+//		String ss = URLDecoder.decode(s, "UTF-8");
 		
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(new StringBufferInputStream(ss));
+			Document doc = db.parse(req.getInputStream());//new StringBufferInputStream(ss));
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request

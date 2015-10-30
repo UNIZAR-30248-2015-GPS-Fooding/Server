@@ -44,7 +44,7 @@ public class DbMethods {
 			st = conexion.createStatement();
 			ResultSet res = st.executeQuery(query);
 			while(res.next()) {
-				String nombre = res.getString("Nombre");
+				String nombre = res.getString("nombre");
 				ings.add(nombre);
 			}
 			st.close();
@@ -69,9 +69,10 @@ public class DbMethods {
 	 *            : ingredientes de la receta (vacio si no hay ingredientes)
 	 * @return una lista con las recetas que coinciden con la query en la BD
 	 * 
-	 * @version 1.1 -- Devuelve toda la informacion relativa a una receta.
+	 * @version 1.2 -- Devuelve toda la informacion relativa a una receta.
 	 * 				Filtros disponibles:
 	 * 					-Nombre (parcial o completo)
+	 * 					-Tipo (completo)
 	 */
 	public static List<Receta> get_recetas(String nombre, String tipo, List<String> ings) {
 		// abrir conexion
@@ -80,13 +81,17 @@ public class DbMethods {
 		
 		// obtener lista de recetas
 		List<Receta> recetas = new LinkedList<Receta>();
-		String query = "SELECT * FROM Receta, Receta-Ingrediente, Usuario-Valora-Receta"
-						+ " WHERE Receta.id = Receta-Ingrediente.idReceta"
-						+ " AND Receta.id = Usuario-Valora-Receta.idReceta";
+		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, idReceta"
+						+ " FROM Receta, RecetaIngrediente"
+						+ " WHERE Receta.id = RecetaIngrediente.idReceta";
+						//+ " AND Receta.id = UsuarioValoraReceta.idReceta";
 		
 		// aplica los distintos filtros a la consulta
 		if (nombre != null) {
 			query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
+		}
+		if (tipo != null) {
+			query = query + " AND Receta.tipo = " + tipo;
 		}
 		
 		Statement st,st2;
@@ -106,7 +111,7 @@ public class DbMethods {
 				
 				// Obtiene la informacion de los ingredientes de cada receta
 				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
-				String query2 = "SELECT * FROM Receta-Ingrediente"
+				String query2 = "SELECT * FROM RecetaIngrediente"
 								+ " WHERE idReceta = " + id;
 				st2 = conexion.createStatement();
 				ResultSet res2 = st2.executeQuery(query2);

@@ -19,5 +19,5 @@ rem Push to Github
 git push github %branch%
 
 rem Get code coverage
-"%SYSTEMDRIVE%\Program Files\Git\bin\bash.exe"" --login -i -c "scp 5624a20f0c1e669609000099@fooding-gpsfooding.rhcloud.com:./app-root/repo/target/site/jacoco/index.html ./Reports/"
+"%SYSTEMDRIVE%\Program Files\Git\bin\bash.exe" --login -i -c "scp 5624a20f0c1e669609000099@fooding-gpsfooding.rhcloud.com:./app-root/repo/target/site/jacoco/index.html ./Reports/"
 pause

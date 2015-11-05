@@ -18,4 +18,7 @@ git push origin %branch%
 rem Push to Github
 git push github %branch%
 
+rem Get code coverage
+ssh 5624a20f0c1e669609000099@fooding-gpsfooding.rhcloud.com:./app-root/repo/target/site/jacoco/index.html ./Reports/
+
 pause

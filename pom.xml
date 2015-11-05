@@ -80,7 +80,6 @@
 							<warName>ROOT</warName>
 						</configuration>
 					</plugin>
-					<!-- AAAAAAAAAAAAAAAAAAAAAA -->
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
@@ -113,7 +112,6 @@
 							<target>1.5</target>
 						</configuration>
 					</plugin>
-					<!-- AAAAAAAAAAAAAAAAAAAAAA -->
 				</plugins>
 			</build>
 		</profile>

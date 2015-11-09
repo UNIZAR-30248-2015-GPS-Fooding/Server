@@ -62,7 +62,7 @@ public class DbMethods {
 	/**
 	 * @return una lista con los tipos disponibles en la bd
 	 * 
-	 * @version 1.0 -- Stub
+	 * @version 1.1 -- Devuelve una lista de todos los tipos de recetas
 	 */
 	public static List<String> get_tipos(){
 		// abrir conexion
@@ -71,6 +71,21 @@ public class DbMethods {
 		
 		// obtener lista de ingredientes
 		List<String> tipos = new LinkedList<String>();
+		String query = "SELECT DISTINCT tipo FROM Receta";
+		Statement st;
+		
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			while(res.next()) {
+				String tipo = res.getString("tipo");
+				tipos.add(tipo);
+			}
+			st.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		// cerrar conexion
 		DbConnection.closeConnection();
@@ -110,7 +125,7 @@ public class DbMethods {
 			query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
 		}
 		if (tipo != null) {
-			query = query + " AND Receta.tipo = " + tipo;
+			query = query + " AND Receta.tipo = '" + tipo + "'";
 		}
 //		if (ings.size() > 0){
 //			for(int i = 0; i < ings.size(); i++){

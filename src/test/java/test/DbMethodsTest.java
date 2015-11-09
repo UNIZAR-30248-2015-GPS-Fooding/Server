@@ -59,7 +59,6 @@ public class DbMethodsTest {
 	 * Test para comprobar que el metodo para obtener recetas por tipo no
 	 * devuelve <null> o lista vacia
 	 */
-	@Ignore
 	@Test
 	public void test_recetas_tipo(){
 		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null);

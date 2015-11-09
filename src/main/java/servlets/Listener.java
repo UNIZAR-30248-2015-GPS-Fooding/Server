@@ -97,6 +97,9 @@ public class Listener extends HttpServlet {
 				break;
 			case Data.GRUPO_CODE: /* grupo */
 				break;
+			case Data.TIPO_CODE:	/* tipo */
+				get_tipos(resp);
+				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
 			}
@@ -150,6 +153,34 @@ public class Listener extends HttpServlet {
 
 			out.println("</response>");
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Escribe en @param resp el XML con los tipos disponibles en la bd
+	 * 
+	 * El formato del XML generado es:
+	 * <response id="4">
+	 * 	<tipo>nombre_tipo</tipo>
+	 * </response>
+	 * 
+	 * @version 1.0
+	 */
+	private void get_tipos(HttpServletResponse resp){
+		// conseguir tipos de la bd
+		List<String> tipos = db.DbMethods.get_tipos();
+		
+		try{
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.TIPO_CODE + "\">");
+			
+			for(String tipo: tipos){
+				out.println("<tipo>" + tipo + "</tipo>");
+			}
+			
+			out.println("</response>");
+		} catch(IOException e){
 			e.printStackTrace();
 		}
 	}

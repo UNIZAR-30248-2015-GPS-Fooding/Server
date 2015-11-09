@@ -58,6 +58,25 @@ public class DbMethods {
 
 		return ings;
 	}
+	
+	/**
+	 * @return una lista con los tipos disponibles en la bd
+	 * 
+	 * @version 1.0 -- Stub
+	 */
+	public static List<String> get_tipos(){
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+		
+		// obtener lista de ingredientes
+		List<String> tipos = new LinkedList<String>();
+		
+		// cerrar conexion
+		DbConnection.closeConnection();
+		
+		return tipos;
+	}
 
 	/**
 	 * 

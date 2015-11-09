@@ -19,5 +19,5 @@ public class Data {
 	public static final int RECETA_CODE = 1;
 	public static final int USER_CODE = 2;
 	public static final int GRUPO_CODE = 3;
-
+	public static final int TIPO_CODE = 4;
 }

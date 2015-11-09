@@ -131,7 +131,7 @@ public class DbMethods {
 			// filtro de busqueda por tipo (completo)
 			query = query + " AND Receta.tipo = '" + tipo + "'";
 		}
-		if (ings.size() > 0){
+		if (ings != null && ings.size() > 0){
 			
 			// filtro de busqueda por ingredientes (uno o varios)
 			query = query + " AND RecetaIngrediente.nombreIngrediente in ('" + ings.get(0) + "'";

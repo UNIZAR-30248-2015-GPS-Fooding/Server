@@ -183,6 +183,11 @@ public class DbMethods {
 			e.printStackTrace();
 		}
 		
+		// Agrega receta de prueba (muestra la query)
+		Receta pR = new Receta();
+		pR.setNombre(query);
+		recetas.add(pR);
+		
 		// cerrar conexion
 		DbConnection.closeConnection();
 		

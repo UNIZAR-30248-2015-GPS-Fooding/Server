@@ -138,7 +138,9 @@ public class DbMethods {
 			for(int i = 1; i < ings.size(); i++){
 				query = query + ",'" + ings.get(i) + "'";
 			}
-			query = query + ") HAVING COUNT(DISTINCT RecetaIngrediente.nombreIngrediente) >= " + ings.size();
+			query = query + ")"
+						+ " GROUP BY Receta.id"
+						+ " HAVING COUNT(DISTINCT RecetaIngrediente.nombreIngrediente) >= " + ings.size();
 		}
 		
 		Statement st,st2;

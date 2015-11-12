@@ -190,4 +190,19 @@ public class DbMethods {
 		
 		return recetas;
 	}
+	
+	/**
+	 * Metodo stub, por hacer
+	 * @param mail
+	 * 			: email con el que el usuario se registra
+	 * @param nick
+	 * 			: nickname del usuario
+	 * @param pw
+	 * 			: password cifrada del usuario
+	 * @return <true> si se ha podido registrar al usuario, 
+	 * o <false> en caso contrario
+	 */
+	public static boolean registrar(String mail, String nick, String pw){
+		return false;
+	}
 }

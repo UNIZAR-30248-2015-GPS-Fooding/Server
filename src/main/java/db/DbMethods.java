@@ -203,6 +203,7 @@ public class DbMethods {
 	 * o <false> en caso contrario
 	 */
 	public static boolean registrar(String mail, String nick, String pw){
+		// Holaaa!!
 		return false;
 	}
 }

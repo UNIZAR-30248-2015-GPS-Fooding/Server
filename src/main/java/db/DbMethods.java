@@ -202,7 +202,7 @@ public class DbMethods {
 	 * @return <true> si se ha podido registrar al usuario, 
 	 * o <false> en caso contrario
 	 */
-	public static boolean registrar(String mail, String nick, String pw){
+	public static boolean registrar(String mail, String nick, String pw, boolean test){
 		return false;
 	}
 }

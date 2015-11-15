@@ -261,6 +261,7 @@ public class Listener extends HttpServlet {
 		String mail = null;
 		String nick = null;
 		String pw = null;
+		boolean test = true;
 		
 		if(doc.getElementsByTagName("mail") != null &&
 				doc.getElementsByTagName("mail").getLength() > 0){
@@ -274,9 +275,13 @@ public class Listener extends HttpServlet {
 				doc.getElementsByTagName("pw").getLength() > 0){
 			pw = doc.getElementsByTagName("pw").item(0).getTextContent();
 		}
+		if(doc.getElementsByTagName("test") != null &&
+				doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
 		
 		// registrar al usuario
-		boolean registrado = db.DbMethods.registrar(mail, nick, pw);
+		boolean registrado = db.DbMethods.registrar(mail, nick, pw, test);
 		
 		// informar al usuario
 		try{

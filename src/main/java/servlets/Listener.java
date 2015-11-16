@@ -326,7 +326,7 @@ public class Listener extends HttpServlet {
 		// informar al usuario
 		try{
 			PrintWriter out = resp.getWriter();
-			out.println("<response id=\"" + Data.CREAR_USER_CODE + "\">");
+			out.println("<response id=\"" + Data.LOGIN_CODE + "\">");
 			if(login){
 				out.println("<hecho>yes</hecho>");
 			}

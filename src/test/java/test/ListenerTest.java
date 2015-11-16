@@ -54,7 +54,6 @@ public class ListenerTest{
 		servlet.doGet(req, resp);
 		
 		String respuesta = resp.getContentAsString();
-		System.out.println(respuesta);
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty());
 	}
@@ -136,7 +135,7 @@ public class ListenerTest{
 	}
 	
 	/**
-	 * Testea que devuelve una lista de tipos (GET)
+	 * Testea que devuelve una lista de tipos (POST)
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
@@ -153,5 +152,43 @@ public class ListenerTest{
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.contains("tipo"));
+	}
+	
+	/**
+	 * Testea que devuelve una lista de recetas (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_recetas() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\"></request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("receta"));
+	}
+	
+	/**
+	 * Testea que devuelve una lista de recetas (POST)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_recetass() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\"></request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("receta"));
 	}
 }

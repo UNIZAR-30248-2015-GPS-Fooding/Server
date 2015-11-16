@@ -54,6 +54,7 @@ public class ListenerTest{
 		servlet.doGet(req, resp);
 		
 		String respuesta = resp.getContentAsString();
+		System.out.println(respuesta);
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.equalsIgnoreCase("<response></response>"));

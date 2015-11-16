@@ -195,6 +195,19 @@ public class DbMethods {
 	 * Metodo stub, por hacer
 	 * @param mail
 	 * 			: email con el que el usuario se registra
+	 * @param pw
+	 * 			: password cifrada del usuario
+	 * @return <true> si se ha podido registrar al usuario, 
+	 * o <false> en caso contrario
+	 */
+	public static boolean login(String mail, String pw){
+		return false;
+	}
+	
+	/**
+	 * Metodo stub, por hacer
+	 * @param mail
+	 * 			: email con el que el usuario se registra
 	 * @param nick
 	 * 			: nickname del usuario
 	 * @param pw
@@ -204,5 +217,40 @@ public class DbMethods {
 	 */
 	public static boolean registrar(String mail, String nick, String pw, boolean test){
 		return false;
+	}
+	
+	/**
+	 * @param mail
+	 * 			: email con el que el usuario se registra
+	 * @return <true> si se ha encontrado al usuario, 
+	 * o <false> en caso contrario
+	 */
+	public static boolean buscar_usuario(String mail, boolean test){
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+		
+		// obtener informacion del usuario
+		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
+		Statement st;
+		
+		boolean encontrado = false;
+		
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			
+			// comprueba si se ha encontrado al usuario
+			encontrado = res.next();
+			
+			st.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cerrar conexion
+		DbConnection.closeConnection();
+		
+		return encontrado;
 	}
 }

@@ -54,9 +54,9 @@ public class ListenerTest{
 		servlet.doGet(req, resp);
 		
 		String respuesta = resp.getContentAsString();
-		System.out.println("get default message");
 		
-		assertTrue(respuesta != null && !respuesta.isEmpty());
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.equalsIgnoreCase("<response></response>"));
 	}
 	
 	/**
@@ -74,7 +74,6 @@ public class ListenerTest{
 		servlet.doPost(req, resp);
 		
 		String respuesta = resp.getContentAsString();
-		System.out.println("get default message");
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty());
 	}

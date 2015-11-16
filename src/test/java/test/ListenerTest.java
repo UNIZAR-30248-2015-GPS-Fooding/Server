@@ -85,6 +85,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_ingredientes() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.ING_CODE +"\"></request";
+		System.out.println(xml);
 		req.addParameter("xml", xml);
 		
 		servlet.doGet(req, resp);

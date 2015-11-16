@@ -103,6 +103,8 @@ public class ListenerTest{
 	@Test
 	public void test_post_ingredientes() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.ING_CODE +"\"></request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
 		req.setContent(xml.getBytes());
 		
 		servlet.doPost(req, resp);
@@ -137,6 +139,8 @@ public class ListenerTest{
 	@Test
 	public void test_post_tipos() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\"></request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
 		req.setContent(xml.getBytes());
 		
 		servlet.doPost(req, resp);

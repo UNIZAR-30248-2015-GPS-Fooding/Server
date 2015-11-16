@@ -122,16 +122,26 @@ public class DbMethods {
 		
 		// aplica los distintos filtros a la consulta
 		if (nombre != null) {
+			
+			// filtro de busqueda por nombre (parcial o completo)
 			query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
 		}
 		if (tipo != null) {
+			
+			// filtro de busqueda por tipo (completo)
 			query = query + " AND Receta.tipo = '" + tipo + "'";
 		}
-//		if (ings.size() > 0){
-//			for(int i = 0; i < ings.size(); i++){
-//				query = query + " AND RecetaIngrediente.nombreIngrediente = " + ings.get(i);
-//			}
-//		}
+		if (ings != null && ings.size() > 0){
+			
+			// filtro de busqueda por ingredientes (uno o varios)
+			query = query + " AND RecetaIngrediente.nombreIngrediente in ('" + ings.get(0) + "'";
+			for(int i = 1; i < ings.size(); i++){
+				query = query + ",'" + ings.get(i) + "'";
+			}
+			query = query + ")"
+						+ " GROUP BY Receta.id"
+						+ " HAVING COUNT(DISTINCT RecetaIngrediente.nombreIngrediente) >= " + ings.size();
+		}
 		
 		Statement st,st2;
 		
@@ -179,5 +189,20 @@ public class DbMethods {
 		DbConnection.closeConnection();
 		
 		return recetas;
+	}
+	
+	/**
+	 * Metodo stub, por hacer
+	 * @param mail
+	 * 			: email con el que el usuario se registra
+	 * @param nick
+	 * 			: nickname del usuario
+	 * @param pw
+	 * 			: password cifrada del usuario
+	 * @return <true> si se ha podido registrar al usuario, 
+	 * o <false> en caso contrario
+	 */
+	public static boolean registrar(String mail, String nick, String pw, boolean test){
+		return false;
 	}
 }

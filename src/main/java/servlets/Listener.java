@@ -33,8 +33,11 @@ public class Listener extends HttpServlet {
 	/**
 	 * Clase para obtener las peticiones de la aplicacion
 	 * 
-	 * @version 1.1 - GET, POST redirigidos a otro metodo - Default message
-	 *          agregado - Obtener ingredientes - Obtener recetas
+	 * @version 1.1
+	 *  - GET, POST redirigidos a otro metodo
+	 *  - Default message agregado
+	 *  - Obtener ingredientes
+	 *  - Obtener recetas
 	 * @date 22/10/2015
 	 */
 
@@ -47,7 +50,7 @@ public class Listener extends HttpServlet {
 	 * @version 1.0
 	 */
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String xml = req.getParameter("xml");
 		InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
 		manageRequest(is, resp);
@@ -59,7 +62,7 @@ public class Listener extends HttpServlet {
 	 * @version 1.0
 	 */
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		manageRequest(req.getInputStream(), resp);
 	}
 

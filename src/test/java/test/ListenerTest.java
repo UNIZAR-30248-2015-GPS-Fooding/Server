@@ -56,8 +56,7 @@ public class ListenerTest{
 		String respuesta = resp.getContentAsString();
 		System.out.println(respuesta);
 		
-		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.equalsIgnoreCase("<response></response>"));
+		assertTrue(respuesta != null && !respuesta.isEmpty());
 	}
 	
 	/**
@@ -94,7 +93,8 @@ public class ListenerTest{
 		
 		String respuesta = resp.getContentAsString();
 		
-		assertTrue(respuesta != null && !respuesta.isEmpty());
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+					&& respuesta.contains("ingrediente"));
 	}
 	
 	/**
@@ -113,7 +113,8 @@ public class ListenerTest{
 		
 		String respuesta = resp.getContentAsString();
 		
-		assertTrue(respuesta != null && !respuesta.isEmpty());
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("ingrediente"));
 	}
 
 	/**
@@ -130,7 +131,8 @@ public class ListenerTest{
 		
 		String respuesta = resp.getContentAsString();
 		
-		assertTrue(respuesta != null && !respuesta.isEmpty());
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("tipo"));
 	}
 	
 	/**
@@ -149,6 +151,7 @@ public class ListenerTest{
 		
 		String respuesta = resp.getContentAsString();
 		
-		assertTrue(respuesta != null && !respuesta.isEmpty());
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("tipo"));
 	}
 }

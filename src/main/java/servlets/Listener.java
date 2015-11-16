@@ -111,12 +111,8 @@ public class Listener extends HttpServlet {
 			}
 
 		} catch (SAXException e) {
-//			PrintWriter out = resp.getWriter();
-//			out.println("SAXException: " + e.getMessage());
 			default_message(resp);
 		} catch (ParserConfigurationException e) {
-//			PrintWriter out = resp.getWriter();
-//			out.println("ParserException: " + e.getMessage());
 			default_message(resp);
 		}
 	}

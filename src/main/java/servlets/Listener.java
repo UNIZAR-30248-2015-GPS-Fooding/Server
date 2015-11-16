@@ -100,6 +100,9 @@ public class Listener extends HttpServlet {
 			case Data.TIPO_CODE:	/* tipo */
 				get_tipos(resp);
 				break;
+			case Data.CREAR_USER_CODE:	/* crear usuario */
+				crear_user(doc, resp);
+				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
 			}
@@ -244,6 +247,54 @@ public class Listener extends HttpServlet {
 
 			out.println("</response>");
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Crea el usuario contenido en @param doc y escribe en @param resp si ha 
+	 * sido creado o no.
+	 * @version 1.0
+	 */
+	private void crear_user(Document doc, HttpServletResponse resp){
+		// parsear la consulta
+		String mail = null;
+		String nick = null;
+		String pw = null;
+		boolean test = true;
+		
+		if(doc.getElementsByTagName("mail") != null &&
+				doc.getElementsByTagName("mail").getLength() > 0){
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		if(doc.getElementsByTagName("nick") != null &&
+				doc.getElementsByTagName("nick").getLength() > 0){
+			nick = doc.getElementsByTagName("nick").item(0).getTextContent();
+		}
+		if(doc.getElementsByTagName("pw") != null &&
+				doc.getElementsByTagName("pw").getLength() > 0){
+			pw = doc.getElementsByTagName("pw").item(0).getTextContent();
+		}
+		if(doc.getElementsByTagName("test") != null &&
+				doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
+		
+		// registrar al usuario
+		boolean registrado = db.DbMethods.registrar(mail, nick, pw, test);
+		
+		// informar al usuario
+		try{
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.CREAR_USER_CODE + "\">");
+			if(registrado){
+				out.println("<hecho>yes</hecho>");
+			}
+			else{
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch(IOException e){
 			e.printStackTrace();
 		}
 	}

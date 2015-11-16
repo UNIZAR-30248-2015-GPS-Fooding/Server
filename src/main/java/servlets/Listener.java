@@ -283,7 +283,7 @@ public class Listener extends HttpServlet {
 		}
 		
 		// registrar al usuario
-		boolean registrado = db.DbMethods.registrar(mail, nick, pw, test);
+		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, test);
 		
 		// informar al usuario
 		try{

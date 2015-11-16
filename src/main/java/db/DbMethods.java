@@ -4,6 +4,7 @@
 
 package db;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -215,8 +216,38 @@ public class DbMethods {
 	 * @return <true> si se ha podido registrar al usuario, 
 	 * o <false> en caso contrario
 	 */
-	public static boolean registrar(String mail, String nick, String pw, boolean test){
-		return false;
+	public static boolean registrar_usuario(String mail, String nick, String pw, boolean test){
+		
+		boolean registrado = false;
+		
+		// Registra al usuario si no se ha encontrado su mail en la bd
+		if ( !buscar_usuario(mail,test) ) {
+
+			// abrir conexion
+			DbConnection.initConnection();
+			Connection conexion = DbConnection.getConnection();
+			
+			// inserta en la bd la info del nuevo usuario
+			String query = "INSERT INTO Usuario (mail,nick,pw)"
+							+ "VALUES (?,?,?)";
+			try {
+				PreparedStatement preparedStatement = conexion
+						.prepareStatement(query);
+
+				preparedStatement.setString(1, mail);
+				preparedStatement.setString(2, nick);
+				preparedStatement.setString(3, pw);
+
+				registrado = preparedStatement.execute();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			
+			// cerrar conexion
+			DbConnection.closeConnection();
+		}
+		
+		return registrado;
 	}
 	
 	/**
@@ -225,7 +256,7 @@ public class DbMethods {
 	 * @return <true> si se ha encontrado al usuario, 
 	 * o <false> en caso contrario
 	 */
-	public static boolean buscar_usuario(String mail, boolean test){
+	private static boolean buscar_usuario(String mail, boolean test){
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

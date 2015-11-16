@@ -82,7 +82,7 @@ public class Listener extends HttpServlet {
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(is);
+			Document doc = db.parse(is, "UTF-8");
 			doc.getDocumentElement().normalize();
 
 			// obtener identificador de la request

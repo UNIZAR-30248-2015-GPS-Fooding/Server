@@ -84,8 +84,8 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_ingredientes() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.ING_CODE +"\"></request";
-		System.out.println(xml);
+		String xml = "<request id=\"" + data.Data.ING_CODE +"\"></request>";
+
 		req.addParameter("xml", xml);
 		
 		servlet.doGet(req, resp);
@@ -102,7 +102,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_ingredientes() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.ING_CODE +"\"></request";
+		String xml = "<request id=\"" + data.Data.ING_CODE +"\"></request>";
 		req.setContent(xml.getBytes());
 		
 		servlet.doPost(req, resp);
@@ -119,7 +119,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_tipos() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\"></request";
+		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\"></request>";
 		req.addParameter("xml", xml);
 		
 		servlet.doGet(req, resp);
@@ -136,7 +136,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_tipos() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\"></request";
+		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\"></request>";
 		req.setContent(xml.getBytes());
 		
 		servlet.doPost(req, resp);

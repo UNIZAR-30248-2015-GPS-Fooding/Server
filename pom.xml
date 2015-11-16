@@ -17,6 +17,10 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+  			<id>Java.Net</id>
+  			<url>http://download.java.net/maven/2/</url>
+    	</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -62,6 +66,16 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>4.0.5.RELEASE</version>
+		</dependency>
+		<dependency>
+	 		<groupId>javax.mail</groupId>
+	 		<artifactId>mail</artifactId>
+	 		<version>1.4.3</version>
+    	</dependency>
+    	<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 	<profiles>

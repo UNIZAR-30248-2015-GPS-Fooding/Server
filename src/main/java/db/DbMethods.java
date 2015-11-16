@@ -15,6 +15,7 @@ import com.mysql.jdbc.Connection;
 
 import data.Ingrediente;
 import data.Receta;
+import data.Usuario;
 
 public class DbMethods {
 	/**
@@ -195,14 +196,42 @@ public class DbMethods {
 	/**
 	 * Metodo stub, por hacer
 	 * @param mail
-	 * 			: email con el que el usuario se registra
+	 * 			: email con el que el usuario inicia sesion
 	 * @param pw
 	 * 			: password cifrada del usuario
-	 * @return <true> si se ha podido registrar al usuario, 
+	 * @return <true> si el usuario ha podido iniciar sesion, 
 	 * o <false> en caso contrario
 	 */
 	public static boolean login(String mail, String pw){
-		return false;
+		
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+		
+		// obtener informacion del usuario
+		String query = "SELECT * FROM Usuario"
+					+ " WHERE mail = '" + mail + "'"
+					+ " AND pass = '" + pw + "'";
+		Statement st;
+		
+		boolean encontrado = false;
+		
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			
+			// comprueba si se ha encontrado al usuario
+			encontrado = res.next();
+			
+			st.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cerrar conexion
+		DbConnection.closeConnection();
+		
+		return encontrado;
 	}
 	
 	/**
@@ -248,6 +277,45 @@ public class DbMethods {
 		}
 		
 		return registrado;
+	}
+	
+	/**
+	 * @param mail
+	 * 			: email con el que el usuario se registra
+	 * @return Usuario != null si se ha encontrado al usuario, 
+	 * o <null> en caso contrario
+	 */
+	private static Usuario get_usuario(String mail, boolean test){
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+		
+		// obtener informacion del usuario
+		Usuario usuario = null;
+		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
+		Statement st;
+		
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			
+			while (res.next()) {
+				usuario = new Usuario();
+				usuario.setMail(res.getString("mail"));
+				usuario.setNick(res.getString("nick"));
+				usuario.setPassword(res.getString("pw"));
+				usuario.setVerificado(res.getInt("verificado"));
+				usuario.setScore(res.getInt("score"));
+			}
+			st.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cerrar conexion
+		DbConnection.closeConnection();
+		
+		return usuario;
 	}
 	
 	/**

@@ -5,12 +5,8 @@
 package test;
 
 import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
-import org.junit.Ignore;
 import org.junit.Test;
-
 import data.Receta;
 import db.DbMethods;
 
@@ -32,6 +28,16 @@ public class DbMethodsTest {
 	@Test
 	public void test_lista_ingredientes() {
 		List<String> ings = DbMethods.get_lista_ingredientes();
+		assertTrue(ings != null && ings.size() > 0);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener la lista de tipos
+	 * no devuelve <null> o lista vacia
+	 */
+	@Test
+	public void test_lista_tipos() {
+		List<String> ings = DbMethods.get_tipos();
 		assertTrue(ings != null && ings.size() > 0);
 	}
 

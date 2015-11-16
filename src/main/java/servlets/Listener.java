@@ -106,6 +106,9 @@ public class Listener extends HttpServlet {
 			case Data.CREAR_USER_CODE:	/* crear usuario */
 				crear_user(doc, resp);
 				break;
+			case Data.LOGIN_CODE:	/* loguear usuario */
+				login_user(doc, resp);
+				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
 			}
@@ -287,6 +290,44 @@ public class Listener extends HttpServlet {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.CREAR_USER_CODE + "\">");
 			if(registrado){
+				out.println("<hecho>yes</hecho>");
+			}
+			else{
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Loguea al usuario contenido en @param doc y escribe en @param resp si ha 
+	 * sido logueado satisfactoriamente o no.
+	 * @version 1.0
+	 */
+	private void login_user(Document doc, HttpServletResponse resp){
+		// parsear la consulta
+		String mail = null;
+		String pw = null;
+		
+		if(doc.getElementsByTagName("mail") != null &&
+				doc.getElementsByTagName("mail").getLength() > 0){
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		if(doc.getElementsByTagName("pw") != null &&
+				doc.getElementsByTagName("pw").getLength() > 0){
+			pw = doc.getElementsByTagName("pw").item(0).getTextContent();
+		}
+		
+		// loguear al usuario
+		boolean login = db.DbMethods.login(mail, pw);
+		
+		// informar al usuario
+		try{
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.CREAR_USER_CODE + "\">");
+			if(login){
 				out.println("<hecho>yes</hecho>");
 			}
 			else{

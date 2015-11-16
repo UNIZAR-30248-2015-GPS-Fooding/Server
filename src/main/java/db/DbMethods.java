@@ -202,7 +202,7 @@ public class DbMethods {
 	 * @return <true> si el usuario ha podido iniciar sesion, 
 	 * o <false> en caso contrario
 	 */
-	public static boolean login(String mail, String pw){
+	public static boolean login_usuario(String mail, String pw){
 		
 		// abrir conexion
 		DbConnection.initConnection();

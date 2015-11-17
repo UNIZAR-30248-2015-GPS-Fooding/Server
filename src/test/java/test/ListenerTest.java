@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -190,5 +191,103 @@ public class ListenerTest{
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.contains("receta"));
+	}
+	
+	/**
+	 * Testea la creacion de usuarios (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Ignore
+	@Test
+	public void test_get_crear_user() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
+				+ "<mail>mail_prueba</mail>"
+				+ "<nick>nick_prueba</nick>"
+				+ "<pw>pw_prueba</pw>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea la creacion de usuarios (POST)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Ignore
+	@Test
+	public void test_post_crear_user() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
+				+ "<mail>mail_prueba</mail>"
+				+ "<nick>nick_prueba</nick>"
+				+ "<pw>pw_prueba</pw>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea el logueo de usuarios (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_login_user() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
+				+ "<mail>fooding@fooding.com</mail>"
+				+ "<pw>" + System.getenv("SERVER_MAIL_PASS") + "</pw>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea el logueo de usuarios (POST)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_login_user() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
+				+ "<mail>fooding@fooding.com</mail>"
+				+ "<pw>" + System.getenv("SERVER_MAIL_PASS") + "</pw>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
 	}
 }

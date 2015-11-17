@@ -5,9 +5,14 @@
 package test;
 
 import static org.junit.Assert.assertTrue;
+
 import java.util.List;
+
+import org.junit.Ignore;
 import org.junit.Test;
+
 import data.Receta;
+import data.Usuario;
 import db.DbMethods;
 
 public class DbMethodsTest {
@@ -69,6 +74,34 @@ public class DbMethodsTest {
 	public void test_recetas_tipo(){
 		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null);
 		assertTrue(recetas != null && recetas.size() > 0);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para registrar al usuario funciona
+	 */
+	@Ignore
+	@Test
+	public void test_registrar_usuario(){
+		boolean registrado = DbMethods.registrar_usuario("mail_prueba",
+				"nick_prueba", "pw_prueba", true);
+		assertTrue(registrado);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para loguear al usuario funciona
+	 */
+	@Test
+	public void test_login_usuario(){
+		assertTrue(DbMethods.login_usuario("fooding@fooding.com", System.getenv("SERVER_MAIL_PASS")));
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para recuperar usuario de la bd funciona
+	 */
+	@Test
+	public void test_get_usuario(){
+		Usuario user = DbMethods.get_usuario("fooding@fooding.com", true);
+		assertTrue(user.getMail().equals("fooding@fooding.com"));
 	}
 
 }

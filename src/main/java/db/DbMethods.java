@@ -303,7 +303,6 @@ public class DbMethods {
 				usuario = new Usuario();
 				usuario.setMail(res.getString("mail"));
 				usuario.setNick(res.getString("nick"));
-				usuario.setPassword(res.getString("pw"));
 				usuario.setVerificado(res.getInt("verificado"));
 				usuario.setScore(res.getInt("score"));
 			}

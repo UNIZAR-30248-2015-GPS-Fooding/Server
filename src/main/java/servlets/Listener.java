@@ -28,6 +28,8 @@ import data.Data;
 import data.Ingrediente;
 import data.Receta;
 
+import utils.Mail;
+
 public class Listener extends HttpServlet {
 
 	/**
@@ -284,6 +286,10 @@ public class Listener extends HttpServlet {
 		
 		// registrar al usuario
 		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, test);
+		
+		if(registrado){
+			//Mail.sendMail(mail, "subject", "message");
+		}
 		
 		// informar al usuario
 		try{

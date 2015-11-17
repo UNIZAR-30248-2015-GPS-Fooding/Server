@@ -285,7 +285,7 @@ public class DbMethods {
 	 * @return Usuario != null si se ha encontrado al usuario, 
 	 * o <null> en caso contrario
 	 */
-	private static Usuario get_usuario(String mail, boolean test){
+	public static Usuario get_usuario(String mail, boolean test){
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

@@ -273,6 +273,8 @@ public class DbMethods {
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date myDate = formatter.parse(fecha);
 			sqlDate = new java.sql.Date(myDate.getTime());
+			
+			System.out.println(sqlDate.toString());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

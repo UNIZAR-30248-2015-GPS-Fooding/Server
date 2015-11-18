@@ -264,8 +264,8 @@ public class DbMethods {
 			Connection conexion = DbConnection.getConnection();
 			
 			// inserta en la bd la info del nuevo usuario
-			String query = "INSERT INTO " + tabla + " (mail,nick,pass)"
-							+ "VALUES (?,?,?)";
+			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score)"
+							+ "VALUES (?,?,?,0,0)";
 			try {
 				PreparedStatement preparedStatement = conexion
 						.prepareStatement(query);

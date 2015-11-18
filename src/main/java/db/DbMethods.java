@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.mysql.jdbc.Connection;
 
@@ -257,9 +258,9 @@ public class DbMethods {
 			tabla = "UsuarioTest";
 		}
 		
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH);
-		int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		int year = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.YEAR);
+		int month = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.MONTH) + 1;
+		int day = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.DATE);
 		String fecha = year + "-" + month + "-" + day;	// fecha: yyyy-mm-dd
 		
 		// Registra al usuario si no se ha encontrado su mail en la bd

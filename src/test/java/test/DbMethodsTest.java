@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import data.Receta;
@@ -79,7 +78,6 @@ public class DbMethodsTest {
 	/**
 	 * Test para comprobar que el metodo para registrar al usuario funciona
 	 */
-	@Ignore
 	@Test
 	public void test_registrar_usuario(){
 		boolean registrado = DbMethods.registrar_usuario("mail_prueba",

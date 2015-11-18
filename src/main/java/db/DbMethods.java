@@ -255,10 +255,10 @@ public class DbMethods {
 		String tabla = null;
 		
 		if(test){
-			tabla = "Usuario";
+			tabla = "UsuarioTest";
 		}
 		else{
-			tabla = "UsuarioTest";
+			tabla = "Usuario";
 		}
 		
 		
@@ -273,8 +273,6 @@ public class DbMethods {
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date myDate = formatter.parse(fecha);
 			sqlDate = new java.sql.Date(myDate.getTime());
-			
-			System.out.println(sqlDate.toString());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

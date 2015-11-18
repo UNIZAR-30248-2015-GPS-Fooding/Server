@@ -4,14 +4,17 @@
 
 package db;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TimeZone;
 
 import com.mysql.jdbc.Connection;
 
@@ -258,6 +261,22 @@ public class DbMethods {
 			tabla = "UsuarioTest";
 		}
 		
+		
+		java.sql.Date sqlDate = null;
+		try {
+			int year = Calendar.getInstance().get(Calendar.YEAR);
+			int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+			int day = Calendar.getInstance().get(Calendar.DATE);
+			
+			String fecha = year + "-" + month + "-" + day;
+			
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date myDate = formatter.parse(fecha);
+			sqlDate = new java.sql.Date(myDate.getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		// Registra al usuario si no se ha encontrado su mail en la bd
 		if ( !buscar_usuario(mail) ) {
 
@@ -266,8 +285,8 @@ public class DbMethods {
 			Connection conexion = DbConnection.getConnection();
 			
 			// inserta en la bd la info del nuevo usuario
-			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score)"
-							+ "VALUES (?,?,?,0,0)";
+			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha)"
+							+ "VALUES (?,?,?,0,0," + sqlDate + ")";
 			try {
 				PreparedStatement preparedStatement = conexion
 						.prepareStatement(query);

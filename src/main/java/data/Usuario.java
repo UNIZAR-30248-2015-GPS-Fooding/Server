@@ -16,7 +16,6 @@ public class Usuario {
 	/* atributos del usuario */
 	private String mail = null;
 	private String nick = null;
-	private String password = null;
 	private int verificado = 0;
 	private int score = 0;
 	
@@ -54,21 +53,6 @@ public class Usuario {
 	 */
 	public void setNick(String nick) {
 		this.nick = nick;
-	}
-	
-	/**
-	 * @return la contraseña
-	 */
-	public String getPassword() {
-		return password;
-	}
-	
-	/**
-	 * @param password
-	 *            password del usuario
-	 */
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	
 	/**

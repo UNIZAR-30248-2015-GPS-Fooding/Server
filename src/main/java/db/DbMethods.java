@@ -194,7 +194,6 @@ public class DbMethods {
 	}
 	
 	/**
-	 * Metodo stub, por hacer
 	 * @param mail
 	 * 			: email con el que el usuario inicia sesion
 	 * @param pw
@@ -248,16 +247,24 @@ public class DbMethods {
 	public static boolean registrar_usuario(String mail, String nick, String pw, boolean test){
 		
 		boolean registrado = false;
+		String tabla = null;
+		
+		if(test){
+			tabla = "Usuario";
+		}
+		else{
+			tabla = "UsuarioTest";
+		}
 		
 		// Registra al usuario si no se ha encontrado su mail en la bd
-		if ( !buscar_usuario(mail,test) ) {
+		if ( !buscar_usuario(mail) ) {
 
 			// abrir conexion
 			DbConnection.initConnection();
 			Connection conexion = DbConnection.getConnection();
 			
 			// inserta en la bd la info del nuevo usuario
-			String query = "INSERT INTO Usuario (mail,nick,pw)"
+			String query = "INSERT INTO " + tabla + " (mail,nick,pw)"
 							+ "VALUES (?,?,?)";
 			try {
 				PreparedStatement preparedStatement = conexion
@@ -285,7 +292,7 @@ public class DbMethods {
 	 * @return Usuario != null si se ha encontrado al usuario, 
 	 * o <null> en caso contrario
 	 */
-	public static Usuario get_usuario(String mail, boolean test){
+	public static Usuario get_usuario(String mail){
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -324,7 +331,7 @@ public class DbMethods {
 	 * @return <true> si se ha encontrado al usuario, 
 	 * o <false> en caso contrario
 	 */
-	private static boolean buscar_usuario(String mail, boolean test){
+	private static boolean buscar_usuario(String mail){
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

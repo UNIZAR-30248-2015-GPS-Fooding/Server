@@ -100,7 +100,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_get_usuario(){
-		Usuario user = DbMethods.get_usuario("fooding@fooding.com", true);
+		Usuario user = DbMethods.get_usuario("fooding@fooding.com");
 		assertTrue(user.getMail().equals("fooding@fooding.com"));
 	}
 

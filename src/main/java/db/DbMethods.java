@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -256,6 +257,11 @@ public class DbMethods {
 			tabla = "UsuarioTest";
 		}
 		
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = Calendar.getInstance().get(Calendar.MONTH);
+		int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		String fecha = year + "-" + month + "-" + day;	// fecha: yyyy-mm-dd
+		
 		// Registra al usuario si no se ha encontrado su mail en la bd
 		if ( !buscar_usuario(mail) ) {
 
@@ -264,8 +270,8 @@ public class DbMethods {
 			Connection conexion = DbConnection.getConnection();
 			
 			// inserta en la bd la info del nuevo usuario
-			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score)"
-							+ "VALUES (?,?,?,0,0)";
+			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha)"
+							+ "VALUES (?,?,?,0,0," + fecha + ")";
 			try {
 				PreparedStatement preparedStatement = conexion
 						.prepareStatement(query);

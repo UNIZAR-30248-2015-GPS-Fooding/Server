@@ -286,7 +286,7 @@ public class DbMethods {
 			
 			// inserta en la bd la info del nuevo usuario
 			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha)"
-							+ "VALUES (?,?,?,0,0," + sqlDate + ")";
+							+ "VALUES (?,?,?,0,0,?)";
 			try {
 				PreparedStatement preparedStatement = conexion
 						.prepareStatement(query);
@@ -294,6 +294,7 @@ public class DbMethods {
 				preparedStatement.setString(1, mail);
 				preparedStatement.setString(2, nick);
 				preparedStatement.setString(3, pw);
+				preparedStatement.setDate(4, sqlDate);
 
 				registrado = preparedStatement.execute();
 			} catch (SQLException ex) {

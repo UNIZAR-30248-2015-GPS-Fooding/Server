@@ -258,11 +258,6 @@ public class DbMethods {
 			tabla = "UsuarioTest";
 		}
 		
-		int year = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.YEAR);
-		int month = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.MONTH) + 1;
-		int day = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.DATE);
-		String fecha = year + "-" + month + "-" + day;	// fecha: yyyy-mm-dd
-		
 		// Registra al usuario si no se ha encontrado su mail en la bd
 		if ( !buscar_usuario(mail) ) {
 
@@ -271,8 +266,8 @@ public class DbMethods {
 			Connection conexion = DbConnection.getConnection();
 			
 			// inserta en la bd la info del nuevo usuario
-			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha)"
-							+ "VALUES (?,?,?,0,0," + fecha + ")";
+			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score)"
+							+ "VALUES (?,?,?,0,0)";
 			try {
 				PreparedStatement preparedStatement = conexion
 						.prepareStatement(query);

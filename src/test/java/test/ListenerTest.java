@@ -250,8 +250,9 @@ public class ListenerTest{
 	@Test
 	public void test_get_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
-				+ "<mail>fooding@fooding.com</mail>"
-				+ "<pw>" + System.getenv("SERVER_MAIL_PASS") + "</pw>"
+				+ "<mail>prueba</mail>"
+				+ "<pw>prueba</pw>"
+				+ "<test>yes</test>"
 				+ "</request>";
 		req.addParameter("xml", xml);
 		
@@ -272,8 +273,9 @@ public class ListenerTest{
 	@Test
 	public void test_post_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
-				+ "<mail>fooding@fooding.com</mail>"
-				+ "<pw>" + System.getenv("SERVER_MAIL_PASS") + "</pw>"
+				+ "<mail>prueba</mail>"
+				+ "<pw>prueba</pw>"
+				+ "<test>yes</test>"
 				+ "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		

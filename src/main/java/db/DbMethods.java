@@ -205,14 +205,21 @@ public class DbMethods {
 	 * @return <true> si el usuario ha podido iniciar sesion, 
 	 * o <false> en caso contrario
 	 */
-	public static boolean login_usuario(String mail, String pw){
+	public static boolean login_usuario(String mail, String pw, boolean test){
 		
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
 		
+		String tabla = "";
+		if(test){
+			tabla = "UsuarioTest";
+		}else{
+			tabla = "Usuario";
+		}
+		
 		// obtener informacion del usuario
-		String query = "SELECT * FROM Usuario"
+		String query = "SELECT * FROM " + tabla
 					+ " WHERE mail = '" + mail + "'"
 					+ " AND pass = '" + pw + "'";
 		Statement st;

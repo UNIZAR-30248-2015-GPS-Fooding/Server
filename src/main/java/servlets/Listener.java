@@ -316,6 +316,8 @@ public class Listener extends HttpServlet {
 		// parsear la consulta
 		String mail = null;
 		String pw = null;
+		String t = null;
+		boolean test = false;
 		
 		if(doc.getElementsByTagName("mail") != null &&
 				doc.getElementsByTagName("mail").getLength() > 0){
@@ -325,9 +327,14 @@ public class Listener extends HttpServlet {
 				doc.getElementsByTagName("pw").getLength() > 0){
 			pw = doc.getElementsByTagName("pw").item(0).getTextContent();
 		}
+		if(doc.getElementsByTagName("test") != null &&
+				doc.getElementsByTagName("test").getLength() > 0){
+			t = doc.getElementsByTagName("test").item(0).getTextContent();
+			test = t.equalsIgnoreCase("yes");
+		}
 		
 		// loguear al usuario
-		boolean login = db.DbMethods.login_usuario(mail, pw);
+		boolean login = db.DbMethods.login_usuario(mail, pw, test);
 		
 		// informar al usuario
 		try{

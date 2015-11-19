@@ -90,7 +90,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_login_usuario(){
-		assertTrue(DbMethods.login_usuario("fooding@fooding.com", System.getenv("SERVER_MAIL_PASS")));
+		assertTrue(DbMethods.login_usuario("prueba", "prueba", true));
 	}
 	
 	/**

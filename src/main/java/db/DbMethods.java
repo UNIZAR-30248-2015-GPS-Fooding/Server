@@ -260,7 +260,6 @@ public class DbMethods {
 			tabla = "Usuario";
 		}
 		
-		
 		java.sql.Date sqlDate = null;
 		try {
 			int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -295,8 +294,10 @@ public class DbMethods {
 				preparedStatement.setString(3, pw);
 				preparedStatement.setDate(4, sqlDate);
 
-				registrado = preparedStatement.execute();
+				preparedStatement.execute();
+				registrado = true;
 			} catch (SQLException ex) {
+				registrado = false;
 				ex.printStackTrace();
 			}
 			
@@ -337,8 +338,10 @@ public class DbMethods {
 			PreparedStatement preparedStatement = conn.prepareStatement(query);
 			preparedStatement.setString(1, mail);
 			
-			deleted = preparedStatement.execute();
+			preparedStatement.execute();
+			deleted = true;
 		} catch (SQLException e) {
+			deleted = false;
 			e.printStackTrace();
 		}
 		DbConnection.closeConnection();

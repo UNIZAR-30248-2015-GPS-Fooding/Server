@@ -4,7 +4,6 @@
 
 package db;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -303,9 +302,48 @@ public class DbMethods {
 			
 			// cerrar conexion
 			DbConnection.closeConnection();
+			
+			// borrar el usuario de test
+			if(test){
+				DbMethods.borrar_usuario(mail, test);
+			}
 		}
 		
 		return registrado;
+	}
+	
+	/**
+	 * @param mail: mail del usuario a borrar
+	 * @param test: <true> si es prueba/test
+	 * @return <true> si se ha borrado, <false> en caso contrario
+	 */
+	public static boolean borrar_usuario(String mail, boolean test){
+		boolean deleted = false;
+		String t = "";
+		
+		if(test){
+			t = "UsuarioTest";
+		}else{
+			t = "Usuario";
+		}
+		
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conn = DbConnection.getConnection();
+		
+		// query
+		String query = "DELETE FROM " + t + " WHERE mail =?";
+		try {
+			PreparedStatement preparedStatement = conn.prepareStatement(query);
+			preparedStatement.setString(1, mail);
+			
+			deleted = preparedStatement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		DbConnection.closeConnection();
+		
+		return deleted;
 	}
 	
 	/**

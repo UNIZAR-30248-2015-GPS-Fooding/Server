@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import db.DbMethods;
+
 public class Authenticator extends HttpServlet {
 
 	/**
@@ -45,7 +47,7 @@ public class Authenticator extends HttpServlet {
 	private void manageKey (HttpServletResponse resp, String key) throws IOException{
 		PrintWriter out = resp.getWriter();
 		
-		boolean exito = false;	// true si se ha verificado al user
+		boolean exito = DbMethods.search_for_validation(key);	// true si se ha verificado al user
 		String mail = null;
 		
 		out.println("<!DOCTYPE html>");

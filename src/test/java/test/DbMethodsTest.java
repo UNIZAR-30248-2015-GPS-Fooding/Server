@@ -81,7 +81,7 @@ public class DbMethodsTest {
 	@Test
 	public void test_registrar_usuario(){
 		boolean registrado = DbMethods.registrar_usuario("mail_pruebaDbMethods",
-				"nick_prueba", "pw_prueba", true);
+				"nick_prueba", "pw_prueba", "NULL", true);
 		assertTrue(registrado);
 	}
 	

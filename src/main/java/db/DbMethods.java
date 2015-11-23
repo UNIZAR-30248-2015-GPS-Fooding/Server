@@ -248,7 +248,7 @@ public class DbMethods {
 	 * @return <true> si se ha podido registrar al usuario, o <false> en caso
 	 *         contrario
 	 */
-	public static boolean registrar_usuario(String mail, String nick, String pw, boolean test) {
+	public static boolean registrar_usuario(String mail, String nick, String pw, String uniqueKey, boolean test) {
 
 		boolean registrado = false;
 		String tabla = null;
@@ -282,7 +282,7 @@ public class DbMethods {
 			Connection conexion = DbConnection.getConnection();
 
 			// inserta en la bd la info del nuevo usuario
-			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha)" + "VALUES (?,?,?,0,0,?)";
+			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha,uniqueKey)" + "VALUES (?,?,?,0,0,?)";
 			try {
 				PreparedStatement preparedStatement = conexion.prepareStatement(query);
 
@@ -290,6 +290,7 @@ public class DbMethods {
 				preparedStatement.setString(2, nick);
 				preparedStatement.setString(3, pw);
 				preparedStatement.setDate(4, sqlDate);
+				preparedStatement.setString(5, uniqueKey);
 
 				preparedStatement.execute();
 				registrado = true;
@@ -401,8 +402,7 @@ public class DbMethods {
 			ResultSet res = st.executeQuery(query);
 			while (res.next()) {
 				encontrado = true;
-				String newQuery = "UPDATE Usuario SET verificado=1,uniqueKey=NULL WHERE uniqueKey='" + key
-						+ "'";
+				String newQuery = "UPDATE Usuario SET verificado=1,uniqueKey=NULL WHERE uniqueKey='" + key + "'";
 				res.close();
 				res = st.executeQuery(newQuery);
 				res.close();

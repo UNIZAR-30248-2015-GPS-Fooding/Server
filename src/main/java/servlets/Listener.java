@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,22 +30,23 @@ import data.Ingrediente;
 import data.Receta;
 
 import utils.Mail;
+import utils.Security;
 
 public class Listener extends HttpServlet {
 
 	/**
 	 * Clase para obtener las peticiones de la aplicacion
 	 * 
-	 * @version 1.1
-	 *  - GET, POST redirigidos a otro metodo
-	 *  - Default message agregado
-	 *  - Obtener ingredientes
-	 *  - Obtener recetas
+	 * @version 1.1 - GET, POST redirigidos a otro metodo - Default message
+	 *          agregado - Obtener ingredientes - Obtener recetas
 	 * @date 22/10/2015
 	 */
 
 	/* serial version */
 	private static final long serialVersionUID = 1473037731466545577L;
+	// Atributos privados
+	private final static String USERNAME = System.getenv("SERVER_MAIL_USER");
+	private final static String PASSWORD = System.getenv("SERVER_MAIL_PASS");
 
 	/**
 	 * Metodo para recibir las peticiones GET de la aplicacion
@@ -102,13 +104,13 @@ public class Listener extends HttpServlet {
 				break;
 			case Data.GRUPO_CODE: /* grupo */
 				break;
-			case Data.TIPO_CODE:	/* tipo */
+			case Data.TIPO_CODE: /* tipo */
 				get_tipos(resp);
 				break;
-			case Data.CREAR_USER_CODE:	/* crear usuario */
+			case Data.CREAR_USER_CODE: /* crear usuario */
 				crear_user(doc, resp);
 				break;
-			case Data.LOGIN_CODE:	/* loguear usuario */
+			case Data.LOGIN_CODE: /* loguear usuario */
 				login_user(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */
@@ -163,31 +165,29 @@ public class Listener extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Escribe en @param resp el XML con los tipos disponibles en la bd
 	 * 
 	 * El formato del XML generado es:
-	 * <response id="4">
-	 * 	<tipo>nombre_tipo</tipo>
-	 * </response>
+	 * <response id="4"> <tipo>nombre_tipo</tipo> </response>
 	 * 
 	 * @version 1.0
 	 */
-	private void get_tipos(HttpServletResponse resp){
+	private void get_tipos(HttpServletResponse resp) {
 		// conseguir tipos de la bd
 		List<String> tipos = db.DbMethods.get_tipos();
-		
-		try{
+
+		try {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.TIPO_CODE + "\">");
-			
-			for(String tipo: tipos){
+
+			for (String tipo : tipos) {
 				out.println("<tipo>" + tipo + "</tipo>");
 			}
-			
+
 			out.println("</response>");
-		} catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -202,21 +202,19 @@ public class Listener extends HttpServlet {
 		// parsear la consulta
 		String nombre = null;
 		String tipo = null;
-		
-		if(doc.getElementsByTagName("nombre") != null
-				&& doc.getElementsByTagName("nombre").getLength() > 0){
+
+		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
 			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
 		}
-		
-		if(doc.getElementsByTagName("tipo") != null
-				&& doc.getElementsByTagName("tipo").getLength() > 0){
+
+		if (doc.getElementsByTagName("tipo") != null && doc.getElementsByTagName("tipo").getLength() > 0) {
 			tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
 		}
-		
+
 		List<String> ings = new LinkedList<String>();
 
 		NodeList ingredientes = doc.getElementsByTagName("ingrediente");
-		if(ingredientes != null){
+		if (ingredientes != null) {
 			for (int i = 0; i < ingredientes.getLength(); i++) {
 				ings.add(ingredientes.item(i).getTextContent());
 			}
@@ -229,7 +227,7 @@ public class Listener extends HttpServlet {
 		try {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.RECETA_CODE + "\">");
-			
+
 			for (Receta r : recetas) {
 				out.println("<receta>");
 
@@ -239,7 +237,7 @@ public class Listener extends HttpServlet {
 				out.println("<me_gusta>" + r.getMe_gusta() + "</me_gusta>");
 				out.println("<no_me_gusta>" + r.getNo_me_gusta() + "</no_me_gusta>");
 
-				if(r.getIngredientes() != null){
+				if (r.getIngredientes() != null) {
 					for (Ingrediente i : r.getIngredientes()) {
 						out.println("<ingrediente cantidad=\"" + i.getCantidad() + "\" uds=\"" + i.getUds() + "\">"
 								+ i.getNombre() + "</ingrediente>");
@@ -254,105 +252,103 @@ public class Listener extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Crea el usuario contenido en @param doc y escribe en @param resp si ha 
+	 * Crea el usuario contenido en @param doc y escribe en @param resp si ha
 	 * sido creado o no.
+	 * 
 	 * @version 1.0
 	 */
-	private void crear_user(Document doc, HttpServletResponse resp){
+	private void crear_user(Document doc, HttpServletResponse resp) {
 		// parsear la consulta
 		String mail = null;
 		String nick = null;
 		String pw = null;
 		boolean test = true;
-		
-		if(doc.getElementsByTagName("mail") != null &&
-				doc.getElementsByTagName("mail").getLength() > 0){
+
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
 			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
 		}
-		if(doc.getElementsByTagName("nick") != null &&
-				doc.getElementsByTagName("nick").getLength() > 0){
+		if (doc.getElementsByTagName("nick") != null && doc.getElementsByTagName("nick").getLength() > 0) {
 			nick = doc.getElementsByTagName("nick").item(0).getTextContent();
 		}
-		if(doc.getElementsByTagName("pw") != null &&
-				doc.getElementsByTagName("pw").getLength() > 0){
+		if (doc.getElementsByTagName("pw") != null && doc.getElementsByTagName("pw").getLength() > 0) {
 			pw = doc.getElementsByTagName("pw").item(0).getTextContent();
 		}
-		if(doc.getElementsByTagName("test") != null &&
-				doc.getElementsByTagName("test").getLength() > 0){
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
 			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
 		}
-		
+		String uniqueKey = "NULL";
+		try {
+			uniqueKey = Security.encrypt_password(mail + USERNAME + PASSWORD);
+		} catch (NoSuchAlgorithmException e1) {
+			// Pero como no va a existir
+		}
 		// registrar al usuario
-		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, test);
-		
-		if(registrado){
+		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, uniqueKey, test);
+
+		if (registrado) {
 			registrado = Mail.sendRegistrationMail(mail);
 		}
-		
+
 		// informar al usuario
-		try{
+		try {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.CREAR_USER_CODE + "\">");
-			if(registrado){
+			if (registrado) {
 				out.println("<hecho>yes</hecho>");
-			}
-			else{
+			} else {
 				out.println("<hecho>no</hecho>");
 			}
 			out.println("</response>");
-		} catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Borrar si no se pudo mandar el correo
-		if(!registrado){
-			db.DbMethods.borrar_usuario(mail,test);
+		if (!registrado) {
+			db.DbMethods.borrar_usuario(mail, test);
 		}
 	}
-	
+
 	/**
-	 * Loguea al usuario contenido en @param doc y escribe en @param resp si ha 
+	 * Loguea al usuario contenido en @param doc y escribe en @param resp si ha
 	 * sido logueado satisfactoriamente o no.
+	 * 
 	 * @version 1.0
 	 */
-	private void login_user(Document doc, HttpServletResponse resp){
+	private void login_user(Document doc, HttpServletResponse resp) {
 		// parsear la consulta
 		String mail = null;
 		String pw = null;
 		String t = null;
 		boolean test = false;
-		
-		if(doc.getElementsByTagName("mail") != null &&
-				doc.getElementsByTagName("mail").getLength() > 0){
+
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
 			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
 		}
-		if(doc.getElementsByTagName("pw") != null &&
-				doc.getElementsByTagName("pw").getLength() > 0){
+		if (doc.getElementsByTagName("pw") != null && doc.getElementsByTagName("pw").getLength() > 0) {
 			pw = doc.getElementsByTagName("pw").item(0).getTextContent();
 		}
-		if(doc.getElementsByTagName("test") != null &&
-				doc.getElementsByTagName("test").getLength() > 0){
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
 			t = doc.getElementsByTagName("test").item(0).getTextContent();
 			test = t.equalsIgnoreCase("yes");
 		}
-		
+
 		// loguear al usuario
 		boolean login = db.DbMethods.login_usuario(mail, pw, test);
-		
+
 		// informar al usuario
-		try{
+		try {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.LOGIN_CODE + "\">");
-			if(login){
+			if (login) {
 				out.println("<hecho>yes</hecho>");
-			}
-			else{
+			} else {
 				out.println("<hecho>no</hecho>");
 			}
 			out.println("</response>");
-		} catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

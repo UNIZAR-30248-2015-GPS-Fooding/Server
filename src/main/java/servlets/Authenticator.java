@@ -45,7 +45,7 @@ public class Authenticator extends HttpServlet {
 	private void manageKey (HttpServletResponse resp, String key) throws IOException{
 		PrintWriter out = resp.getWriter();
 		
-		boolean exito = false;	// true si se ha verificado al user, false o/w 
+		boolean exito = false;	// true si se ha verificado al user, false o/w
 		String mail = null;
 		
 		out.println("<!DOCTYPE html>");

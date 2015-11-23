@@ -250,7 +250,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
-				+ "<mail>prueba2</mail>"
+				+ "<mail>pruebaListenerTest0</mail>"
 				+ "<pw>prueba</pw>"
 				+ "<test>yes</test>"
 				+ "</request>";
@@ -273,7 +273,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
-				+ "<mail>prueba3</mail>"
+				+ "<mail>pruebaListenerTest1</mail>"
 				+ "<pw>prueba</pw>"
 				+ "<test>yes</test>"
 				+ "</request>";

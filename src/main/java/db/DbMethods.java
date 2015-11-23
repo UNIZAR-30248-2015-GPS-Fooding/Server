@@ -391,10 +391,11 @@ public class DbMethods {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
+		String origen = "Usuario";
 
 		// encontrar usuario
 		boolean encontrado = false;
-		String query = "SELECT * FROM Usuario WHERE uniqueKey = '" + key + "'";
+		String query = "SELECT * FROM "+origen+" WHERE uniqueKey = '" + key + "'";
 		Statement st;
 
 		try {

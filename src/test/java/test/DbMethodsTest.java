@@ -6,15 +6,11 @@ package test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
 import org.junit.Test;
-
 import data.Receta;
 import data.Usuario;
 import db.DbMethods;
-import utils.Security;
 
 public class DbMethodsTest {
 	/**
@@ -24,10 +20,6 @@ public class DbMethodsTest {
 	 *          (generico) - Test de lista de recetas (nombre)
 	 * @date 23/10/2015
 	 */
-
-	// Atributos privados
-	private final static String USERNAME = System.getenv("SERVER_MAIL_USER");
-	private final static String PASSWORD = System.getenv("SERVER_MAIL_PASS");
 
 	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes
@@ -87,22 +79,6 @@ public class DbMethodsTest {
 		boolean registrado = DbMethods.registrar_usuario("mail_pruebaDbMethods", "nick_prueba", "pw_prueba", "NULL",
 				true);
 		assertTrue(registrado);
-	}
-
-	/**
-	 * Test para comprobar que se puede verificar el usuario
-	 */
-	@Test
-	public void test_verificar_usuario() {
-		boolean verificado = false;
-		String key = "";
-		try {
-			key = Security.encrypt_password("mail_pruebaDbMethods" + USERNAME + PASSWORD);
-			verificado = DbMethods.search_for_validation(key);
-			assertTrue(verificado);
-		} catch (NoSuchAlgorithmException e) {
-			assertTrue(false);
-		}
 	}
 
 	/**

@@ -6,6 +6,7 @@ package test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,17 +14,20 @@ import org.junit.Test;
 import data.Receta;
 import data.Usuario;
 import db.DbMethods;
+import utils.Security;
 
 public class DbMethodsTest {
 	/**
 	 * Clase para tests sobre los metodos de acceso
 	 * 
-	 * @version 1.1 
-	 * 	- Test de lista de ingredientes 
-	 * 	- Test de lista de recetas (generico)
-	 * 	- Test de lista de recetas (nombre)
+	 * @version 1.1 - Test de lista de ingredientes - Test de lista de recetas
+	 *          (generico) - Test de lista de recetas (nombre)
 	 * @date 23/10/2015
 	 */
+
+	// Atributos privados
+	private final static String USERNAME = System.getenv("SERVER_MAIL_USER");
+	private final static String PASSWORD = System.getenv("SERVER_MAIL_PASS");
 
 	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes
@@ -34,10 +38,10 @@ public class DbMethodsTest {
 		List<String> ings = DbMethods.get_lista_ingredientes();
 		assertTrue(ings != null && ings.size() > 0);
 	}
-	
+
 	/**
-	 * Test para comprobar que el metodo para obtener la lista de tipos
-	 * no devuelve <null> o lista vacia
+	 * Test para comprobar que el metodo para obtener la lista de tipos no
+	 * devuelve <null> o lista vacia
 	 */
 	@Test
 	public void test_lista_tipos() {
@@ -64,40 +68,57 @@ public class DbMethodsTest {
 		List<Receta> recetas = DbMethods.get_recetas("mac", null, null);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
-	
+
 	/**
 	 * Test para comprobar que el metodo para obtener recetas por tipo no
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
-	public void test_recetas_tipo(){
+	public void test_recetas_tipo() {
 		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
-	
+
 	/**
 	 * Test para comprobar que el metodo para registrar al usuario funciona
 	 */
 	@Test
-	public void test_registrar_usuario(){
-		boolean registrado = DbMethods.registrar_usuario("mail_pruebaDbMethods",
-				"nick_prueba", "pw_prueba", "NULL", true);
+	public void test_registrar_usuario() {
+		boolean registrado = DbMethods.registrar_usuario("mail_pruebaDbMethods", "nick_prueba", "pw_prueba", "NULL",
+				true);
 		assertTrue(registrado);
 	}
-	
+
+	/**
+	 * Test para comprobar que se puede verificar el usuario
+	 */
+	@Test
+	public void test_verificar_usuario() {
+		boolean verificado = false;
+		String key = "";
+		try {
+			key = Security.encrypt_password("mail_pruebaDbMethods" + USERNAME + PASSWORD);
+			verificado = DbMethods.search_for_validation(key);
+			assertTrue(verificado);
+		} catch (NoSuchAlgorithmException e) {
+			assertTrue(false);
+		}
+	}
+
 	/**
 	 * Test para comprobar que el metodo para loguear al usuario funciona
 	 */
 	@Test
-	public void test_login_usuario(){
+	public void test_login_usuario() {
 		assertTrue(DbMethods.login_usuario("mail_pruebaDbMethods", "pw_prueba", true));
 	}
-	
+
 	/**
-	 * Test para comprobar que el metodo para recuperar usuario de la bd funciona
+	 * Test para comprobar que el metodo para recuperar usuario de la bd
+	 * funciona
 	 */
 	@Test
-	public void test_get_usuario(){
+	public void test_get_usuario() {
 		Usuario user = DbMethods.get_usuario("fooding@fooding.com");
 		assertTrue(user.getMail().equals("fooding@fooding.com"));
 	}

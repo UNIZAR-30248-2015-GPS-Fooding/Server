@@ -310,11 +310,6 @@ public class DbMethods {
 			
 			// cerrar conexion
 			DbConnection.closeConnection();
-			
-			// borrar el usuario de test
-			if(test){
-				DbMethods.borrar_usuario(mail, test);
-			}
 		}
 		
 		return registrado;

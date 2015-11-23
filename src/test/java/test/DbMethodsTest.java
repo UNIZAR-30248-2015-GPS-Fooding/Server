@@ -80,7 +80,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_registrar_usuario(){
-		boolean registrado = DbMethods.registrar_usuario("mail_prueba",
+		boolean registrado = DbMethods.registrar_usuario("mail_prueba1",
 				"nick_prueba", "pw_prueba", true);
 		assertTrue(registrado);
 	}

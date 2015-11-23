@@ -213,8 +213,7 @@ public class ListenerTest{
 		String respuesta = resp.getContentAsString();
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.contains("hecho")
-				&& respuesta.contains("yes"));
+				&& respuesta.contains("hecho"));
 	}
 	
 	/**
@@ -239,8 +238,7 @@ public class ListenerTest{
 		String respuesta = resp.getContentAsString();
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.contains("hecho")
-				&& respuesta.contains("yes"));
+				&& respuesta.contains("hecho"));
 	}
 	
 	/**
@@ -251,7 +249,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
-				+ "<mail>pruebaListenerTest0</mail>"
+				+ "<mail>mail_pruebaDbMethods</mail>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
 				+ "</request>";
@@ -275,7 +273,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
-				+ "<mail>pruebaListenerTest1</mail>"
+				+ "<mail>mail_pruebaDbMethods</mail>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
 				+ "</request>";

@@ -237,7 +237,7 @@ public class DbMethods {
 	}
 
 	/**
-	 * Metodo stub, por hacer
+	 * Registra al usuario
 	 * 
 	 * @param mail
 	 *            : email con el que el usuario se registra

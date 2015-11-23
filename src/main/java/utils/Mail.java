@@ -1,5 +1,6 @@
 package utils;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -23,11 +24,22 @@ public class Mail {
 
 		// Construye el mensaje
 		String text = "";
-		// [FALTA POR HACER] Cuerpo del mensaje
-		// [FALTA POR HACER] Link único de confirmación
 
+		// Cuerpo del mensaje
+		String body = "Click the following link to validate your email and join the Fooding App community!\n";
+		String url = "";
+		// Link unico de confirmacion
+		try {
+			url = "https://fooding-gpsfooding.rhcloud.com/servlet/Authenticator?key="
+					+ Security.encrypt_password(emailUser + USERNAME + PASSWORD) + " \n";
+		} catch (NoSuchAlgorithmException e) {
+			// Wow, wtf, it does not exist?
+			return false;
+		}
+
+		text = text + body + url + "\nIf you didn't ask for registration in Fooding App, please ignore this message.";
 		// Envía el mensaje
-		return sendMail(emailUser,subject,text);
+		return sendMail(emailUser, subject, text);
 	}
 
 	/**
@@ -66,7 +78,7 @@ public class Mail {
 
 		} catch (MessagingException e) {
 			return false;
-		} catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 	}

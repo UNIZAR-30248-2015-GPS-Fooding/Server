@@ -288,7 +288,7 @@ public class Listener extends HttpServlet {
 		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, test);
 		
 		if(registrado){
-			Mail.sendRegistrationMail(mail);
+			registrado = Mail.sendRegistrationMail(mail);
 		}
 		
 		// informar al usuario
@@ -304,6 +304,11 @@ public class Listener extends HttpServlet {
 			out.println("</response>");
 		} catch(IOException e){
 			e.printStackTrace();
+		}
+		
+		// Borrar si no se pudo mandar el correo
+		if(!registrado){
+			db.DbMethods.borrar_usuario(mail,test);
 		}
 	}
 	

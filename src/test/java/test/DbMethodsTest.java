@@ -90,7 +90,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_login_usuario(){
-		assertTrue(DbMethods.login_usuario("prueba", "prueba", true));
+		assertTrue(DbMethods.login_usuario("mail_pruebaDbMethods", "pw_prueba", true));
 	}
 	
 	/**

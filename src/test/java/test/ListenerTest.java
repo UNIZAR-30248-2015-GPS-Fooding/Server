@@ -200,7 +200,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_crear_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
-				+ "<mail>mail_prueba</mail>"
+				+ "<mail>pruebaListenerTest0</mail>"
 				+ "<nick>nick_prueba</nick>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
@@ -224,7 +224,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_crear_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
-				+ "<mail>mail_prueba</mail>"
+				+ "<mail>pruebaListenerTest1</mail>"
 				+ "<nick>nick_prueba</nick>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"

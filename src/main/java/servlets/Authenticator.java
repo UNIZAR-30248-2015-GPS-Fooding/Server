@@ -50,7 +50,6 @@ public class Authenticator extends HttpServlet {
 		boolean exito = DbMethods.search_for_validation(key);	// true si se ha verificado al user o/w
 		String mail = null;
 		
-		out.println("<!DOCTYPE html>");
 		if(exito){
 			out.println("<html>");
 			

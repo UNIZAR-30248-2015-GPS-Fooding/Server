@@ -391,32 +391,22 @@ public class DbMethods {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
-		String origen = "Usuario";
 
 		// encontrar usuario
-		boolean encontrado = false;
-		String query = "SELECT * FROM "+origen+" WHERE uniqueKey = '" + key + "'";
-		Statement st;
-
+		int mods = 0;
 		try {
-			st = conexion.createStatement();
-			ResultSet res = st.executeQuery(query);
-			while (res.next()) {
-				encontrado = true;
-				String newQuery = "UPDATE Usuario SET verificado=1,uniqueKey=NULL WHERE uniqueKey='" + key + "'";
-				res.close();
-				res = st.executeQuery(newQuery);
-				res.close();
-			}
-			st.close();
-
+			String query = "UPDATE Usuario SET verificado=1, uniqueKey=DEFAULT WHERE uniqueKey=?";
+			PreparedStatement st = conexion.prepareStatement(query);
+			st.setString(1, key);
+			mods = st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		// cerrar conexion
 		DbConnection.closeConnection();
 
-		return encontrado;
+		return (mods > 0);
 	}
 
 	/**

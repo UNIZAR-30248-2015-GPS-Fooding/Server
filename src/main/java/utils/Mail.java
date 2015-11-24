@@ -18,7 +18,7 @@ public class Mail {
 	 * 
 	 * @version 1.0
 	 */
-	public static boolean sendRegistrationMail(String emailUser) {
+	public static boolean sendRegistrationMail(String emailUser, String key) {
 		// Construye el asunto
 		String subject = "Fooding App registration validation";
 
@@ -27,15 +27,10 @@ public class Mail {
 
 		// Cuerpo del mensaje
 		String body = "Click the following link to validate your email and join the Fooding App community!\n";
-		String url = "";
+		
 		// Link unico de confirmacion
-		try {
-			url = "https://fooding-gpsfooding.rhcloud.com/servlet/Authenticator?key="
-					+ Security.encrypt_password(emailUser + USERNAME + PASSWORD) + " \n";
-		} catch (NoSuchAlgorithmException e) {
-			// Wow, wtf, it does not exist?
-			return false;
-		}
+		String url = "https://fooding-gpsfooding.rhcloud.com/servlet/Authenticator?key="
+				+ key + " \n";
 
 		text = text + body + url + "\nIf you didn't ask for registration in Fooding App, please ignore this message.";
 		// Envía el mensaje

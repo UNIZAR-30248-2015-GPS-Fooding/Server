@@ -288,7 +288,7 @@ public class Listener extends HttpServlet {
 		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, uniqueKey, test);
 
 		if (registrado && !test) {
-			registrado = Mail.sendRegistrationMail(mail);
+			registrado = Mail.sendRegistrationMail(mail, uniqueKey);
 		}
 
 		// informar al usuario

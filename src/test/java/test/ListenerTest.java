@@ -268,7 +268,7 @@ public class ListenerTest{
 	}
 	
 	/**
-	 * Testea el logueo de usuarios (POST)
+	 * Testea el logueo de usuarios (POST) 
 	 * 
 	 * @throws IOException 
 	 * @throws ServletException 

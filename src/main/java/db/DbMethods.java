@@ -326,7 +326,7 @@ public class DbMethods {
 				ex.printStackTrace();
 			}
 
-			// cerrar conexion
+			// cerrar conexion 
 			DbConnection.closeConnection();
 		}
 

@@ -149,7 +149,7 @@ public class Listener extends HttpServlet {
 	 */
 	private void get_ingredientes(HttpServletResponse resp) {
 		// conseguir ingredientes de la bd
-		List<String> ingredientes = db.DbMethods.get_lista_ingredientes();
+		List<String> ingredientes = db.DbMethods.get_lista_ingredientes(false);
 
 		try {
 			PrintWriter out = resp.getWriter();
@@ -176,7 +176,7 @@ public class Listener extends HttpServlet {
 	 */
 	private void get_tipos(HttpServletResponse resp) {
 		// conseguir tipos de la bd
-		List<String> tipos = db.DbMethods.get_tipos();
+		List<String> tipos = db.DbMethods.get_tipos(false);
 
 		try {
 			PrintWriter out = resp.getWriter();
@@ -221,7 +221,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// conseguir las recetas de la bd
-		List<Receta> recetas = db.DbMethods.get_recetas(nombre, tipo, ings);
+		List<Receta> recetas = db.DbMethods.get_recetas(nombre, tipo, ings, false);
 
 		// escribir las recetas en la respuesta
 		try {

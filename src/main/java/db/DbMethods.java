@@ -34,7 +34,7 @@ public class DbMethods {
 	 * 
 	 * @version 1.1 -- Devuelve una lista con todos los ingredientes
 	 */
-	public static List<String> get_lista_ingredientes() {
+	public static List<String> get_lista_ingredientes(boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -42,6 +42,8 @@ public class DbMethods {
 		// obtener lista de ingredientes
 		List<String> ings = new LinkedList<String>();
 		String query = "SELECT * FROM Ingrediente";
+		if(test)
+			query = query + "Test";
 		Statement st;
 
 		try {
@@ -68,7 +70,7 @@ public class DbMethods {
 	 * 
 	 * @version 1.1 -- Devuelve una lista de todos los tipos de recetas
 	 */
-	public static List<String> get_tipos() {
+	public static List<String> get_tipos(boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -76,6 +78,8 @@ public class DbMethods {
 		// obtener lista de ingredientes
 		List<String> tipos = new LinkedList<String>();
 		String query = "SELECT DISTINCT tipo FROM Receta";
+		if(test)
+			query = query + "Test";
 		Statement st;
 
 		try {
@@ -111,7 +115,7 @@ public class DbMethods {
 	 *          Filtros disponibles: -Nombre (parcial o completo) -Tipo
 	 *          (completo)
 	 */
-	public static List<Receta> get_recetas(String nombre, String tipo, List<String> ings) {
+	public static List<Receta> get_recetas(String nombre, String tipo, List<String> ings, boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -120,6 +124,10 @@ public class DbMethods {
 		List<Receta> recetas = new LinkedList<Receta>();
 		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, idReceta" + " FROM Receta, RecetaIngrediente"
 				+ " WHERE Receta.id = RecetaIngrediente.idReceta";
+		if(test){
+			query = "SELECT DISTINCT id, nombre, tipo, instrucciones, idReceta" + " FROM RecetaTest, RecetaIngredienteTest"
+					+ " WHERE RecetaTest.id = RecetaIngredienteTest.idReceta";
+		}
 				// + " AND Receta.id = UsuarioValoraReceta.idReceta";
 
 		// aplica los distintos filtros a la consulta
@@ -131,17 +139,30 @@ public class DbMethods {
 		if (tipo != null) {
 
 			// filtro de busqueda por tipo (completo)
-			query = query + " AND Receta.tipo = '" + tipo + "'";
+			if(!test)
+				query = query + " AND Receta.tipo = '" + tipo + "'";
+			else
+				query = query + " AND RecetaTest.tipo = '" + tipo + "'";
 		}
 		if (ings != null && ings.size() > 0) {
 
 			// filtro de busqueda por ingredientes (uno o varios)
-			query = query + " AND RecetaIngrediente.nombreIngrediente in ('" + ings.get(0) + "'";
+			if(!test)
+				query = query + " AND RecetaIngrediente.nombreIngrediente in ('" + ings.get(0) + "'";
+			else
+				query = query + " AND RecetaIngredienteTest.nombreIngrediente in ('" + ings.get(0) + "'";
+			
 			for (int i = 1; i < ings.size(); i++) {
 				query = query + ",'" + ings.get(i) + "'";
 			}
-			query = query + ")" + " GROUP BY Receta.id"
-					+ " HAVING COUNT(DISTINCT RecetaIngrediente.nombreIngrediente) >= " + ings.size();
+			if(!test){
+				query = query + ")" + " GROUP BY Receta.id"
+						+ " HAVING COUNT(DISTINCT RecetaIngrediente.nombreIngrediente) >= " + ings.size();
+			}
+			else{
+				query = query + ")" + " GROUP BY RecetaTest.id"
+						+ " HAVING COUNT(DISTINCT RecetaIngredienteTest.nombreIngrediente) >= " + ings.size();
+			}
 		}
 
 		Statement st, st2;
@@ -163,6 +184,8 @@ public class DbMethods {
 				// Obtiene la informacion de los ingredientes de cada receta
 				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
 				String query2 = "SELECT * FROM RecetaIngrediente" + " WHERE idReceta = " + id;
+				if(test)
+					query2 = "SELECT * FROM RecetaIngredienteTest" + " WHERE idReceta = " + id;
 				st2 = conexion.createStatement();
 				ResultSet res2 = st2.executeQuery(query2);
 				Ingrediente ing;
@@ -275,7 +298,7 @@ public class DbMethods {
 		}
 
 		// Registra al usuario si no se ha encontrado su mail en la bd
-		if (!buscar_usuario(mail)) {
+		if (!buscar_usuario(mail, test)) {
 
 			// abrir conexion
 			DbConnection.initConnection();
@@ -350,7 +373,7 @@ public class DbMethods {
 	 * @return Usuario != null si se ha encontrado al usuario, o <null> en caso
 	 *         contrario
 	 */
-	public static Usuario get_usuario(String mail) {
+	public static Usuario get_usuario(String mail, boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -358,6 +381,8 @@ public class DbMethods {
 		// obtener informacion del usuario
 		Usuario usuario = null;
 		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
+		if(test)
+			query = "SELECT * FROM UsuarioTest WHERE mail = '" + mail + "'";
 		Statement st;
 
 		try {
@@ -387,7 +412,7 @@ public class DbMethods {
 	 *            : unique key del usuario que se registra
 	 * @return true si se ha validado al usuario. false si no se ha encontrado.
 	 */
-	public static boolean search_for_validation(String key) {
+	public static boolean search_for_validation(String key, boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -396,6 +421,8 @@ public class DbMethods {
 		int mods = 0;
 		try {
 			String query = "UPDATE Usuario SET verificado=1, uniqueKey=DEFAULT WHERE uniqueKey=?";
+			if(test)
+				query = "UPDATE UsuarioTest SET verificado=1, uniqueKey=DEFAULT WHERE uniqueKey=?";
 			PreparedStatement st = conexion.prepareStatement(query);
 			st.setString(1, key);
 			mods = st.executeUpdate();
@@ -415,13 +442,15 @@ public class DbMethods {
 	 * @return <true> si se ha encontrado al usuario, o <false> en caso
 	 *         contrario
 	 */
-	private static boolean buscar_usuario(String mail) {
+	private static boolean buscar_usuario(String mail, boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
 
 		// obtener informacion del usuario
 		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
+		if(test)
+			query = "SELECT * FROM UsuarioTest WHERE mail = '" + mail + "'";
 		Statement st;
 
 		boolean encontrado = false;

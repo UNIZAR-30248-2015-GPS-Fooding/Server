@@ -27,7 +27,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_lista_ingredientes() {
-		List<String> ings = DbMethods.get_lista_ingredientes();
+		List<String> ings = DbMethods.get_lista_ingredientes(true);
 		assertTrue(ings != null && ings.size() > 0);
 	}
 
@@ -37,7 +37,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_lista_tipos() {
-		List<String> ings = DbMethods.get_tipos();
+		List<String> ings = DbMethods.get_tipos(true);
 		assertTrue(ings != null && ings.size() > 0);
 	}
 
@@ -47,7 +47,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_recetas() {
-		List<Receta> recetas = DbMethods.get_recetas(null, null, null);
+		List<Receta> recetas = DbMethods.get_recetas(null, null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 
@@ -57,7 +57,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_recetas_nombre() {
-		List<Receta> recetas = DbMethods.get_recetas("mac", null, null);
+		List<Receta> recetas = DbMethods.get_recetas("mac", null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 
@@ -67,7 +67,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_recetas_tipo() {
-		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null);
+		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 
@@ -95,8 +95,8 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_get_usuario() {
-		Usuario user = DbMethods.get_usuario("fooding@fooding.com");
-		assertTrue(user.getMail().equals("fooding@fooding.com"));
+		Usuario user = DbMethods.get_usuario("mail_pruebaDbMethods", true);
+		assertTrue(user.getMail().equals("mail_pruebaDbMethods"));
 	}
 
 }

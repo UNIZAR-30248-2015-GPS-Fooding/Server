@@ -134,7 +134,11 @@ public class DbMethods {
 		if (nombre != null) {
 
 			// filtro de busqueda por nombre (parcial o completo)
-			query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
+			if(!test)
+				query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
+			else
+				query = query + " AND RecetaTest.nombre LIKE '%" + nombre + "%'";
+			
 		}
 		if (tipo != null) {
 

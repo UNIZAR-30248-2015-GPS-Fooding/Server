@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -112,6 +113,9 @@ public class Listener extends HttpServlet {
 				break;
 			case Data.LOGIN_CODE: /* loguear usuario */
 				login_user(doc, resp);
+				break;
+			case Data.CREAR_REC_CODE: /* crear receta */
+				crear_receta(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
@@ -344,6 +348,66 @@ public class Listener extends HttpServlet {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.LOGIN_CODE + "\">");
 			if (login) {
+				out.println("<hecho>yes</hecho>");
+			} else {
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Crea una nueva receta en la BD
+	 */
+	private void crear_receta(Document doc, HttpServletResponse resp){
+		// parsear la consulta
+		String nombre = null;
+		String tipo = null;
+		String instrucciones = null;
+		List<Ingrediente> ings = null;
+		
+		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
+			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("tipo") != null && doc.getElementsByTagName("tipo").getLength() > 0) {
+			tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("instrucciones") != null && doc.getElementsByTagName("instrucciones").getLength() > 0) {
+			instrucciones = doc.getElementsByTagName("instrucciones").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("ingrediente") != null && doc.getElementsByTagName("ingrediente").getLength() > 0) {
+			ings = new LinkedList<Ingrediente>();
+			for (int i = 0; i < doc.getElementsByTagName("ingrediente").getLength(); i++) {
+				Element e = (Element) doc.getElementsByTagName("ingrediente").item(i);
+				
+				String nom = e.getTextContent();
+				String uds = null;
+				int cant = -1;
+				
+				if(e.hasAttribute("cantidad")){
+					uds = e.getAttribute("cantidad");
+				}
+				if(e.hasAttribute("uds")){
+					cant = Integer.parseInt(e.getAttribute("uds"));
+				}
+				Ingrediente ing = new Ingrediente();
+				ing.setNombre(nom);
+				ing.setCantidad(cant);
+				ing.setUds(uds);
+				ings.add(ing);
+			}
+		}
+		
+		// crear receta
+		boolean creada = db.DbMethods.crear_receta(nombre, tipo, instrucciones, ings);
+		
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.CREAR_REC_CODE+ "\">");
+			if (creada) {
 				out.println("<hecho>yes</hecho>");
 			} else {
 				out.println("<hecho>no</hecho>");

@@ -231,6 +231,7 @@ public class Listener extends HttpServlet {
 			for (Receta r : recetas) {
 				out.println("<receta>");
 
+				out.println("<id>" + r.getId() + "</id>");
 				out.println("<nombre>" + r.getNombre() + "</nombre>");
 				out.println("<tipo>" + r.getTipo() + "</tipo>");
 				out.println("<instrucciones>" + r.getInstrucciones() + "</instrucciones>");

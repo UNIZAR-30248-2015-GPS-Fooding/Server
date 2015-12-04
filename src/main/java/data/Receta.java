@@ -16,6 +16,7 @@ public class Receta {
 	 */
 
 	/* atributos de las recetas */
+	private int id = -1;
 	private String nombre = null;
 	private String tipo = null;
 	private String instrucciones = null;
@@ -29,6 +30,20 @@ public class Receta {
 	public Receta(){
 	}
 	
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return el nombre
 	 */

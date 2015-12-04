@@ -181,6 +181,7 @@ public class DbMethods {
 
 				rec = new Receta();
 				int id = res.getInt("id");
+				rec.setId(id);
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));

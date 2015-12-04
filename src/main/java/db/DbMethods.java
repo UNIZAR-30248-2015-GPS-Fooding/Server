@@ -516,16 +516,11 @@ public class DbMethods {
 
 			preparedStatement.executeUpdate();
 			
-			System.out.println("Insertada receta");
-			
 			Receta r = get_recetas(nombre, tipo, null, test).get(0);
 			int id = r.getId();
 			
-			System.out.println("Siguiente paradita");
-			
 			if(ings != null){
 				for(Ingrediente i : ings){
-					System.out.println("Ingrediente...");
 					tabla = "Ingrediente";
 					if(test) tabla = "IngredienteTest";
 					query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
@@ -539,8 +534,6 @@ public class DbMethods {
 						
 						preparedStatement.execute();
 					}
-					
-					System.out.println("Seguimos con el ingrediente...");
 					
 					tabla = "RecetaIngrediente";
 					if(test) tabla = tabla + "Test";

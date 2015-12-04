@@ -4,10 +4,12 @@
 
 package test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.List;
+
 import org.junit.Test;
+
 import data.Receta;
 import data.Usuario;
 import db.DbMethods;
@@ -99,7 +101,7 @@ public class DbMethodsTest {
 	@Test
 	public void test_get_usuario() {
 		Usuario user = DbMethods.get_usuario(nombre, true);
-		assertTrue(user.getMail().equalsIgnoreCase("mail_pruebaDbMethods"));
+		assertTrue(nombre, user != null && user.getMail().equalsIgnoreCase("mail_pruebaDbMethods"));
 	}
 
 	/**

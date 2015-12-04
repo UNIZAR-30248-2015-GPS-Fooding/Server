@@ -104,7 +104,7 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
-	public void test_crear_usuario() {
+	public void test_crear_receta() {
 		assertTrue(DbMethods.crear_receta("nombreDB", "Pasta", "instrucciones", null, true));
 	}
 }

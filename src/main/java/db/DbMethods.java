@@ -514,7 +514,7 @@ public class DbMethods {
 			preparedStatement.setString(2, tipo);
 			preparedStatement.setString(3, instrucciones);
 
-			preparedStatement.execute();
+			preparedStatement.executeUpdate();
 			
 			Receta r = get_recetas(nombre, tipo, null, test).get(0);
 			int id = r.getId();

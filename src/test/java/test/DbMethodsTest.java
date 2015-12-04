@@ -105,6 +105,6 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_crear_receta() {
-		assertTrue(DbMethods.crear_receta("nombreDB", "Pasta", "instrucciones", null, true));
+		assertTrue(DbMethods.crear_receta("nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true));
 	}
 }

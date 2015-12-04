@@ -301,7 +301,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_crear_receta() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
-				+ "<nombre>NombreGET</nombre>"
+				+ "<nombre>NombreGET" + System.nanoTime() + "</nombre>"
 				+ "<tipo>Pasta</tipo>"
 				+ "<instrucciones>Instrucciones</instrucciones>"
 				+ "<test>yes</test>"
@@ -326,7 +326,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_crear_receta() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
-				+ "<nombre>NombrePOST</nombre>"
+				+ "<nombre>NombrePOST" + System.nanoTime() + "</nombre>"
 				+ "<tipo>Pasta</tipo>"
 				+ "<instrucciones>Instrucciones</instrucciones>"
 				+ "<test>yes</test>"

@@ -135,27 +135,33 @@ public class DbMethods {
 		if (nombre != null) {
 
 			// filtro de busqueda por nombre (parcial o completo)
-			if (!test)
+			if (!test){
 				query = query + " AND Receta.nombre LIKE '%" + nombre + "%'";
-			else
+			}
+			else{
 				query = query + " AND RecetaTest.nombre LIKE '%" + nombre + "%'";
+			}
 
 		}
 		if (tipo != null) {
 
 			// filtro de busqueda por tipo (completo)
-			if (!test)
+			if (!test){
 				query = query + " AND Receta.tipo = '" + tipo + "'";
-			else
+			}
+			else{
 				query = query + " AND RecetaTest.tipo = '" + tipo + "'";
+			}
 		}
 		if (ings != null && ings.size() > 0) {
 
 			// filtro de busqueda por ingredientes (uno o varios)
-			if (!test)
+			if (!test){
 				query = query + " AND RecetaIngrediente.nombreIngrediente in ('" + ings.get(0) + "'";
-			else
+			}
+			else{
 				query = query + " AND RecetaIngredienteTest.nombreIngrediente in ('" + ings.get(0) + "'";
+			}
 
 			for (int i = 1; i < ings.size(); i++) {
 				query = query + ",'" + ings.get(i) + "'";
@@ -189,8 +195,9 @@ public class DbMethods {
 				// Obtiene la informacion de los ingredientes de cada receta
 				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
 				String query2 = "SELECT * FROM RecetaIngrediente" + " WHERE idReceta = " + id;
-				if (test)
+				if (test){
 					query2 = "SELECT * FROM RecetaIngredienteTest" + " WHERE idReceta = " + id;
+				}
 				st2 = conexion.createStatement();
 				ResultSet res2 = st2.executeQuery(query2);
 				Ingrediente ing;
@@ -387,8 +394,9 @@ public class DbMethods {
 		// obtener informacion del usuario
 		Usuario usuario = null;
 		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
-		if (test)
+		if (test){
 			query = "SELECT * FROM UsuarioTest WHERE mail = '" + mail + "'";
+		}
 		Statement st;
 
 		try {
@@ -427,8 +435,9 @@ public class DbMethods {
 		int mods = 0;
 		try {
 			String query = "UPDATE Usuario SET verificado=1, uniqueKey=DEFAULT WHERE uniqueKey=?";
-			if (test)
+			if (test){
 				query = "UPDATE UsuarioTest SET verificado=1, uniqueKey=DEFAULT WHERE uniqueKey=?";
+			}
 			PreparedStatement st = conexion.prepareStatement(query);
 			st.setString(1, key);
 			mods = st.executeUpdate();
@@ -455,8 +464,9 @@ public class DbMethods {
 
 		// obtener informacion del usuario
 		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
-		if (test)
+		if (test){
 			query = "SELECT * FROM UsuarioTest WHERE mail = '" + mail + "'";
+		}
 		Statement st;
 
 		boolean encontrado = false;
@@ -497,7 +507,9 @@ public class DbMethods {
 			String instrucciones, List<Ingrediente> ings, boolean test) {
 		boolean creado = false;
 		String tabla = "Receta";
-		if(test) tabla = "RecetaTest";
+		if(test){ 
+			tabla = "RecetaTest";
+		}
 
 		// abrir conexion
 		DbConnection.initConnection();
@@ -524,7 +536,9 @@ public class DbMethods {
 				if(ings != null){
 					for(Ingrediente i : ings){
 						tabla = "Ingrediente";
-						if(test) tabla = "IngredienteTest";
+						if(test) {
+							tabla = "IngredienteTest";
+						}
 						query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
 						
 						preparedStatement = conexion.clientPrepareStatement(query);
@@ -538,7 +552,9 @@ public class DbMethods {
 						}
 						
 						tabla = "RecetaIngrediente";
-						if(test) tabla = tabla + "Test";
+						if(test) {
+							tabla = tabla + "Test";
+						}
 						
 						query = "INSERT INTO " + tabla + " (idReceta, nombreIngrediente, cantidad, medida) "
 								+ "VALUES (?,?,?,?)";

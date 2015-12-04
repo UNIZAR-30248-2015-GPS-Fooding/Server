@@ -311,7 +311,7 @@ public class DbMethods {
 
 			// inserta en la bd la info del nuevo usuario
 			String query = "INSERT INTO " + tabla + " (mail,nick,pass,verificado,score,fecha,uniqueKey)"
-					+ "VALUES (?,?,?,0,0,?,?)";
+					+ " VALUES (?,?,?,0,0,?,?)";
 			try {
 				PreparedStatement preparedStatement = conexion.prepareStatement(query);
 
@@ -495,7 +495,69 @@ public class DbMethods {
 	 */
 	public static boolean crear_receta(String nombre, String tipo, 
 			String instrucciones, List<Ingrediente> ings, boolean test) {
-		// TODO
-		return false;
+		boolean creado = false;
+		String tabla = "Receta";
+		if(test) tabla = "RecetaTest";
+
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		try {
+			// inserta en la bd la info de la nueva receta
+			String query = "INSERT INTO " + tabla + " (nombre, tipo, instrucciones)"
+					+ " VALUES (?,?,?)";
+			
+			PreparedStatement preparedStatement = conexion.prepareStatement(query);
+
+			preparedStatement.setString(1, nombre);
+			preparedStatement.setString(2, tipo);
+			preparedStatement.setString(3, instrucciones);
+
+			preparedStatement.execute();
+			
+			Receta r = get_recetas(nombre, tipo, null, test).get(0);
+			int id = r.getId();
+			
+			for(Ingrediente i : ings){
+				tabla = "Ingrediente";
+				if(test) tabla = "IngredienteTest";
+				query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
+				
+				preparedStatement = conexion.clientPrepareStatement(query);
+				ResultSet rs = preparedStatement.executeQuery();
+				if(!rs.next()){
+					query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";
+					preparedStatement = conexion.clientPrepareStatement(query);
+					preparedStatement.setString(1, i.getNombre());
+					
+					preparedStatement.execute();
+				}
+				
+				tabla = "RecetaIngrediente";
+				if(test) tabla = tabla + "Test";
+				
+				query = "INSERT INTO " + tabla + " (idReceta, nombreIngrediente, cantidad, medida) "
+						+ "VALUES (?,?,?,?)";
+				preparedStatement = conexion.clientPrepareStatement(query);
+				
+				preparedStatement.setInt(1, id);
+				preparedStatement.setString(2, i.getNombre());
+				preparedStatement.setInt(3, i.getCantidad());
+				preparedStatement.setString(4, i.getUds());
+				
+				preparedStatement.execute();
+			}
+			
+			creado = true;
+		} catch (SQLException ex) {
+			creado = false;
+			ex.printStackTrace();
+		}
+
+		// cerrar conexion
+		DbConnection.closeConnection();
+
+		return creado;
 	}
 }

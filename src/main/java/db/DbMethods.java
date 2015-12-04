@@ -526,6 +526,7 @@ public class DbMethods {
 
 			query = "SELECT id from " + tabla + "where nombre=?";
 			preparedStatement = conexion.clientPrepareStatement(query);
+			preparedStatement.setString(1, nombre);
 			ResultSet rs = preparedStatement.executeQuery();
 
 			Receta r = new Receta();

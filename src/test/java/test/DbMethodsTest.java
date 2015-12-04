@@ -23,7 +23,7 @@ public class DbMethodsTest {
 	 * @date 23/10/2015
 	 */
 
-	private String nombre;
+	private String nombre = "";
 	
 	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes

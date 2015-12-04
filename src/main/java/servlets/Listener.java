@@ -367,6 +367,7 @@ public class Listener extends HttpServlet {
 		String tipo = null;
 		String instrucciones = null;
 		List<Ingrediente> ings = null;
+		boolean test = true;
 		
 		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
 			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
@@ -399,9 +400,12 @@ public class Listener extends HttpServlet {
 				ings.add(ing);
 			}
 		}
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
 		
 		// crear receta
-		boolean creada = db.DbMethods.crear_receta(nombre, tipo, instrucciones, ings);
+		boolean creada = db.DbMethods.crear_receta(nombre, tipo, instrucciones, ings, test);
 		
 		// informar al usuario
 		try {

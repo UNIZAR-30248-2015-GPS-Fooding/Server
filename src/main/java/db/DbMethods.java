@@ -488,10 +488,13 @@ public class DbMethods {
 	 *            : instrucciones de la nueva receta
 	 * @param ings
 	 *            : ingredientes de la nueva receta
+	 * @param test
+	 * 			  : <true> si es test, <false> en caso contrario
 	 * @return <true> si se ha creado la nueva receta, <false> si no se ha
 	 *         podido crear
 	 */
-	public static boolean crear_receta(String nombre, String tipo, String instrucciones, List<Ingrediente> ings) {
+	public static boolean crear_receta(String nombre, String tipo, 
+			String instrucciones, List<Ingrediente> ings, boolean test) {
 		// TODO
 		return false;
 	}

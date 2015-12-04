@@ -524,14 +524,14 @@ public class DbMethods {
 
 			preparedStatement.executeUpdate();
 
-			query = "SELECT id from " + tabla + " where nombre = ?";
+			query = "SELECT * from " + tabla + " where nombre = ?";
 			preparedStatement = conexion.clientPrepareStatement(query);
 			preparedStatement.setString(1, nombre);
 			ResultSet rs = preparedStatement.executeQuery();
 
 			Receta r = new Receta();
 			if (rs.next()) {
-				r.setId(rs.getInt("id"));
+				r.setId(rs.getInt(1));
 			}
 			int id = r.getId();
 

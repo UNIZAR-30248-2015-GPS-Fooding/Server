@@ -526,47 +526,48 @@ public class DbMethods {
 			preparedStatement.setString(2, tipo);
 			preparedStatement.setString(3, instrucciones);
 
-			preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.executeQuery();
 			
-			List<Receta> recetas = get_recetas(nombre, tipo, null, test);
-			if(recetas != null &&  recetas.size() > 0){
-				Receta r = recetas.get(0);
-				int id = r.getId();
-				
-				if(ings != null){
-					for(Ingrediente i : ings){
-						tabla = "Ingrediente";
-						if(test) {
-							tabla = "IngredienteTest";
-						}
-						query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
-						
+			Receta r = new Receta(); 
+			if(rs.next()){
+				r.setId(rs.getInt(1));
+			}
+			
+			int id = r.getId();
+			
+			if(ings != null){
+				for(Ingrediente i : ings){
+					tabla = "Ingrediente";
+					if(test) {
+						tabla = "IngredienteTest";
+					}
+					query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
+					
+					preparedStatement = conexion.clientPrepareStatement(query);
+					rs = preparedStatement.executeQuery();
+					if(!rs.next()){
+						query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";
 						preparedStatement = conexion.clientPrepareStatement(query);
-						ResultSet rs = preparedStatement.executeQuery();
-						if(!rs.next()){
-							query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";
-							preparedStatement = conexion.clientPrepareStatement(query);
-							preparedStatement.setString(1, i.getNombre());
-							
-							preparedStatement.execute();
-						}
-						
-						tabla = "RecetaIngrediente";
-						if(test) {
-							tabla = tabla + "Test";
-						}
-						
-						query = "INSERT INTO " + tabla + " (idReceta, nombreIngrediente, cantidad, medida) "
-								+ "VALUES (?,?,?,?)";
-						preparedStatement = conexion.clientPrepareStatement(query);
-						
-						preparedStatement.setInt(1, id);
-						preparedStatement.setString(2, i.getNombre());
-						preparedStatement.setInt(3, i.getCantidad());
-						preparedStatement.setString(4, i.getUds());
+						preparedStatement.setString(1, i.getNombre());
 						
 						preparedStatement.execute();
 					}
+					
+					tabla = "RecetaIngrediente";
+					if(test) {
+						tabla = tabla + "Test";
+					}
+					
+					query = "INSERT INTO " + tabla + " (idReceta, nombreIngrediente, cantidad, medida) "
+							+ "VALUES (?,?,?,?)";
+					preparedStatement = conexion.clientPrepareStatement(query);
+					
+					preparedStatement.setInt(1, id);
+					preparedStatement.setString(2, i.getNombre());
+					preparedStatement.setInt(3, i.getCantidad());
+					preparedStatement.setString(4, i.getUds());
+					
+					preparedStatement.execute();
 				}
 				
 				creado = true;

@@ -96,7 +96,7 @@ public class DbMethodsTest {
 	@Test
 	public void test_get_usuario() {
 		Usuario user = DbMethods.get_usuario("mail_pruebaDbMethods", true);
-		assertTrue(user.getMail().equals("mail_pruebaDbMethods"));
+		assertTrue(user.getMail().equalsIgnoreCase("mail_pruebaDbMethods"));
 	}
 
 }

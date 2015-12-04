@@ -528,7 +528,7 @@ public class DbMethods {
 
 			preparedStatement.executeUpdate();
 			
-			List<Receta> recetas = get_recetas(nombre, null, null, test);
+			List<Receta> recetas = get_recetas(nombre, tipo, null, test);
 			if(recetas != null &&  recetas.size() > 0){
 				Receta r = recetas.get(0);
 				int id = r.getId();

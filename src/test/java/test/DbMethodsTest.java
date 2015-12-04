@@ -99,4 +99,12 @@ public class DbMethodsTest {
 		assertTrue(user.getMail().equalsIgnoreCase("mail_pruebaDbMethods"));
 	}
 
+	/**
+	 * Test para comprobar que el metodo para crear una receta en la BD
+	 * funciona
+	 */
+	@Test
+	public void test_crear_usuario() {
+		assertTrue(DbMethods.crear_receta("nombreDB", "Pasta", "instrucciones", null, true));
+	}
 }

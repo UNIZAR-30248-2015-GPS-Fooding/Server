@@ -292,4 +292,55 @@ public class ListenerTest{
 				&& respuesta.contains("hecho")
 				&& respuesta.contains("yes"));
 	}
+	
+	/**
+	 * Testea la creacion de recetas (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_crear_receta() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+				+ "<nombre>NombreGET</nombre>"
+				+ "<tipo>Pasta</tipo>"
+				+ "<instrucciones>Instrucciones</instrucciones>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea la creacion de recetas (POST) 
+	 * 
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_crear_receta() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+				+ "<nombre>NombrePOST</nombre>"
+				+ "<tipo>Pasta</tipo>"
+				+ "<instrucciones>Instrucciones</instrucciones>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
 }

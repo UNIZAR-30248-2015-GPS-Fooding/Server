@@ -29,7 +29,7 @@ public class ListenerTest{
 	private MockHttpServletRequest req;
 	private MockHttpServletResponse resp;
 	
-	private String nombreGet, nombrePOST;
+	private String nombreGet = "", nombrePOST = "";
 	
 	/**
 	 * Setup para los tests del Listener

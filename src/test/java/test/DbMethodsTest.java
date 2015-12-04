@@ -21,6 +21,8 @@ public class DbMethodsTest {
 	 * @date 23/10/2015
 	 */
 
+	private String nombre;
+	
 	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes
 	 * no devuelve <null> o lista vacia
@@ -76,7 +78,8 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_registrar_usuario() {
-		boolean registrado = DbMethods.registrar_usuario("mail_pruebaDbMethods", "nick_prueba", "pw_prueba", "NULL",
+		nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		boolean registrado = DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL",
 				true);
 		assertTrue(registrado);
 	}
@@ -86,7 +89,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_login_usuario() {
-		assertTrue(DbMethods.login_usuario("mail_pruebaDbMethods", "pw_prueba", true));
+		assertTrue(DbMethods.login_usuario(nombre, "pw_prueba", true));
 	}
 
 	/**
@@ -95,7 +98,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_get_usuario() {
-		Usuario user = DbMethods.get_usuario("mail_pruebaDbMethods", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
 		assertTrue(user.getMail().equalsIgnoreCase("mail_pruebaDbMethods"));
 	}
 

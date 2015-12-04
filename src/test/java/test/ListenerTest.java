@@ -29,6 +29,8 @@ public class ListenerTest{
 	private MockHttpServletRequest req;
 	private MockHttpServletResponse resp;
 	
+	private String nombreGet, nombrePOST;
+	
 	/**
 	 * Setup para los tests del Listener
 	 */
@@ -201,8 +203,9 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_crear_user() throws ServletException, IOException{
+		nombreGet = "pruebaListenerTest0" + System.nanoTime();
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
-				+ "<mail>pruebaListenerTest0</mail>"
+				+ "<mail>" + nombreGet + "</mail>"
 				+ "<nick>nick_prueba</nick>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
@@ -225,8 +228,9 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_crear_user() throws ServletException, IOException{
+		nombrePOST = "pruebaListenerTest1" + System.nanoTime();
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
-				+ "<mail>pruebaListenerTest1</mail>"
+				+ "<mail>" + nombrePOST + "</mail>"
 				+ "<nick>nick_prueba</nick>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
@@ -252,7 +256,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
-				+ "<mail>pruebaListenerTest0</mail>"
+				+ "<mail>" + nombreGet + "</mail>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
 				+ "</request>";
@@ -276,7 +280,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
-				+ "<mail>pruebaListenerTest0</mail>"
+				+ "<mail>" + nombrePOST + "</mail>"
 				+ "<pw>pw_prueba</pw>"
 				+ "<test>yes</test>"
 				+ "</request>";

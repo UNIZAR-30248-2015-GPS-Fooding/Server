@@ -542,17 +542,16 @@ public class DbMethods {
 					if (test) {
 						tabla = "IngredienteTest";
 					}
-					query = "SELECT * from " + tabla; //+ " where nombre ='" + i.getNombre() + "'";
+					query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
 
-					preparedStatement = conexion.clientPrepareStatement(query);
-					rs = preparedStatement.executeQuery();
-					if(test) return true;
+					PreparedStatement prepStat= conexion.clientPrepareStatement(query);
+					rs = prepStat.executeQuery();
 					if (!rs.next()) {
 						query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";
-						preparedStatement = conexion.clientPrepareStatement(query);
-						preparedStatement.setString(1, i.getNombre());
+						PreparedStatement ps = conexion.clientPrepareStatement(query);
+						ps.setString(1, i.getNombre());
 
-						preparedStatement.execute();
+						ps.execute();
 					}
 
 					tabla = "RecetaIngrediente";
@@ -562,14 +561,14 @@ public class DbMethods {
 
 					query = "INSERT INTO " + tabla + " (idReceta, nombreIngrediente, cantidad, medida) "
 							+ "VALUES (?,?,?,?)";
-					preparedStatement = conexion.clientPrepareStatement(query);
+					PreparedStatement pst = conexion.clientPrepareStatement(query);
 
-					preparedStatement.setInt(1, id);
-					preparedStatement.setString(2, i.getNombre());
-					preparedStatement.setInt(3, i.getCantidad());
-					preparedStatement.setString(4, i.getUds());
+					pst.setInt(1, id);
+					pst.setString(2, i.getNombre());
+					pst.setInt(3, i.getCantidad());
+					pst.setString(4, i.getUds());
 
-					preparedStatement.execute();
+					pst.execute();
 				}
 
 				creado = true;

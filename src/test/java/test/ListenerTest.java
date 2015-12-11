@@ -288,7 +288,6 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	@Ignore
 	public void test_get_crear_receta() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
 				+ "<nombre>NombreGET" + System.nanoTime() + "</nombre>"
@@ -314,7 +313,6 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	@Ignore
 	public void test_post_crear_receta() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
 				+ "<nombre>NombrePOST" + System.nanoTime() + "</nombre>"
@@ -335,6 +333,12 @@ public class ListenerTest{
 				&& respuesta.contains("yes"));
 	}
 	
+	/**
+	 * @param mail email del usuario nuevo
+	 * @return respuesta del servidor
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private String get_crear_user(String mail) throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
 				+ "<mail>" + mail + "</mail>"
@@ -350,6 +354,12 @@ public class ListenerTest{
 		return respuesta;
 	}
 	
+	/**
+	 * @param mail email del nuevo usuario
+	 * @return respuesta del servidor
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private String post_crear_user(String mail) throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
 				+ "<mail>" + mail + "</mail>"

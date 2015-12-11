@@ -23,4 +23,6 @@ public class Data {
 	public static final int CREAR_USER_CODE = 5;
 	public static final int LOGIN_CODE = 6;
 	public static final int CREAR_REC_CODE = 7;
+	public static final int VOTAR_CODE = 8;
+	public static final int VALORACION_CODE = 9;
 }

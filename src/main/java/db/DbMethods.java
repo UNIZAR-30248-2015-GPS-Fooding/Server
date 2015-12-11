@@ -583,4 +583,25 @@ public class DbMethods {
 
 		return creado;
 	}
+	
+	/**
+	 * @param id identificador de la receta
+	 * @param voto voto del usuario
+	 * @param test <true> si es test
+	 * @return <true> si se ha podido votar
+	 */
+	public static boolean votar(int id, String mail, int voto, boolean test){
+		// TODO
+		return false;
+	}
+	
+	/**
+	 * @param id identificador de la receta
+	 * @param test <true> si es test
+	 * @return media de valoraciones
+	 */
+	public static int valoracion_media(int id, boolean test){
+		// TODO
+		return -1;
+	}
 }

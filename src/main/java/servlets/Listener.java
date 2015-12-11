@@ -117,6 +117,12 @@ public class Listener extends HttpServlet {
 			case Data.CREAR_REC_CODE: /* crear receta */
 				crear_receta(doc, resp);
 				break;
+			case Data.VOTAR_CODE: /* votar receta */
+				votar(doc, resp);
+				break;
+			case Data.VALORACION_CODE: /* valoracion media */
+				valoracion_media(doc, resp);
+				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
 			}
@@ -416,6 +422,76 @@ public class Listener extends HttpServlet {
 			} else {
 				out.println("<hecho>no</hecho>");
 			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Registrar el voto del usuario
+	 */
+	private void votar(Document doc, HttpServletResponse resp){
+		int id = -1;
+		String mail = null;
+		boolean test = false;
+		int voto = 0;
+		
+		if(doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+		
+		if(doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+		
+		if(doc.getElementsByTagName("voto") != null && doc.getElementsByTagName("voto").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("voto").item(0).getTextContent());
+		}
+		
+		if(doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0){
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		
+		boolean hecho = db.DbMethods.votar(id, mail, voto, test);
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.VOTAR_CODE + "\">");
+			if (hecho) {
+				out.println("<hecho>yes</hecho>");
+			} else {
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Obtener la valoracion media de una receta
+	 * @param doc
+	 * @param resp
+	 */
+	private void valoracion_media(Document doc, HttpServletResponse resp){
+		int id = -1;
+		boolean test = false;
+		
+		if(doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+	
+		if(doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+		
+		int valoracion = db.DbMethods.valoracion_media(id, test);
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.VALORACION_CODE + "\">");
+			out.println("<valoracion>" + valoracion + "</valoracion>");
 			out.println("</response>");
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -390,16 +390,15 @@ public class DbMethods {
 
 		// obtener informacion del usuario
 		Usuario usuario = null;
-		String query = "SELECT * FROM Usuario WHERE mail = ?";
+		String query = "SELECT * FROM Usuario WHERE mail='" + mail + "'";
 		if (test) {
-			query = "SELECT * FROM UsuarioTest WHERE mail = ?";
+			query = "SELECT * FROM UsuarioTest WHERE mail='" + mail + "'";
 		}
-		PreparedStatement st;
+		Statement st;
 
 		try {
-			st = conexion.prepareStatement(query);
-			st.setString(1, mail);
-			ResultSet res = st.executeQuery();
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
 
 			if (res.next()) {
 				usuario = new Usuario();

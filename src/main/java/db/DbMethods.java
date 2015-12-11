@@ -524,7 +524,7 @@ public class DbMethods {
 
 			preparedStatement.executeUpdate();
 
-			query = "SELECT * from " + tabla + " where nombre = ?";
+			query = "SELECT * from " + tabla + " where nombre = ?"; 
 			preparedStatement = conexion.clientPrepareStatement(query);
 			preparedStatement.setString(1, nombre);
 			ResultSet rs = preparedStatement.executeQuery();

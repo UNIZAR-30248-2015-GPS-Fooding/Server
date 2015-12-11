@@ -404,7 +404,8 @@ public class DbMethods {
 			while (res.next()) {
 				usuario = new Usuario();
 				usuario.setMail(res.getString("mail"));
-				usuario.setNick(res.getString("nick"));
+//				usuario.setNick(res.getString("nick"));
+				usuario.setNick(query);
 				usuario.setVerificado(res.getInt("verificado"));
 				usuario.setScore(res.getInt("score"));
 			}

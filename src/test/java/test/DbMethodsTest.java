@@ -4,12 +4,14 @@
 
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 
+import data.Ingrediente;
 import data.Receta;
 import data.Usuario;
 import db.DbMethods;
@@ -110,10 +112,28 @@ public class DbMethodsTest {
 
 	/**
 	 * Test para comprobar que el metodo para crear una receta en la BD
+	 * funciona (sin ingredientes)
+	 */
+	@Test
+	public void test_crear_receta_sin_ingredientes() {
+		assertTrue(DbMethods.crear_receta("nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para crear una receta en la BD
 	 * funciona
 	 */
 	@Test
 	public void test_crear_receta() {
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		
+		ings.add(ing);
+		
 		assertTrue(DbMethods.crear_receta("nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
 	}
 }

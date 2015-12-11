@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -202,6 +203,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	@Ignore
 	public void test_get_crear_user() throws ServletException, IOException{
 		nombreGet = "pruebaListenerTest0" + System.nanoTime();
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
@@ -227,6 +229,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	@Ignore
 	public void test_post_crear_user() throws ServletException, IOException{
 		nombrePOST = "pruebaListenerTest1" + System.nanoTime();
 		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
@@ -254,6 +257,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	@Ignore
 	public void test_get_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
 				+ "<mail>" + nombreGet + "</mail>"
@@ -278,6 +282,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	@Ignore
 	public void test_post_login_user() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
 				+ "<mail>" + nombrePOST + "</mail>"
@@ -303,6 +308,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	@Ignore
 	public void test_get_crear_receta() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
 				+ "<nombre>NombreGET" + System.nanoTime() + "</nombre>"
@@ -328,6 +334,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	@Ignore
 	public void test_post_crear_receta() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
 				+ "<nombre>NombrePOST" + System.nanoTime() + "</nombre>"

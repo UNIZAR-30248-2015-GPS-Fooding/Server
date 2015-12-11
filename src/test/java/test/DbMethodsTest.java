@@ -100,7 +100,6 @@ public class DbMethodsTest {
 	@Test
 	public void test_get_usuario() {
 		Usuario user = DbMethods.get_usuario(nombre, true);
-		System.out.println(user.getNick());
 		assertTrue(nombre, user != null);
 	}
 

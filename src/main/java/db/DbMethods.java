@@ -401,7 +401,7 @@ public class DbMethods {
 			st.setString(1, mail);
 			ResultSet res = st.executeQuery();
 
-			while (res.next()) {
+			if (res.next()) {
 				usuario = new Usuario();
 				usuario.setMail(res.getString("mail"));
 //				usuario.setNick(res.getString("nick"));

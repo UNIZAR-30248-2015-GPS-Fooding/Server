@@ -390,15 +390,16 @@ public class DbMethods {
 
 		// obtener informacion del usuario
 		Usuario usuario = null;
-		String query = "SELECT * FROM Usuario WHERE mail LIKE '%" + mail + "%'";
+		String query = "SELECT * FROM Usuario WHERE mail = ?";
 		if (test) {
-			query = "SELECT * FROM UsuarioTest WHERE mail LIKE '%" + mail + "%'";
+			query = "SELECT * FROM UsuarioTest WHERE mail = ?";
 		}
-		Statement st;
+		PreparedStatement st;
 
 		try {
-			st = conexion.createStatement();
-			ResultSet res = st.executeQuery(query);
+			st = conexion.prepareStatement(query);
+			st.setString(1, mail);
+			ResultSet res = st.executeQuery();
 
 			while (res.next()) {
 				usuario = new Usuario();
@@ -524,7 +525,7 @@ public class DbMethods {
 
 			preparedStatement.executeUpdate();
 
-			query = "SELECT * from " + tabla + " where nombre = ?"; 
+			query = "SELECT * from " + tabla + " where nombre = ?";
 			preparedStatement = conexion.clientPrepareStatement(query);
 			preparedStatement.setString(1, nombre);
 			ResultSet rs = preparedStatement.executeQuery();

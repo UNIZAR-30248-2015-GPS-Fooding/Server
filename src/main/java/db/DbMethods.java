@@ -542,7 +542,7 @@ public class DbMethods {
 					if (test) {
 						tabla = "IngredienteTest";
 					}
-					query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
+					query = "SELECT * from " + tabla; //+ " where nombre ='" + i.getNombre() + "'";
 
 					preparedStatement = conexion.clientPrepareStatement(query);
 					rs = preparedStatement.executeQuery();

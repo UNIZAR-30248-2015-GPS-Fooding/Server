@@ -23,7 +23,7 @@ public class DbMethodsTest {
 	 * @date 23/10/2015
 	 */
 
-	private String nombre = "";
+	private String nombre = "mail_pruebaDbMethods" + System.nanoTime();;
 	
 	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes
@@ -80,7 +80,6 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_registrar_usuario() {
-		nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		System.out.println(nombre.length());
 		boolean registrado = DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL",
 				true);

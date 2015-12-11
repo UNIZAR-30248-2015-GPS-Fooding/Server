@@ -81,6 +81,7 @@ public class DbMethodsTest {
 	@Test
 	public void test_registrar_usuario() {
 		nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		System.out.println(nombre.length());
 		boolean registrado = DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL",
 				true);
 		assertTrue(registrado);

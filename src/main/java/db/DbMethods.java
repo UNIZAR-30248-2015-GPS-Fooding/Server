@@ -390,9 +390,9 @@ public class DbMethods {
 
 		// obtener informacion del usuario
 		Usuario usuario = null;
-		String query = "SELECT * FROM Usuario WHERE mail = '" + mail + "'";
+		String query = "SELECT * FROM Usuario WHERE mail LIKE '%" + mail + "%'";
 		if (test) {
-			query = "SELECT * FROM UsuarioTest WHERE mail = '" + mail + "'";
+			query = "SELECT * FROM UsuarioTest WHERE mail LIKE '%" + mail + "%'";
 		}
 		Statement st;
 

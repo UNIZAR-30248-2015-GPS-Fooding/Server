@@ -532,9 +532,11 @@ public class DbMethods {
 
 			Receta r = new Receta();
 			if (rs.next()) {
-				r.setId(rs.getInt(1));
+				r.setId(rs.getInt("id"));
 			}
 			int id = r.getId();
+			
+			if(id > -1) return true;
 
 			if (ings != null) {
 				for (Ingrediente i : ings) {

@@ -546,7 +546,7 @@ public class DbMethods {
 
 					PreparedStatement prepStat= conexion.clientPrepareStatement(query);
 					rs = prepStat.executeQuery();
-					if(test) return true;
+
 					if (!rs.next()) {
 						query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";
 						PreparedStatement ps = conexion.clientPrepareStatement(query);
@@ -571,9 +571,8 @@ public class DbMethods {
 
 					pst.execute();
 				}
-
-				creado = true;
 			}
+			creado = true;
 		} catch (SQLException ex) {
 			creado = false;
 			ex.printStackTrace();

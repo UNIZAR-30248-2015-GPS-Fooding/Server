@@ -536,8 +536,6 @@ public class DbMethods {
 			}
 			int id = r.getId();
 			
-			if(id > -1) return true;
-
 			if (ings != null) {
 				for (Ingrediente i : ings) {
 					tabla = "Ingrediente";
@@ -548,6 +546,7 @@ public class DbMethods {
 
 					preparedStatement = conexion.clientPrepareStatement(query);
 					rs = preparedStatement.executeQuery();
+					if(id > 0) return true;
 					if (!rs.next()) {
 						query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";
 						preparedStatement = conexion.clientPrepareStatement(query);

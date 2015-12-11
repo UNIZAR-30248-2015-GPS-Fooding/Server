@@ -30,8 +30,6 @@ public class ListenerTest{
 	private MockHttpServletRequest req;
 	private MockHttpServletResponse resp;
 	
-	private String nombreGet = "", nombrePOST = "";
-	
 	/**
 	 * Setup para los tests del Listener
 	 */
@@ -203,20 +201,10 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	@Ignore
 	public void test_get_crear_user() throws ServletException, IOException{
-		nombreGet = "pruebaListenerTest0" + System.nanoTime();
-		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
-				+ "<mail>" + nombreGet + "</mail>"
-				+ "<nick>nick_prueba</nick>"
-				+ "<pw>pw_prueba</pw>"
-				+ "<test>yes</test>"
-				+ "</request>";
-		req.addParameter("xml", xml);
+		String nombreGet = "pruebaListenerTest0" + System.nanoTime();
 		
-		servlet.doGet(req, resp);
-		
-		String respuesta = resp.getContentAsString();
+		String respuesta = get_crear_user(nombreGet);
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.contains("hecho")
@@ -229,22 +217,9 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	@Ignore
 	public void test_post_crear_user() throws ServletException, IOException{
-		nombrePOST = "pruebaListenerTest1" + System.nanoTime();
-		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
-				+ "<mail>" + nombrePOST + "</mail>"
-				+ "<nick>nick_prueba</nick>"
-				+ "<pw>pw_prueba</pw>"
-				+ "<test>yes</test>"
-				+ "</request>";
-		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
-		
-		req.setContent(xml.getBytes());
-		
-		servlet.doPost(req, resp);
-		
-		String respuesta = resp.getContentAsString();
+		String nombrePOST = "pruebaListenerTest1" + System.nanoTime();
+		String respuesta = post_crear_user(nombrePOST);
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.contains("hecho")
@@ -257,8 +232,11 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	@Ignore
 	public void test_get_login_user() throws ServletException, IOException{
+		String nombreGet = "pruebaListenerTest0" + System.nanoTime();
+		
+		get_crear_user(nombreGet);
+		
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">" 
 				+ "<mail>" + nombreGet + "</mail>"
 				+ "<pw>pw_prueba</pw>"
@@ -282,8 +260,10 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	@Ignore
 	public void test_post_login_user() throws ServletException, IOException{
+		String nombrePOST = "pruebaListenerTest1" + System.nanoTime();
+		post_crear_user(nombrePOST);
+		
 		String xml = "<request id=\"" + data.Data.LOGIN_CODE +"\">"
 				+ "<mail>" + nombrePOST + "</mail>"
 				+ "<pw>pw_prueba</pw>"
@@ -353,5 +333,38 @@ public class ListenerTest{
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.contains("hecho")
 				&& respuesta.contains("yes"));
+	}
+	
+	private String get_crear_user(String mail) throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">" 
+				+ "<mail>" + mail + "</mail>"
+				+ "<nick>nick_prueba</nick>"
+				+ "<pw>pw_prueba</pw>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		return respuesta;
+	}
+	
+	private String post_crear_user(String mail) throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.CREAR_USER_CODE +"\">"
+				+ "<mail>" + mail + "</mail>"
+				+ "<nick>nick_prueba</nick>"
+				+ "<pw>pw_prueba</pw>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		return respuesta;
 	}
 }

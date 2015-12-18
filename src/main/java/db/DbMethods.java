@@ -592,7 +592,46 @@ public class DbMethods {
 	 */
 	public static boolean votar(int id, String mail, int voto, boolean test){
 		// TODO
-		return false;
+		String tabla = "UsuarioValoraReceta";
+		if(test) tabla = tabla + "Test";
+		
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+		
+		String query_select = "select * from " + tabla + " where mail=? and idReceta=?";
+		try{
+			PreparedStatement select = conexion.clientPrepareStatement(query_select);
+			select.setString(1, mail);
+			select.setInt(2, id);
+			
+			ResultSet rs = select.executeQuery();
+			
+			PreparedStatement insert_update;
+			if(rs.next()){
+				String query = "update " + tabla + " set valoracion=? where mail=? and idReceta=?";
+				insert_update = conexion.clientPrepareStatement(query);
+				insert_update.setInt(1, voto);
+				insert_update.setString(2, mail);
+				insert_update.setInt(3, id);
+				
+			}
+			else{
+				String query = "insert into " + tabla + " (mail, idReceta, valoracion) values (?,?,?)";
+				insert_update = conexion.clientPrepareStatement(query);
+				insert_update.setString(1, mail);
+				insert_update.setInt(2, id);
+				insert_update.setInt(3, voto);
+			}
+			int returned = insert_update.executeUpdate();
+			
+			select.close();
+			insert_update.close();
+			
+			return returned > 0;
+		} catch(SQLException e){
+			return false;
+		}
 	}
 	
 	/**

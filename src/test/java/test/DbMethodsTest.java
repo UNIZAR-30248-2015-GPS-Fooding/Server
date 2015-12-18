@@ -136,4 +136,35 @@ public class DbMethodsTest {
 		
 		assertTrue(DbMethods.crear_receta("nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
 	}
+	
+	/**
+	 * Test para comprobar que el metodo para valorar una receta en la BD
+	 * funciona
+	 */
+	@Test
+	public void test_valorar_receta() {
+		/* crear receta */
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		ings.add(ing);
+		String nombreReceta = "nombreDB" + System.nanoTime();
+		DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", null, true);
+		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue(false);
+		}
+		int idReceta = recetas.get(0).getId();
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+	}
 }

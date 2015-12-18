@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import data.Ingrediente;
@@ -142,6 +143,7 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
+	@Ignore
 	public void test_valorar_receta() {
 		/* crear receta */
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();

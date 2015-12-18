@@ -393,11 +393,11 @@ public class Listener extends HttpServlet {
 				String uds = null;
 				int cant = -1;
 				
-				if(e.hasAttribute("cantidad")){
-					uds = e.getAttribute("cantidad");
-				}
 				if(e.hasAttribute("uds")){
-					cant = Integer.parseInt(e.getAttribute("uds"));
+					uds = e.getAttribute("uds");
+				}
+				if(e.hasAttribute("cantidad")){
+					cant = Integer.parseInt(e.getAttribute("cantidad"));
 				}
 				Ingrediente ing = new Ingrediente();
 				ing.setNombre(nom);

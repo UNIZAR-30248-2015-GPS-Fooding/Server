@@ -317,6 +317,7 @@ public class ListenerTest{
 				+ "<nombre>NombrePOST" + System.nanoTime() + "</nombre>"
 				+ "<tipo>Pasta</tipo>"
 				+ "<instrucciones>Instrucciones</instrucciones>"
+				+ "<ingrediente cantidad=\"1\" uds=\"uds\">ingrediente</ingrediente>"
 				+ "<test>yes</test>"
 				+ "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");

@@ -403,8 +403,7 @@ public class DbMethods {
 			if (res.next()) {
 				usuario = new Usuario();
 				usuario.setMail(res.getString("mail"));
-//				usuario.setNick(res.getString("nick"));
-				usuario.setNick(query);
+				usuario.setNick(res.getString("nick"));
 				usuario.setVerificado(res.getInt("verificado"));
 				usuario.setScore(res.getInt("score"));
 			}
@@ -627,9 +626,11 @@ public class DbMethods {
 			
 			select.close();
 			insert_update.close();
+			DbConnection.closeConnection();
 			
 			return returned > 0;
 		} catch(SQLException e){
+			DbConnection.closeConnection();
 			return false;
 		}
 	}

@@ -7,6 +7,7 @@ package test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
@@ -15,6 +16,8 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import data.Receta;
+import db.DbMethods;
 import servlets.Listener;
 
 public class ListenerTest{
@@ -325,6 +328,89 @@ public class ListenerTest{
 		req.setContent(xml.getBytes());
 		
 		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea la valoracion de recetas (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_valorar_receta() throws ServletException, IOException{
+		String mail = "ListenerTest" + System.nanoTime();
+		get_crear_user(mail);
+		
+		String nombre = "NombreListener" + System.nanoTime();
+		String tipo = "Pasta";
+		String instrucciones = "Instrucciones";
+		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+				+ "<nombre>" + nombre + "</nombre>"
+				+ "<tipo>" + tipo + "</tipo>"
+				+ "<instrucciones>" + instrucciones + "</instrucciones>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		servlet.doGet(req, resp);
+		
+		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
+		int id = recetas.get(0).getId();
+		
+		xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"
+				+ "<id>" + id + "</id>"
+				+ "<mail>" + mail + "</mail>"
+				+ "<voto>" + 1 + "</voto>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("hecho")
+				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea la valoracion de recetas (POST) 
+	 * 
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_valorar_receta() throws ServletException, IOException{
+		String mail = "ListenerTest" + System.nanoTime();
+		post_crear_user(mail);
+		
+		String nombre = "NombreListener" + System.nanoTime();
+		String tipo = "Pasta";
+		String instrucciones = "Instrucciones";
+		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+				+ "<nombre>" + nombre + "</nombre>"
+				+ "<tipo>" + tipo + "</tipo>"
+				+ "<instrucciones>" + instrucciones + "</instrucciones>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.setContent(xml.getBytes());
+		servlet.doGet(req, resp);
+		
+		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
+		int id = recetas.get(0).getId();
+		
+		xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"
+				+ "<id>" + id + "</id>"
+				+ "<mail>" + mail + "</mail>"
+				+ "<voto>" + 1 + "</voto>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.setContent(xml.getBytes());
+		servlet.doGet(req, resp);
 		
 		String respuesta = resp.getContentAsString();
 		

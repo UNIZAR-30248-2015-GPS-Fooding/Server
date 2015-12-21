@@ -344,7 +344,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_valorar_receta() throws ServletException, IOException{
 		String mail = "ListenerTest" + System.nanoTime();
-		get_crear_user(mail);
+		DbMethods.registrar_usuario(mail, mail, "pw", "NULL", true);
 		
 		String nombre = "NombreListener" + System.nanoTime();
 		String tipo = "Pasta";
@@ -379,7 +379,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_valorar_receta() throws ServletException, IOException{
 		String mail = "ListenerTest" + System.nanoTime();
-		post_crear_user(mail);
+		DbMethods.registrar_usuario(mail, mail, "pw", "NULL", true);
 		
 		String nombre = "NombreListener2" + System.nanoTime();
 		String tipo = "Pasta";

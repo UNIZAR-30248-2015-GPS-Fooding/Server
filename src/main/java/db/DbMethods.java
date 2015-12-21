@@ -665,7 +665,7 @@ public class DbMethods {
 			media = (double) ((double) media / (double) numValoraciones);
 		}
 		catch(Exception e){
-			media = -1;
+			media = -2;
 		}
 		DbConnection.closeConnection();
 		

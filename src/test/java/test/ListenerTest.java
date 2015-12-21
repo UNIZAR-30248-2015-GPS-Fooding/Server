@@ -7,6 +7,7 @@ package test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import data.Ingrediente;
 import data.Receta;
 import db.DbMethods;
 import servlets.Listener;
@@ -351,7 +353,15 @@ public class ListenerTest{
 		String nombre = "NombreListener" + System.nanoTime();
 		String tipo = "Pasta";
 		String instrucciones = "Instrucciones";
-		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, null, true)){
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		
+		ings.add(ing);
+		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, ings, true)){
 			assertTrue("No se ha creado la receta", false);
 		}
 		
@@ -393,7 +403,15 @@ public class ListenerTest{
 		String nombre = "NombreListener2" + System.nanoTime();
 		String tipo = "Pasta";
 		String instrucciones = "Instrucciones";
-		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, null, true)){
+List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		
+		ings.add(ing);
+		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, ings, true)){
 			assertTrue("No se ha creado la receta", false);
 		}
 		

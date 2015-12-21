@@ -486,7 +486,7 @@ public class Listener extends HttpServlet {
 			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
 		}
 		
-		int valoracion = db.DbMethods.valoracion_media(id, test);
+		double valoracion = db.DbMethods.valoracion_media(id, test);
 		// informar al usuario
 		try {
 			PrintWriter out = resp.getWriter();

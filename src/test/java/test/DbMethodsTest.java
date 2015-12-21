@@ -152,11 +152,11 @@ public class DbMethodsTest {
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
 		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
-			assertTrue("Line 157: receta no creada", false);
+			assertTrue("receta no creada", false);
 		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
-			assertTrue("Line 161: receta no encontrada", false);
+			assertTrue("receta no encontrada", false);
 		}
 		int idReceta = recetas.get(0).getId();
 		
@@ -167,6 +167,49 @@ public class DbMethodsTest {
 		String mailUsuario = user.getMail();
 		
 		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener valoracion media una 
+	 * receta en la BD funciona
+	 */
+	@Test
+	public void test_valoracion_media_receta() {
+		/* crear receta */
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		ings.add(ing);
+		String nombreReceta = "nombreDB" + System.nanoTime();
+		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+			assertTrue("receta no creada", false);
+		}
+		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue("receta no encontrada", false);
+		}
+		int idReceta = recetas.get(0).getId();
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+		/* crear usuario 2 */
+		nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		user = DbMethods.get_usuario(nombre, true);
+		mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+		assertTrue(DbMethods.valoracion_media(idReceta, true) == 1);
 		
 	}
 }

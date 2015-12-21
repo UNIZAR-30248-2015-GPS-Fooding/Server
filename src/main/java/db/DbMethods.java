@@ -590,7 +590,6 @@ public class DbMethods {
 	 * @return <true> si se ha podido votar
 	 */
 	public static boolean votar(int id, String mail, int voto, boolean test){
-		// TODO
 		String tabla = "UsuarioValoraReceta";
 		if(test) tabla = tabla + "Test";
 		
@@ -640,8 +639,36 @@ public class DbMethods {
 	 * @param test <true> si es test
 	 * @return media de valoraciones
 	 */
-	public static int valoracion_media(int id, boolean test){
-		// TODO
-		return -1;
+	public static double valoracion_media(int id, boolean test){
+		DbConnection.initConnection();
+		Connection conn = DbConnection.getConnection();
+		PreparedStatement ps;
+		double media = 0;
+		
+		String tabla = "UsuarioValoraReceta";
+		if(test) tabla = tabla + "Test";
+		
+		try{
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			int numValoraciones = 0;
+			while(rs.next()){
+				int valoracion = rs.getInt(1);
+				numValoraciones++;
+				media = media + valoracion;
+			}
+			ps.close();
+			
+			media = (double) ((double) media / (double) numValoraciones);
+		}
+		catch(Exception e){
+			media = -1;
+		}
+		DbConnection.closeConnection();
+		
+		return media;
 	}
 }

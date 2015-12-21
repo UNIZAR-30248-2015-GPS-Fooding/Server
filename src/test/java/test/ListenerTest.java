@@ -349,19 +349,12 @@ public class ListenerTest{
 		String nombre = "NombreListener" + System.nanoTime();
 		String tipo = "Pasta";
 		String instrucciones = "Instrucciones";
-		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
-				+ "<nombre>" + nombre + "</nombre>"
-				+ "<tipo>" + tipo + "</tipo>"
-				+ "<instrucciones>" + instrucciones + "</instrucciones>"
-				+ "<test>yes</test>"
-				+ "</request>";
-		req.addParameter("xml", xml);
-		servlet.doGet(req, resp);
+		DbMethods.crear_receta(nombre, tipo, instrucciones, null, true);
 		
 		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
 		int id = recetas.get(0).getId();
 		
-		xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"
+		String xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"
 				+ "<id>" + id + "</id>"
 				+ "<mail>" + mail + "</mail>"
 				+ "<voto>" + 1 + "</voto>"
@@ -388,22 +381,15 @@ public class ListenerTest{
 		String mail = "ListenerTest" + System.nanoTime();
 		post_crear_user(mail);
 		
-		String nombre = "NombreListener" + System.nanoTime();
+		String nombre = "NombreListener2" + System.nanoTime();
 		String tipo = "Pasta";
 		String instrucciones = "Instrucciones";
-		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
-				+ "<nombre>" + nombre + "</nombre>"
-				+ "<tipo>" + tipo + "</tipo>"
-				+ "<instrucciones>" + instrucciones + "</instrucciones>"
-				+ "<test>yes</test>"
-				+ "</request>";
-		req.setContent(xml.getBytes());
-		servlet.doGet(req, resp);
+		DbMethods.crear_receta(nombre, tipo, instrucciones, null, true);
 		
 		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
 		int id = recetas.get(0).getId();
 		
-		xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"
+		String xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"
 				+ "<id>" + id + "</id>"
 				+ "<mail>" + mail + "</mail>"
 				+ "<voto>" + 1 + "</voto>"

@@ -344,14 +344,21 @@ public class ListenerTest{
 	@Test
 	public void test_get_valorar_receta() throws ServletException, IOException{
 		String mail = "ListenerTest" + System.nanoTime();
-		DbMethods.registrar_usuario(mail, mail, "pw", "NULL", true);
+		if(!DbMethods.registrar_usuario(mail, mail, "pw", "NULL", true)){
+			assertTrue("usuario no reigstrado", false);
+		}
 		
 		String nombre = "NombreListener" + System.nanoTime();
 		String tipo = "Pasta";
 		String instrucciones = "Instrucciones";
-		DbMethods.crear_receta(nombre, tipo, instrucciones, null, true);
+		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, null, true)){
+			assertTrue("No se ha creado la receta", false);
+		}
 		
 		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue("receta no recuperada", false);
+		}
 		int id = recetas.get(0).getId();
 		
 		String xml = "<request id=\"" + data.Data.VOTAR_CODE +"\">"

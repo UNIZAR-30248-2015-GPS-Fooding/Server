@@ -17,8 +17,10 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import data.Data;
 import data.Ingrediente;
 import data.Receta;
+import data.Usuario;
 import db.DbMethods;
 import servlets.Listener;
 
@@ -403,7 +405,7 @@ public class ListenerTest{
 		String nombre = "NombreListener2" + System.nanoTime();
 		String tipo = "Pasta";
 		String instrucciones = "Instrucciones";
-List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		
 		Ingrediente ing = new Ingrediente();
 		ing.setCantidad(3);
@@ -435,6 +437,122 @@ List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		assertTrue(respuesta != null && !respuesta.isEmpty()
 				&& respuesta.contains("hecho")
 				&& respuesta.contains("yes"));
+	}
+	
+	/**
+	 * Testea la valoracion media de recetas (GET) 
+	 * 
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_valoracion_media() throws ServletException, IOException{
+		/* crear receta */
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		ings.add(ing);
+		String nombreReceta = "nombreDB" + System.nanoTime();
+		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+			assertTrue("receta no creada", false);
+		}
+		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue("receta no encontrada", false);
+		}
+		int idReceta = recetas.get(0).getId();
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+		/* crear usuario 2 */
+		nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		user = DbMethods.get_usuario(nombre, true);
+		mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+		String xml = "<request id=\"" + Data.VALORACION_CODE + "\">"
+				+ "<id>" + idReceta + "</id>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("valoracion")
+				&& respuesta.contains("1"));
+	}
+	
+	/**
+	 * Testea la valoracion media de recetas (POST) 
+	 * 
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_valoracion_media() throws ServletException, IOException{
+		/* crear receta */
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		ings.add(ing);
+		String nombreReceta = "nombreDB" + System.nanoTime();
+		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+			assertTrue("receta no creada", false);
+		}
+		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue("receta no encontrada", false);
+		}
+		int idReceta = recetas.get(0).getId();
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+		/* crear usuario 2 */
+		nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		user = DbMethods.get_usuario(nombre, true);
+		mailUsuario = user.getMail();
+		
+		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
+		
+		String xml = "<request id=\"" + Data.VALORACION_CODE + "\">"
+				+ "<id>" + idReceta + "</id>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("valoracion")
+				&& respuesta.contains("1"));
 	}
 	
 	/**

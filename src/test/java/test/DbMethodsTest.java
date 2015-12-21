@@ -151,7 +151,7 @@ public class DbMethodsTest {
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
-		if( DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", null, true)){
+		if(DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("Line 157: receta no creada", false);
 		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);

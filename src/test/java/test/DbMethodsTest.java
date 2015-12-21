@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import data.Ingrediente;
@@ -143,7 +142,6 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
-	@Ignore
 	public void test_valorar_receta() {
 		/* crear receta */
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();
@@ -153,10 +151,12 @@ public class DbMethodsTest {
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
-		DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", null, true);
+		if( DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", null, true)){
+			assertTrue("Line 157: receta no creada", false);
+		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
-			assertTrue(false);
+			assertTrue("Line 161: receta no encontrada", false);
 		}
 		int idReceta = recetas.get(0).getId();
 		

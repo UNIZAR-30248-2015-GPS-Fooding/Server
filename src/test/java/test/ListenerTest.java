@@ -486,7 +486,7 @@ public class ListenerTest{
 				+ "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		
-		req.setContent(xml.getBytes());
+		req.addParameter("xml", xml);
 		
 		servlet.doGet(req, resp);
 		

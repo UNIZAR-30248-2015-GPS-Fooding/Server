@@ -555,7 +555,6 @@ public class DbMethods {
 
 					PreparedStatement prepStat= conexion.clientPrepareStatement(query);
 					rs = prepStat.executeQuery();
-					prepStat.close();
 
 					if (!rs.next()) {
 						query = "INSERT INTO " + tabla + " (nombre) VALUES (?)";

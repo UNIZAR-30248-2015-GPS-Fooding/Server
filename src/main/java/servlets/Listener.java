@@ -377,7 +377,7 @@ public class Listener extends HttpServlet {
 		boolean test = true;
 		
 		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
-			nombre = doc.getElementsByTagName("mail").item(0).getTextContent();
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
 		}
 		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
 			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();

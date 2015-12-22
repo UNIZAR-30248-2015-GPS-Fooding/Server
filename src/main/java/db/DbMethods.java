@@ -539,7 +539,7 @@ public class DbMethods {
 			if (test){
 				tabla = tabla + "Test";
 			}
-			query = "insert into " + tabla + " (mail, idReceta) values (?, ?)";
+			query = "insert into " + tabla + " (mail, idReceta) values (?,?)";
 			PreparedStatement upr = conexion.clientPrepareStatement(query);
 			upr.setString(1, mail);
 			upr.setInt(2, id);

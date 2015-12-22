@@ -370,11 +370,15 @@ public class Listener extends HttpServlet {
 	private void crear_receta(Document doc, HttpServletResponse resp){
 		// parsear la consulta
 		String nombre = null;
+		String mail = null;
 		String tipo = null;
 		String instrucciones = null;
 		List<Ingrediente> ings = null;
 		boolean test = true;
 		
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			nombre = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
 		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
 			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
 		}
@@ -411,7 +415,7 @@ public class Listener extends HttpServlet {
 		}
 		
 		// crear receta
-		boolean creada = db.DbMethods.crear_receta(nombre, tipo, instrucciones, ings, test);
+		boolean creada = db.DbMethods.crear_receta(mail, nombre, tipo, instrucciones, ings, test);
 		
 		// informar al usuario
 		try {

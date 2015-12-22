@@ -500,7 +500,7 @@ public class DbMethods {
 	 * @return <true> si se ha creado la nueva receta, <false> si no se ha
 	 *         podido crear
 	 */
-	public static boolean crear_receta(String nombre, String tipo, String instrucciones, List<Ingrediente> ings,
+	public static boolean crear_receta(String mail, String nombre, String tipo, String instrucciones, List<Ingrediente> ings,
 			boolean test) {
 		boolean creado = false;
 		String tabla = "Receta";
@@ -534,6 +534,16 @@ public class DbMethods {
 				r.setId(rs.getInt("id"));
 			}
 			int id = r.getId();
+			
+			tabla = "UsuarioPoseeReceta";
+			if (test){
+				tabla = tabla + "Test";
+			}
+			query = "insert into " + tabla + " (mail, idReceta) values (?, ?)";
+			PreparedStatement upr = conexion.clientPrepareStatement(query);
+			upr.setString(1, mail);
+			upr.setInt(2, id);
+			upr.execute();
 			
 			if (ings != null && ings.size() > 0) {
 				for (Ingrediente i : ings) {

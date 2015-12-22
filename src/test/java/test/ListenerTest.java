@@ -363,7 +363,7 @@ public class ListenerTest{
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		
 		ings.add(ing);
-		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, ings, true)){
+		if(!DbMethods.crear_receta(mail, nombre, tipo, instrucciones, ings, true)){
 			assertTrue("No se ha creado la receta", false);
 		}
 		
@@ -413,7 +413,7 @@ public class ListenerTest{
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		
 		ings.add(ing);
-		if(!DbMethods.crear_receta(nombre, tipo, instrucciones, ings, true)){
+		if(!DbMethods.crear_receta(mail, nombre, tipo, instrucciones, ings, true)){
 			assertTrue("No se ha creado la receta", false);
 		}
 		
@@ -447,7 +447,13 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_valoracion_media() throws ServletException, IOException{
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
 		/* crear receta */
+
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		Ingrediente ing = new Ingrediente();
 		ing.setCantidad(3);
@@ -455,7 +461,7 @@ public class ListenerTest{
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
-		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
@@ -463,12 +469,6 @@ public class ListenerTest{
 			assertTrue("receta no encontrada", false);
 		}
 		int idReceta = recetas.get(0).getId();
-		
-		/* crear usuario */
-		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
-		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
-		Usuario user = DbMethods.get_usuario(nombre, true);
-		String mailUsuario = user.getMail();
 		
 		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
 		
@@ -505,6 +505,12 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_valoracion_media() throws ServletException, IOException{
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+
 		/* crear receta */
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		Ingrediente ing = new Ingrediente();
@@ -513,7 +519,7 @@ public class ListenerTest{
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
-		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
@@ -521,12 +527,6 @@ public class ListenerTest{
 			assertTrue("receta no encontrada", false);
 		}
 		int idReceta = recetas.get(0).getId();
-		
-		/* crear usuario */
-		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
-		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
-		Usuario user = DbMethods.get_usuario(nombre, true);
-		String mailUsuario = user.getMail();
 		
 		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
 		

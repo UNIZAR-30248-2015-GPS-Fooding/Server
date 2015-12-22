@@ -116,7 +116,10 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_crear_receta_sin_ingredientes() {
-		assertTrue(DbMethods.crear_receta("nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", 
+				"pw_prueba", "NULL", true);
+		assertTrue(DbMethods.crear_receta(nombre, "nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
 	}
 	
 	/**
@@ -125,6 +128,9 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_crear_receta() {
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", 
+				"pw_prueba", "NULL", true);
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		
 		Ingrediente ing = new Ingrediente();
@@ -134,7 +140,7 @@ public class DbMethodsTest {
 		
 		ings.add(ing);
 		
-		assertTrue(DbMethods.crear_receta("nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
+		assertTrue(DbMethods.crear_receta(nombre, "nombreDB" + System.nanoTime(), "Pasta", "instrucciones", null, true) == true);
 	}
 	
 	/**
@@ -143,6 +149,12 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_valorar_receta() {
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+
 		/* crear receta */
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		Ingrediente ing = new Ingrediente();
@@ -151,7 +163,7 @@ public class DbMethodsTest {
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
-		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
@@ -160,11 +172,6 @@ public class DbMethodsTest {
 		}
 		int idReceta = recetas.get(0).getId();
 		
-		/* crear usuario */
-		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
-		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
-		Usuario user = DbMethods.get_usuario(nombre, true);
-		String mailUsuario = user.getMail();
 		
 		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
 		
@@ -176,6 +183,12 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_valoracion_media_receta() {
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+
 		/* crear receta */
 		List<Ingrediente> ings = new LinkedList<Ingrediente>();
 		Ingrediente ing = new Ingrediente();
@@ -184,7 +197,7 @@ public class DbMethodsTest {
 		ing.setNombre("Ingrediente" + System.nanoTime());
 		ings.add(ing);
 		String nombreReceta = "nombreDB" + System.nanoTime();
-		if(!DbMethods.crear_receta(nombreReceta, "Pasta", "instrucciones", ings, true)){
+		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
 		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
@@ -192,12 +205,6 @@ public class DbMethodsTest {
 			assertTrue("receta no encontrada", false);
 		}
 		int idReceta = recetas.get(0).getId();
-		
-		/* crear usuario */
-		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
-		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
-		Usuario user = DbMethods.get_usuario(nombre, true);
-		String mailUsuario = user.getMail();
 		
 		assertTrue(DbMethods.votar(idReceta, mailUsuario, 1, true));
 		

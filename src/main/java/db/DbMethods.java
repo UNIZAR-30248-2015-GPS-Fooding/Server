@@ -523,13 +523,11 @@ public class DbMethods {
 			preparedStatement.setString(3, instrucciones);
 
 			preparedStatement.executeUpdate();
-			preparedStatement.close();
 
 			query = "SELECT * from " + tabla + " where nombre = ?";
 			preparedStatement = conexion.clientPrepareStatement(query);
 			preparedStatement.setString(1, nombre);
 			ResultSet rs = preparedStatement.executeQuery();
-			preparedStatement.close();
 
 			Receta r = new Receta();
 			if (rs.next()) {
@@ -546,7 +544,6 @@ public class DbMethods {
 			upr.setString(1, mail);
 			upr.setInt(2, id);
 			upr.executeUpdate();
-			upr.close();
 			
 			if (ings != null && ings.size() > 0) {
 				for (Ingrediente i : ings) {
@@ -566,7 +563,6 @@ public class DbMethods {
 						ps.setString(1, i.getNombre());
 
 						ps.execute();
-						ps.close();
 					}
 
 					tabla = "RecetaIngrediente";
@@ -584,7 +580,6 @@ public class DbMethods {
 					pst.setString(4, i.getUds());
 
 					pst.execute();
-					pst.close();
 				}
 			}
 			creado = true;

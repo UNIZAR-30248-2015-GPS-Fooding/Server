@@ -333,7 +333,7 @@ public class ListenerTest{
 		Usuario user = DbMethods.get_usuario(nombre, true);
 		String mailUsuario = user.getMail();
 		
-		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">"
 				+ "<mail>" + mailUsuario + "</mail>"
 				+ "<nombre>NombrePOST" + System.nanoTime() + "</nombre>"
 				+ "<tipo>Pasta</tipo>"

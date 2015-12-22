@@ -295,7 +295,14 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_crear_receta() throws ServletException, IOException{
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+				+ "<mail>" + mailUsuario + "</mail>"
 				+ "<nombre>NombreGET" + System.nanoTime() + "</nombre>"
 				+ "<tipo>Pasta</tipo>"
 				+ "<instrucciones>Instrucciones</instrucciones>"
@@ -320,7 +327,14 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_crear_receta() throws ServletException, IOException{
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
 		String xml = "<request id=\"" + data.Data.CREAR_REC_CODE +"\">" 
+				+ "<mail>" + mailUsuario + "</mail>"
 				+ "<nombre>NombrePOST" + System.nanoTime() + "</nombre>"
 				+ "<tipo>Pasta</tipo>"
 				+ "<instrucciones>Instrucciones</instrucciones>"

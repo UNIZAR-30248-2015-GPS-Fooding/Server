@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import data.Data;
 import data.Ingrediente;
 import data.Receta;
-
+import data.Usuario;
 import utils.Mail;
 import utils.Security;
 
@@ -101,7 +101,7 @@ public class Listener extends HttpServlet {
 			case Data.RECETA_CODE: /* receta */
 				get_recetas(doc, resp);
 				break;
-			case Data.USER_CODE: /* usuario */
+			case Data.USER_INFO_CODE: /* info usuario */
 				break;
 			case Data.GRUPO_CODE: /* grupo */
 				break;
@@ -122,6 +122,9 @@ public class Listener extends HttpServlet {
 				break;
 			case Data.VALORACION_CODE: /* valoracion media */
 				valoracion_media(doc, resp);
+				break;
+			case Data.USER_CODE: /* lista usuarios */
+				get_usuarios(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
@@ -264,6 +267,54 @@ public class Listener extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Escribe en @param resp el XML con los usuarios disponibles en la bd
+	 * 
+	 * El formato del XML generado es:
+	 * <response id=”10”> <usuario> <nick>nick</nick> <score>numero</score> 
+	 * <receta id="numero">nombre</receta> </usuario> </response>
+	 *
+	 * @version 1.0
+	 */
+	private void get_usuarios(Document doc, HttpServletResponse resp) {
+		// parsear la consulta
+		boolean test = false;
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
+		
+		// conseguir usuarios de la bd
+		List<Usuario> usuarios = db.DbMethods.get_lista_usuarios(test);
+
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.USER_CODE + "\">");
+
+			// escribir informacion de usuarios
+			for (Usuario user : usuarios) {
+				out.println("<usuario>");
+				
+				out.println("<mail>" + user.getMail() + "</mail>");
+				out.println("<nick>" + user.getNick() + "</nick>");
+				out.println("<score>" + user.getScore() + "</score>");
+				
+				// escribe las recetas de cada usuario
+				if (user.getRecetas() != null) {
+					for (Receta r : user.getRecetas()) {
+						out.println("<receta id=\"" + r.getId() + "\">" +
+								r.getNombre() + "</receta>");
+					}
+				}
+				
+				out.println("</usuario>");
+			}
+
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Crea el usuario contenido en @param doc y escribe en @param resp si ha
 	 * sido creado o no.

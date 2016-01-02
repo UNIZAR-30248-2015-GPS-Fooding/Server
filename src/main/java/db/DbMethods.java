@@ -376,6 +376,77 @@ public class DbMethods {
 
 		return deleted;
 	}
+	
+	/**
+	 * @param test:
+	 *            <true> si es prueba/test
+	 * @return lista con los nombres de todos los usuarios de la
+	 * base de datos
+	 */
+	public static List<Usuario> get_lista_usuarios(boolean test) {
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		// obtener informacion del usuario
+		List<Usuario> usuarios = new LinkedList<Usuario>();
+		Usuario usuario = null;
+		String query = "SELECT mail, nick, score FROM Usuario";
+		if (test) {
+			query = "SELECT mail, nick, score FROM UsuarioTest";
+			}
+		Statement st, st2;
+
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+
+			while (res.next()) {
+				usuario = new Usuario();
+				String mail = res.getString("mail");
+				String nick = res.getString("nick");
+				int score = res.getInt("score");
+				usuario.setNick(nick);
+				usuario.setScore(score);
+				
+				/* Obtiene las recetas de cada usuario */
+				String query2 = "SELECT idReceta, nombre" +
+						"FROM Receta, UsuarioPoseeReceta" +
+						"WHERE Receta.id = UsuarioPoseeReceta.idReceta" +
+						"AND UsuarioPoseeReceta.mail = '" + mail + "'";
+				if (test) {
+					query2 = "SELECT idReceta, nombre" +
+							"FROM Receta, UsuarioPoseeRecetaTest" +
+							"WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta" +
+							"AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
+				}
+				
+				st2 = conexion.createStatement();
+				ResultSet res2 = st2.executeQuery(query2);
+				List<Receta> recetas = new LinkedList<Receta>();
+				
+				while (res2.next()) {
+					Receta r = new Receta();
+					int id = res2.getInt("idReceta");
+					String nombre = res2.getString("nombre");
+					r.setId(id);
+					r.setNombre(nombre);
+					recetas.add(r);
+				}
+				
+				usuario.setRecetas(recetas);
+				usuarios.add(usuario);
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cerrar conexion
+		DbConnection.closeConnection();
+
+		return usuarios;
+	}
 
 	/**
 	 * @param mail

@@ -17,7 +17,7 @@ public class Data {
 	/* codigos de las request */
 	public static final int ING_CODE = 0;
 	public static final int RECETA_CODE = 1;
-	public static final int USER_CODE = 2;
+	public static final int USER_INFO_CODE = 2;
 	public static final int GRUPO_CODE = 3;
 	public static final int TIPO_CODE = 4;
 	public static final int CREAR_USER_CODE = 5;
@@ -25,4 +25,5 @@ public class Data {
 	public static final int CREAR_REC_CODE = 7;
 	public static final int VOTAR_CODE = 8;
 	public static final int VALORACION_CODE = 9;
+	public static final int USER_CODE = 10;
 }

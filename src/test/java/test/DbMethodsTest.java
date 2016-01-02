@@ -109,6 +109,16 @@ public class DbMethodsTest {
 		Usuario user = DbMethods.get_usuario(nombre, true);
 		assertTrue(nombre, user != null);
 	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener la lista de
+	 * usuarios no devuelve <null> o lista vacia
+	 */
+	@Test
+	public void test_lista_usuarios() {
+		List<Usuario> usuarios = DbMethods.get_lista_usuarios(true);
+		assertTrue(usuarios != null && usuarios.size() > 0);
+	}
 
 	/**
 	 * Test para comprobar que el metodo para crear una receta en la BD

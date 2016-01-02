@@ -101,7 +101,7 @@ public class Listener extends HttpServlet {
 			case Data.RECETA_CODE: /* receta */
 				get_recetas(doc, resp);
 				break;
-			case Data.USER_INFO_CODE: /* info usuario */
+			case Data.USER_CODE: /* info usuario */
 				break;
 			case Data.GRUPO_CODE: /* grupo */
 				break;
@@ -123,7 +123,7 @@ public class Listener extends HttpServlet {
 			case Data.VALORACION_CODE: /* valoracion media */
 				valoracion_media(doc, resp);
 				break;
-			case Data.USER_CODE: /* lista usuarios */
+			case Data.LIST_USER_CODE: /* lista usuarios */
 				get_usuarios(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */

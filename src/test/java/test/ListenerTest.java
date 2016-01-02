@@ -201,6 +201,48 @@ public class ListenerTest{
 	}
 	
 	/**
+	 * Testea que devuelve una lista de usuarios (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_lista_usuarios() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.LIST_USER_CODE +"\">"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("usuario"));
+	}
+	
+	/**
+	 * Testea que devuelve una lista de usuarios (POST)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_lista_usuarios() throws ServletException, IOException{
+		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\">"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("usuario"));
+	}
+	
+	/**
 	 * Testea la creacion de usuarios (GET)
 	 * 
 	 * @throws IOException 

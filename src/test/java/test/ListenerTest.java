@@ -227,7 +227,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_lista_usuarios() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.TIPO_CODE +"\">"
+		String xml = "<request id=\"" + data.Data.LIST_USER_CODE +"\">"
 				+ "<test>yes</test>"
 				+ "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");

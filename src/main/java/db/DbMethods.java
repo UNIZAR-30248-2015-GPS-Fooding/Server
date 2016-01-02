@@ -411,14 +411,14 @@ public class DbMethods {
 				
 				/* Obtiene las recetas de cada usuario */
 				String query2 = "SELECT idReceta, nombre" +
-						"FROM Receta, UsuarioPoseeReceta" +
-						"WHERE Receta.id = UsuarioPoseeReceta.idReceta" +
-						"AND UsuarioPoseeReceta.mail = '" + mail + "'";
+						" FROM Receta, UsuarioPoseeReceta" +
+						" WHERE Receta.id = UsuarioPoseeReceta.idReceta" +
+						" AND UsuarioPoseeReceta.mail = '" + mail + "'";
 				if (test) {
 					query2 = "SELECT idReceta, nombre" +
-							"FROM Receta, UsuarioPoseeRecetaTest" +
-							"WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta" +
-							"AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
+							" FROM Receta, UsuarioPoseeRecetaTest" +
+							" WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta" +
+							" AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
 				}
 				
 				st2 = conexion.createStatement();

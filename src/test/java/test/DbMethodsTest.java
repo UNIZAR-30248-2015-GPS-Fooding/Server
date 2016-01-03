@@ -126,7 +126,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_lista_usuarios_nombre() {
-		List<Usuario> usuarios = DbMethods.get_lista_usuarios("food", true);
+		List<Usuario> usuarios = DbMethods.get_lista_usuarios("nick_prueba", true);
 		assertTrue(usuarios != null && usuarios.size() > 0);
 	}
 

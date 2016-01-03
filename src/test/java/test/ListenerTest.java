@@ -208,6 +208,7 @@ public class ListenerTest{
 	@Test
 	public void test_get_lista_usuarios() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LIST_USER_CODE +"\">"
+				+ "<nick>nick_prueba</nick>"
 				+ "<test>yes</test>"
 				+ "</request>";
 		req.addParameter("xml", xml);
@@ -228,6 +229,7 @@ public class ListenerTest{
 	@Test
 	public void test_post_lista_usuarios() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LIST_USER_CODE +"\">"
+				+ "<nick>nick_prueba</nick>"
 				+ "<test>yes</test>"
 				+ "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");

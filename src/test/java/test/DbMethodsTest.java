@@ -116,7 +116,17 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_lista_usuarios() {
-		List<Usuario> usuarios = DbMethods.get_lista_usuarios(true);
+		List<Usuario> usuarios = DbMethods.get_lista_usuarios(null, true);
+		assertTrue(usuarios != null && usuarios.size() > 0);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener la lista de
+	 * usuarios con filtro por nombre no devuelve <null> o lista vacia
+	 */
+	@Test
+	public void test_lista_usuarios_nombre() {
+		List<Usuario> usuarios = DbMethods.get_lista_usuarios("food", true);
 		assertTrue(usuarios != null && usuarios.size() > 0);
 	}
 

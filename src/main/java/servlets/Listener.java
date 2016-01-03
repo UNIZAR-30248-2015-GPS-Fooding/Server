@@ -278,13 +278,19 @@ public class Listener extends HttpServlet {
 	 */
 	private void get_usuarios(Document doc, HttpServletResponse resp) {
 		// parsear la consulta
+		String nick = null;
 		boolean test = false;
+		
+		if (doc.getElementsByTagName("nick") != null && doc.getElementsByTagName("nick").getLength() > 0) {
+			nick = doc.getElementsByTagName("nick").item(0).getTextContent();
+		}
+
 		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
 			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
 		}
 		
 		// conseguir usuarios de la bd
-		List<Usuario> usuarios = db.DbMethods.get_lista_usuarios(test);
+		List<Usuario> usuarios = db.DbMethods.get_lista_usuarios(nick, test);
 
 		try {
 			PrintWriter out = resp.getWriter();

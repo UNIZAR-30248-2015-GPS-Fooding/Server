@@ -383,7 +383,7 @@ public class DbMethods {
 	 * @return lista con los nombres de todos los usuarios de la
 	 * base de datos
 	 */
-	public static List<Usuario> get_lista_usuarios(boolean test) {
+	public static List<Usuario> get_lista_usuarios(String nombre, boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -394,7 +394,13 @@ public class DbMethods {
 		String query = "SELECT mail, nick, score FROM Usuario";
 		if (test) {
 			query = "SELECT mail, nick, score FROM UsuarioTest";
-			}
+		}
+		
+		// aplica el filtro de nombre de usuario (parcial o completo)
+		if (nombre != null) {
+			query = query + " WHERE nick LIKE '%" + nombre + "%'";
+		}
+		
 		Statement st, st2;
 
 		try {
@@ -428,9 +434,9 @@ public class DbMethods {
 				while (res2.next()) {
 					Receta r = new Receta();
 					int id = res2.getInt("idReceta");
-					String nombre = res2.getString("nombre");
+					String nombreReceta = res2.getString("nombre");
 					r.setId(id);
-					r.setNombre(nombre);
+					r.setNombre(nombreReceta);
 					recetas.add(r);
 				}
 				

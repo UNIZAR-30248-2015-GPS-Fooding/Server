@@ -206,6 +206,67 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
+	public void test_get_usuario() throws ServletException, IOException{
+		
+		// crea un usuario
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		
+		// crea la peticion
+		String xml = "<request id=\"" + data.Data.USER_CODE +"\">"
+				+ "<mail>" + nombre + "</mail>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		// borra al usuario creado
+		DbMethods.borrar_usuario(nombre, true);
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("usuario"));
+	}
+	
+	/**
+	 * Testea que devuelve una lista de usuarios (POST)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_usuario() throws ServletException, IOException{
+		
+		// crea un usuario
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		
+		String xml = "<request id=\"" + data.Data.USER_CODE +"\">"
+				+ "<mail>" + nombre + "</mail>"
+				+ "<test>yes</test>"
+				+ "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		// borra al usuario creado
+		DbMethods.borrar_usuario(nombre, true);
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("usuario"));
+	}
+	
+	/**
+	 * Testea que devuelve una lista de usuarios (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
 	public void test_get_lista_usuarios() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LIST_USER_CODE +"\">"
 				+ "<nick>nick_prueba</nick>"

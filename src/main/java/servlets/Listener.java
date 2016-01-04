@@ -102,6 +102,7 @@ public class Listener extends HttpServlet {
 				get_recetas(doc, resp);
 				break;
 			case Data.USER_CODE: /* info usuario */
+				get_usuario_info(doc, resp);
 				break;
 			case Data.GRUPO_CODE: /* grupo */
 				break;
@@ -272,9 +273,9 @@ public class Listener extends HttpServlet {
 	 * 
 	 * El formato del XML generado es:
 	 * <response id=”10”> <usuario> <nick>nick</nick> <score>numero</score> 
-	 * <receta id="numero">nombre</receta> </usuario> </response>
+	 * </usuario> </response>
 	 *
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	private void get_usuarios(Document doc, HttpServletResponse resp) {
 		// parsear la consulta
@@ -294,7 +295,7 @@ public class Listener extends HttpServlet {
 
 		try {
 			PrintWriter out = resp.getWriter();
-			out.println("<response id=\"" + Data.USER_CODE + "\">");
+			out.println("<response id=\"" + Data.LIST_USER_CODE + "\">");
 
 			// escribir informacion de usuarios
 			for (Usuario user : usuarios) {
@@ -304,16 +305,61 @@ public class Listener extends HttpServlet {
 				out.println("<nick>" + user.getNick() + "</nick>");
 				out.println("<score>" + user.getScore() + "</score>");
 				
-				// escribe las recetas de cada usuario
-				if (user.getRecetas() != null) {
-					for (Receta r : user.getRecetas()) {
-						out.println("<receta id=\"" + r.getId() + "\">" +
-								r.getNombre() + "</receta>");
-					}
-				}
-				
 				out.println("</usuario>");
 			}
+
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Escribe en @param resp el XML con la informacion del usuario cuyo mail
+	 * coincide con el solicitado
+	 * 
+	 * El formato del XML generado es:
+	 * <response id=”2”> <usuario> <nick>nick</nick> <score>numero</score> 
+	 * <receta id="numero">nombre</receta> </usuario> </response>
+	 *
+	 * @version 1.0
+	 */
+	private void get_usuario_info(Document doc, HttpServletResponse resp) {
+		// parsear la consulta
+		String mail = null;
+		boolean test = false;
+		
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
+		
+		// consigue el usuario de la bd con mail <mail>
+		Usuario user = db.DbMethods.get_usuario(mail, test);
+
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.USER_CODE + "\">");
+
+			// escribe la informacion del usuario
+			out.println("<usuario>");
+			
+			out.println("<mail>" + user.getMail() + "</mail>");
+			out.println("<nick>" + user.getNick() + "</nick>");
+			out.println("<score>" + user.getScore() + "</score>");
+			
+			// escribe las recetas del usuario
+			if (user.getRecetas() != null) {
+				for (Receta r : user.getRecetas()) {
+					out.println("<receta id=\"" + r.getId() + "\">" +
+							r.getNombre() + "</receta>");
+				}
+			}
+			
+			out.println("</usuario>");
 
 			out.println("</response>");
 		} catch (IOException e) {

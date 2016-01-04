@@ -410,10 +410,8 @@ public class DbMethods {
 			while (res.next()) {
 				usuario = new Usuario();
 				String mail = res.getString("mail");
-				String nick = res.getString("nick");
-				int score = res.getInt("score");
-				usuario.setNick(nick);
-				usuario.setScore(score);
+				usuario.setNick(res.getString("nick"));
+				usuario.setScore(res.getInt("score"));
 				
 				/* Obtiene las recetas de cada usuario */
 				String query2 = "SELECT idReceta, nombre" +
@@ -471,7 +469,7 @@ public class DbMethods {
 		if (test) {
 			query = "SELECT * FROM UsuarioTest WHERE mail='" + mail + "'";
 		}
-		Statement st;
+		Statement st, st2;
 
 		try {
 			st = conexion.createStatement();
@@ -481,8 +479,32 @@ public class DbMethods {
 				usuario = new Usuario();
 				usuario.setMail(res.getString("mail"));
 				usuario.setNick(res.getString("nick"));
-				usuario.setVerificado(res.getInt("verificado"));
 				usuario.setScore(res.getInt("score"));
+				
+				/* Obtiene las recetas del usuario */
+				String query2 = "SELECT idReceta, nombre" +
+						" FROM Receta, UsuarioPoseeReceta" +
+						" WHERE Receta.id = UsuarioPoseeReceta.idReceta" +
+						" AND UsuarioPoseeReceta.mail = '" + mail + "'";
+				if (test) {
+					query2 = "SELECT idReceta, nombre" +
+							" FROM Receta, UsuarioPoseeRecetaTest" +
+							" WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta" +
+							" AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
+				}
+				
+				st2 = conexion.createStatement();
+				ResultSet res2 = st2.executeQuery(query2);
+				List<Receta> recetas = new LinkedList<Receta>();
+				
+				while (res2.next()) {
+					Receta r = new Receta();
+					r.setId(res2.getInt("idReceta"));
+					r.setNombre(res2.getString("nombre"));
+					recetas.add(r);
+				}
+				
+				usuario.setRecetas(recetas);
 			}
 			st.close();
 

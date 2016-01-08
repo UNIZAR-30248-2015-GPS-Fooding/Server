@@ -22,13 +22,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import data.Data;
 import data.Ingrediente;
 import data.Receta;
-
+import data.Usuario;
 import utils.Mail;
 import utils.Security;
 
@@ -102,7 +103,8 @@ public class Listener extends HttpServlet {
 			case Data.RECETA_CODE: /* receta */
 				get_recetas(doc, resp);
 				break;
-			case Data.USER_CODE: /* usuario */
+			case Data.USER_CODE: /* info usuario */
+				get_usuario_info(doc, resp);
 				break;
 			case Data.GRUPO_CODE: /* grupo */
 				break;
@@ -114,6 +116,18 @@ public class Listener extends HttpServlet {
 				break;
 			case Data.LOGIN_CODE: /* loguear usuario */
 				login_user(doc, resp);
+				break;
+			case Data.CREAR_REC_CODE: /* crear receta */
+				crear_receta(doc, resp);
+				break;
+			case Data.VOTAR_CODE: /* votar receta */
+				votar(doc, resp);
+				break;
+			case Data.VALORACION_CODE: /* valoracion media */
+				valoracion_media(doc, resp);
+				break;
+			case Data.LIST_USER_CODE: /* lista usuarios */
+				get_usuarios(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
@@ -151,7 +165,7 @@ public class Listener extends HttpServlet {
 	 */
 	private void get_ingredientes(HttpServletResponse resp) {
 		// conseguir ingredientes de la bd
-		List<String> ingredientes = db.DbMethods.get_lista_ingredientes();
+		List<String> ingredientes = db.DbMethods.get_lista_ingredientes(false);
 
 		try {
 			PrintWriter out = resp.getWriter();
@@ -178,7 +192,7 @@ public class Listener extends HttpServlet {
 	 */
 	private void get_tipos(HttpServletResponse resp) {
 		// conseguir tipos de la bd
-		List<String> tipos = db.DbMethods.get_tipos();
+		List<String> tipos = db.DbMethods.get_tipos(false);
 
 		try {
 			PrintWriter out = resp.getWriter();
@@ -223,7 +237,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// conseguir las recetas de la bd
-		List<Receta> recetas = db.DbMethods.get_recetas(nombre, tipo, ings);
+		List<Receta> recetas = db.DbMethods.get_recetas(nombre, tipo, ings, false);
 
 		// escribir las recetas en la respuesta
 		try {
@@ -233,6 +247,7 @@ public class Listener extends HttpServlet {
 			for (Receta r : recetas) {
 				out.println("<receta>");
 
+				out.println("<id>" + r.getId() + "</id>");
 				out.println("<nombre>" + r.getNombre() + "</nombre>");
 				out.println("<tipo>" + r.getTipo() + "</tipo>");
 				out.println("<instrucciones>" + r.getInstrucciones() + "</instrucciones>");
@@ -255,6 +270,101 @@ public class Listener extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Escribe en @param resp el XML con los usuarios disponibles en la bd
+	 * 
+	 * El formato del XML generado es:
+	 * <response id=”10”> <usuario> <nick>nick</nick> <score>numero</score> 
+	 * </usuario> </response>
+	 *
+	 * @version 1.1
+	 */
+	private void get_usuarios(Document doc, HttpServletResponse resp) {
+		// parsear la consulta
+		String nick = null;
+		boolean test = false;
+		
+		if (doc.getElementsByTagName("nick") != null && doc.getElementsByTagName("nick").getLength() > 0) {
+			nick = doc.getElementsByTagName("nick").item(0).getTextContent();
+		}
+
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
+		
+		// conseguir usuarios de la bd
+		List<Usuario> usuarios = db.DbMethods.get_lista_usuarios(nick, test);
+
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.LIST_USER_CODE + "\">");
+
+			// escribir informacion de usuarios
+			for (Usuario user : usuarios) {
+				out.println("<usuario>");
+				
+				out.println("<mail>" + user.getMail() + "</mail>");
+				out.println("<nick>" + user.getNick() + "</nick>");
+				out.println("<score>" + user.getScore() + "</score>");
+				
+				out.println("</usuario>");
+			}
+
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Escribe en @param resp el XML con la informacion del usuario cuyo mail
+	 * coincide con el solicitado
+	 * 
+	 * El formato del XML generado es:
+	 * <response id=”2”> <usuario> <nick>nick</nick> <score>numero</score> 
+	 * <receta id="numero">nombre</receta> </usuario> </response>
+	 *
+	 * @version 1.0
+	 */
+	private void get_usuario_info(Document doc, HttpServletResponse resp) {
+		// parsear la consulta
+		String mail = null;
+		boolean test = false;
+		
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
+		
+		// consigue el usuario de la bd con mail <mail>
+		Usuario user = db.DbMethods.get_usuario(mail, test);
+
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.USER_CODE + "\">");
+
+			// escribe la informacion del usuario
+			out.println("<mail>" + user.getMail() + "</mail>");
+			out.println("<nick>" + user.getNick() + "</nick>");
+			out.println("<score>" + user.getScore() + "</score>");
+			
+			// escribe las recetas del usuario
+			if (user.getRecetas() != null) {
+				for (Receta r : user.getRecetas()) {
+					out.println("<receta id=\"" + r.getId() + "\">" +
+							r.getNombre() + "</receta>");
+				}
+			}
+			
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Crea el usuario contenido en @param doc y escribe en @param resp si ha
 	 * sido creado o no.
@@ -289,8 +399,8 @@ public class Listener extends HttpServlet {
 		// registrar al usuario
 		boolean registrado = db.DbMethods.registrar_usuario(mail, nick, pw, uniqueKey, test);
 
-		if (registrado) {
-			registrado = Mail.sendRegistrationMail(mail);
+		if (registrado && !test) {
+			registrado = Mail.sendRegistrationMail(mail, uniqueKey);
 		}
 
 		// informar al usuario
@@ -349,6 +459,144 @@ public class Listener extends HttpServlet {
 			} else {
 				out.println("<hecho>no</hecho>");
 			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Crea una nueva receta en la BD
+	 */
+	private void crear_receta(Document doc, HttpServletResponse resp){
+		// parsear la consulta
+		String nombre = null;
+		String mail = null;
+		String tipo = null;
+		String instrucciones = null;
+		List<Ingrediente> ings = null;
+		boolean test = true;
+		
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
+			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("tipo") != null && doc.getElementsByTagName("tipo").getLength() > 0) {
+			tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("instrucciones") != null && doc.getElementsByTagName("instrucciones").getLength() > 0) {
+			instrucciones = doc.getElementsByTagName("instrucciones").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("ingrediente") != null && doc.getElementsByTagName("ingrediente").getLength() > 0) {
+			ings = new LinkedList<Ingrediente>();
+			for (int i = 0; i < doc.getElementsByTagName("ingrediente").getLength(); i++) {
+				Element e = (Element) doc.getElementsByTagName("ingrediente").item(i);
+				
+				String nom = e.getTextContent();
+				String uds = null;
+				int cant = -1;
+				
+				if(e.hasAttribute("uds")){
+					uds = e.getAttribute("uds");
+				}
+				if(e.hasAttribute("cantidad")){
+					cant = Integer.parseInt(e.getAttribute("cantidad"));
+				}
+				Ingrediente ing = new Ingrediente();
+				ing.setNombre(nom);
+				ing.setCantidad(cant);
+				ing.setUds(uds);
+				ings.add(ing);
+			}
+		}
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equalsIgnoreCase("yes");
+		}
+		
+		// crear receta
+		boolean creada = db.DbMethods.crear_receta(mail, nombre, tipo, instrucciones, ings, test);
+		
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.CREAR_REC_CODE+ "\">");
+			if (creada) {
+				out.println("<hecho>yes</hecho>");
+			} else {
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Registrar el voto del usuario
+	 */
+	private void votar(Document doc, HttpServletResponse resp){
+		int id = -1;
+		String mail = null;
+		boolean test = false;
+		int voto = 0;
+		
+		if(doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+		
+		if(doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+		
+		if(doc.getElementsByTagName("voto") != null && doc.getElementsByTagName("voto").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("voto").item(0).getTextContent());
+		}
+		
+		if(doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0){
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		
+		boolean hecho = db.DbMethods.votar(id, mail, voto, test);
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.VOTAR_CODE + "\">");
+			if (hecho) {
+				out.println("<hecho>yes</hecho>");
+			} else {
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Obtener la valoracion media de una receta
+	 * @param doc
+	 * @param resp
+	 */
+	private void valoracion_media(Document doc, HttpServletResponse resp){
+		int id = -1;
+		boolean test = false;
+		
+		if(doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+	
+		if(doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+		
+		double valoracion = db.DbMethods.valoracion_media(id, test);
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.VALORACION_CODE + "\">");
+			out.println("<valoracion>" + valoracion + "</valoracion>");
 			out.println("</response>");
 		} catch (IOException e) {
 			e.printStackTrace();

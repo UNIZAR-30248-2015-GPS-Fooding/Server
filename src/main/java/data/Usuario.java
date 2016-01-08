@@ -4,6 +4,9 @@
 
 package data;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Usuario {
 	
 	/**
@@ -18,6 +21,7 @@ public class Usuario {
 	private String nick = null;
 	private int verificado = 0;
 	private int score = 0;
+	private List<Receta> recetas = new LinkedList<Receta>();
 	
 	/**
 	 * Metodo para crear usuarios
@@ -85,6 +89,21 @@ public class Usuario {
 	 */
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	/**
+	 * @return lista de recetas asociadas al usuario
+	 */
+	public List<Receta> getRecetas() {
+		return recetas;
+	}
+
+	/**
+	 * @param recetas
+	 * 				lista de recetas asociadas al usuario
+	 */
+	public void setRecetas(List<Receta> recetas) {
+		this.recetas = recetas;
 	}
 
 }

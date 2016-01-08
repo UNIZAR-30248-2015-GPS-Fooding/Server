@@ -4,5 +4,9 @@ target
 !.settings/.jsdtscope
 .project
 .classpath
+<<<<<<< HEAD
 /Reports/
 /test
+=======
+/Reports/
+>>>>>>> branch 'master' of ssh://5624a20f0c1e669609000099@fooding-gpsfooding.rhcloud.com/~/git/fooding.git/

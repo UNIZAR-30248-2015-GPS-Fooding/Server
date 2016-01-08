@@ -345,8 +345,6 @@ public class Listener extends HttpServlet {
 			out.println("<response id=\"" + Data.USER_CODE + "\">");
 
 			// escribe la informacion del usuario
-			out.println("<usuario>");
-			
 			out.println("<mail>" + user.getMail() + "</mail>");
 			out.println("<nick>" + user.getNick() + "</nick>");
 			out.println("<score>" + user.getScore() + "</score>");
@@ -359,8 +357,6 @@ public class Listener extends HttpServlet {
 				}
 			}
 			
-			out.println("</usuario>");
-
 			out.println("</response>");
 		} catch (IOException e) {
 			e.printStackTrace();

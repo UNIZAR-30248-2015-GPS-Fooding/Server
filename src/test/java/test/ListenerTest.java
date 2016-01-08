@@ -227,7 +227,7 @@ public class ListenerTest{
 		DbMethods.borrar_usuario(nombre, true);
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.contains("usuario"));
+				&& respuesta.contains("score"));
 	}
 	
 	/**
@@ -258,7 +258,7 @@ public class ListenerTest{
 		DbMethods.borrar_usuario(nombre, true);
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.contains("usuario"));
+				&& respuesta.contains("score"));
 	}
 	
 	/**

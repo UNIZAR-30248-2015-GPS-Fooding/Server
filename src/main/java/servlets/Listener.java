@@ -81,6 +81,8 @@ public class Listener extends HttpServlet {
 	 */
 	private void manageRequest(InputStream is, HttpServletResponse resp) throws IOException {
 
+		resp.setContentType("text/xml; charset=UTF-8");
+		resp.setCharacterEncoding("UTF-8");
 		// crear parser para XML
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;

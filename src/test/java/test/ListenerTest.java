@@ -186,7 +186,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	public void test_post_recetass() throws ServletException, IOException{
+	public void test_post_recetas() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LIST_RECETA_CODE +"\"></request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		

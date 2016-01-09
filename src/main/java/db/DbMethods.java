@@ -208,7 +208,7 @@ public class DbMethods {
 		Connection conexion = DbConnection.getConnection();
 
 		// obtener lista de recetas
-		Receta receta = new Receta();
+		Receta rec = null;
 		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, "
 						+ "Usuario.nick, Usuario.mail" 
 				+ " FROM Receta, RecetaIngrediente, UsuarioPoseeReceta, Usuario"
@@ -231,7 +231,6 @@ public class DbMethods {
 		try {
 			st = conexion.createStatement();
 			ResultSet res = st.executeQuery(query);
-			Receta rec;
 			Usuario autor;
 
 			// Obtiene toda la informacion de la receta
@@ -277,7 +276,7 @@ public class DbMethods {
 		// cerrar conexion
 		DbConnection.closeConnection();
 		
-		return receta;
+		return rec;
 	}
 
 	/**

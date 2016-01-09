@@ -74,6 +74,16 @@ public class DbMethodsTest {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtene la informacion de
+	 * una recetas no devuelve <null>
+	 */
+	@Test
+	public void test_get_receta() {
+		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
+		assertTrue(recetas != null && recetas.size() > 0);
+	}
 
 	/**
 	 * Test para comprobar que el metodo para registrar al usuario funciona

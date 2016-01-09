@@ -81,8 +81,8 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_get_receta() {
-		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
-		assertTrue(recetas != null && recetas.size() > 0);
+		Receta receta = DbMethods.get_receta(34, true);
+		assertTrue(receta != null);
 	}
 
 	/**

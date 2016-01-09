@@ -51,7 +51,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_recetas() {
-		List<Receta> recetas = DbMethods.get_recetas(null, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 
@@ -61,7 +61,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_recetas_nombre() {
-		List<Receta> recetas = DbMethods.get_recetas("mac", null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas("mac", null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 
@@ -71,7 +71,7 @@ public class DbMethodsTest {
 	 */
 	@Test
 	public void test_recetas_tipo() {
-		List<Receta> recetas = DbMethods.get_recetas(null, "Pasta", null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
 	}
 
@@ -186,7 +186,7 @@ public class DbMethodsTest {
 		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
-		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombreReceta, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue("receta no encontrada", false);
 		}
@@ -220,7 +220,7 @@ public class DbMethodsTest {
 		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
-		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombreReceta, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue("receta no encontrada", false);
 		}

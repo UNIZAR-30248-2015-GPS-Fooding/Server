@@ -111,25 +111,25 @@ public class DbMethods {
 	 *            : ingredientes de la receta (vacio si no hay ingredientes)
 	 * @return una lista con las recetas que coinciden con la query en la BD
 	 * 
-	 * @version 1.2 -- Devuelve toda la informacion relativa a una receta.
+	 * @version 1.3 -- Devuelve la lista de recetas que satisfaga los filtros.
 	 *          Filtros disponibles: -Nombre (parcial o completo) -Tipo
 	 *          (completo)
 	 */
-	public static List<Receta> get_recetas(String nombre, String tipo, List<String> ings, boolean test) {
+	public static List<Receta> get_lista_recetas(String nombre, String tipo, List<String> ings, boolean test) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
 
 		// obtener lista de recetas
 		List<Receta> recetas = new LinkedList<Receta>();
-		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, idReceta" + " FROM Receta, RecetaIngrediente"
+		String query = "SELECT DISTINCT id, nombre, tipo" 
+				+ " FROM Receta, RecetaIngrediente"
 				+ " WHERE Receta.id = RecetaIngrediente.idReceta";
 		if (test) {
-			query = "SELECT DISTINCT id, nombre, tipo, instrucciones, idReceta"
+			query = "SELECT DISTINCT id, nombre, tipo" 
 					+ " FROM RecetaTest, RecetaIngredienteTest"
 					+ " WHERE RecetaTest.id = RecetaIngredienteTest.idReceta";
 		}
-		// + " AND Receta.id = UsuarioValoraReceta.idReceta";
 
 		// aplica los distintos filtros a la consulta
 		if (nombre != null) {
@@ -172,7 +172,7 @@ public class DbMethods {
 			}
 		}
 
-		Statement st, st2;
+		Statement st;
 
 		try {
 			st = conexion.createStatement();
@@ -187,7 +187,65 @@ public class DbMethods {
 				rec.setId(id);
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
+				recetas.add(rec);
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// cerrar conexion
+		DbConnection.closeConnection();
+
+		return recetas;
+	}
+	
+	public static Receta get_receta(int id, boolean test) {
+		
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		// obtener lista de recetas
+		Receta receta = new Receta();
+		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, "
+						+ "Usuario.nick, Usuario.mail" 
+				+ " FROM Receta, RecetaIngrediente, UsuarioPoseeReceta, Usuario"
+				+ " WHERE Receta.id = '" + id + "'"
+				+ " AND Receta.id = RecetaIngrediente.idReceta"
+				+ " AND Receta.id = UsuarioPoseeReceta.idReceta"
+				+ " AND UsuarioPoseeReceta.mail = Usuario.mail";
+		if (test) {
+			query = "SELECT DISTINCT id, nombre, tipo, instrucciones, "
+					+ "UsuarioTest.nick, UsuarioTest.mail" 
+			+ " FROM RecetaTest, RecetaIngredienteTest, UsuarioPoseeRecetaTest, UsuarioTest"
+			+ " WHERE RecetaTest.id = '" + id + "'"
+			+ " AND RecetaTest.id = RecetaIngredienteTest.idReceta"
+			+ " AND RecetaTest.id = UsuarioPoseeRecetaTest.idReceta"
+			+ " AND UsuarioPoseeRecetaTest.mail = UsuarioTest.mail";
+		}
+
+		Statement st, st2;
+
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			Receta rec;
+			Usuario autor;
+
+			// Obtiene toda la informacion de la receta
+			if (res.next()) {
+
+				rec = new Receta();
+				autor = new Usuario();
+				rec.setId(res.getInt("id"));
+				rec.setNombre(res.getString("nombre"));
+				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));
+				autor.setNick(res.getString("nick"));
+				autor.setMail(res.getString("mail"));
+				rec.setAutor(autor);
 
 				// Obtiene la informacion de los ingredientes de cada receta
 				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
@@ -207,7 +265,6 @@ public class DbMethods {
 					ingredientes.add(ing);
 				}
 				rec.setIngredientes(ingredientes);
-				recetas.add(rec);
 				st2.close();
 			}
 
@@ -219,8 +276,8 @@ public class DbMethods {
 
 		// cerrar conexion
 		DbConnection.closeConnection();
-
-		return recetas;
+		
+		return receta;
 	}
 
 	/**

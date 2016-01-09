@@ -168,7 +168,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_recetas() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\"></request>";
+		String xml = "<request id=\"" + data.Data.LIST_RECETA_CODE +"\"></request>";
 		req.addParameter("xml", xml);
 		
 		servlet.doGet(req, resp);
@@ -187,7 +187,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_recetass() throws ServletException, IOException{
-		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\"></request>";
+		String xml = "<request id=\"" + data.Data.LIST_RECETA_CODE +"\"></request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		
 		req.setContent(xml.getBytes());
@@ -201,7 +201,7 @@ public class ListenerTest{
 	}
 	
 	/**
-	 * Testea que devuelve una lista de usuarios (GET)
+	 * Testea que devuelve la informacion de un usuario (GET)
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
@@ -231,7 +231,7 @@ public class ListenerTest{
 	}
 	
 	/**
-	 * Testea que devuelve una lista de usuarios (POST)
+	 * Testea que devuelve la informacion de un usuario (POST)
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
@@ -486,7 +486,7 @@ public class ListenerTest{
 			assertTrue("No se ha creado la receta", false);
 		}
 		
-		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombre, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue("receta no recuperada", false);
 		}
@@ -536,7 +536,7 @@ public class ListenerTest{
 			assertTrue("No se ha creado la receta", false);
 		}
 		
-		List<Receta> recetas = DbMethods.get_recetas(nombre, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombre, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue("receta no recuperada", false);
 		}
@@ -583,7 +583,7 @@ public class ListenerTest{
 		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
-		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombreReceta, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue("receta no encontrada", false);
 		}
@@ -641,7 +641,7 @@ public class ListenerTest{
 		if(!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)){
 			assertTrue("receta no creada", false);
 		}
-		List<Receta> recetas = DbMethods.get_recetas(nombreReceta, null, null, true);
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombreReceta, null, null, true);
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue("receta no encontrada", false);
 		}

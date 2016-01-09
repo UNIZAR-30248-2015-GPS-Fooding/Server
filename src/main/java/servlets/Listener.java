@@ -101,7 +101,7 @@ public class Listener extends HttpServlet {
 				get_ingredientes(resp);
 				break;
 			case Data.RECETA_CODE: /* receta */
-				get_recetas(doc, resp);
+				get_receta_info(doc, resp);
 				break;
 			case Data.USER_CODE: /* info usuario */
 				get_usuario_info(doc, resp);
@@ -128,6 +128,9 @@ public class Listener extends HttpServlet {
 				break;
 			case Data.LIST_USER_CODE: /* lista usuarios */
 				get_usuarios(doc, resp);
+				break;
+			case Data.LIST_RECETA_CODE: /* lista recetas */
+				get_recetas(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
@@ -212,7 +215,7 @@ public class Listener extends HttpServlet {
 	 * Escribe en @param resp el XML con las recetas recuperadas de la base de
 	 * datos. La peticion esta en @param doc.
 	 * 
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	private void get_recetas(Document doc, HttpServletResponse resp) {
 		// parsear la consulta
@@ -237,12 +240,12 @@ public class Listener extends HttpServlet {
 		}
 
 		// conseguir las recetas de la bd
-		List<Receta> recetas = db.DbMethods.get_recetas(nombre, tipo, ings, false);
+		List<Receta> recetas = db.DbMethods.get_lista_recetas(nombre, tipo, ings, false);
 
 		// escribir las recetas en la respuesta
 		try {
 			PrintWriter out = resp.getWriter();
-			out.println("<response id=\"" + Data.RECETA_CODE + "\">");
+			out.println("<response id=\"" + Data.LIST_RECETA_CODE + "\">");
 
 			for (Receta r : recetas) {
 				out.println("<receta>");
@@ -250,16 +253,6 @@ public class Listener extends HttpServlet {
 				out.println("<id>" + r.getId() + "</id>");
 				out.println("<nombre>" + r.getNombre() + "</nombre>");
 				out.println("<tipo>" + r.getTipo() + "</tipo>");
-				out.println("<instrucciones>" + r.getInstrucciones() + "</instrucciones>");
-				out.println("<me_gusta>" + r.getMe_gusta() + "</me_gusta>");
-				out.println("<no_me_gusta>" + r.getNo_me_gusta() + "</no_me_gusta>");
-
-				if (r.getIngredientes() != null) {
-					for (Ingrediente i : r.getIngredientes()) {
-						out.println("<ingrediente cantidad=\"" + i.getCantidad() + "\" uds=\"" + i.getUds() + "\">"
-								+ i.getNombre() + "</ingrediente>");
-					}
-				}
 
 				out.println("</receta>");
 			}
@@ -270,6 +263,54 @@ public class Listener extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Escribe en @param resp el XML con la receta recuperada de la base de
+	 * datos. La peticion esta en @param doc.
+	 * 
+	 * @version 1.0
+	 */
+	private void get_receta_info(Document doc, HttpServletResponse resp) {
+		// parsear la consulta
+		int id = -1;
+		boolean test = false;
+
+		if(doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0){
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+		
+		if(doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0){
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+
+		// conseguir la receta de la bd
+		Receta r = db.DbMethods.get_receta(id, test);
+
+		// escribir las recetas en la respuesta
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.RECETA_CODE + "\">");
+
+			out.println("<id>" + r.getId() + "</id>");
+			out.println("<nombre>" + r.getNombre() + "</nombre>");
+			out.println("<tipo>" + r.getTipo() + "</tipo>");
+			out.println("<instrucciones>" + r.getInstrucciones() + "</instrucciones>");
+			out.println("<me_gusta>" + r.getMe_gusta() + "</me_gusta>");
+			out.println("<no_me_gusta>" + r.getNo_me_gusta() + "</no_me_gusta>");
+
+			if (r.getIngredientes() != null) {
+				for (Ingrediente i : r.getIngredientes()) {
+					out.println("<ingrediente cantidad=\"" + i.getCantidad() + "\" uds=\"" + i.getUds() + "\">"
+							+ i.getNombre() + "</ingrediente>");
+				}
+			}
+
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	/**
 	 * Escribe en @param resp el XML con los usuarios disponibles en la bd
 	 * 

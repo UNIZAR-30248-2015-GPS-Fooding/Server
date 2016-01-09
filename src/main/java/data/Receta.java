@@ -21,6 +21,7 @@ public class Receta {
 	private String tipo = null;
 	private String instrucciones = null;
 	private List<Ingrediente> ingredientes = null;
+	private Usuario autor = null;
 	private int me_gusta = 0;
 	private int no_me_gusta = 0;
 
@@ -132,6 +133,22 @@ public class Receta {
 	 */
 	public void setNo_me_gusta(int no_me_gusta) {
 		this.no_me_gusta = no_me_gusta;
+	}
+
+	/**
+	 * 
+	 * @return el autor de la receta
+	 */
+	public Usuario getAutor() {
+		return autor;
+	}
+
+	/**
+	 * @param autor
+	 *            el nuevo autor
+	 */
+	public void setAutor(Usuario autor) {
+		this.autor = autor;
 	}
 
 }

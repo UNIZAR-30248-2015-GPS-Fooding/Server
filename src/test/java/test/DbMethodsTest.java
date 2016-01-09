@@ -77,11 +77,11 @@ public class DbMethodsTest {
 	
 	/**
 	 * Test para comprobar que el metodo para obtene la informacion de
-	 * una recetas no devuelve <null>
+	 * una receta no devuelve <null>
 	 */
 	@Test
 	public void test_get_receta() {
-		Receta receta = DbMethods.get_receta(34, true);
+		Receta receta = DbMethods.get_receta(254, true);
 		assertTrue(receta != null);
 	}
 

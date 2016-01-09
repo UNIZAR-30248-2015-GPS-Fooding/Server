@@ -284,16 +284,19 @@ public class Listener extends HttpServlet {
 
 		// conseguir la receta de la bd
 		Receta r = db.DbMethods.get_receta(id, test);
-
+		Usuario autor = r.getAutor();
+		
 		// escribir las recetas en la respuesta
 		try {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.RECETA_CODE + "\">");
-
+			
 			out.println("<id>" + r.getId() + "</id>");
 			out.println("<nombre>" + r.getNombre() + "</nombre>");
 			out.println("<tipo>" + r.getTipo() + "</tipo>");
 			out.println("<instrucciones>" + r.getInstrucciones() + "</instrucciones>");
+			out.println("<nick_autor>" + autor.getNick() + "</nick_autor>");
+			out.println("<mail_autor>" + autor.getMail() + "</mail_autor>");
 			out.println("<me_gusta>" + r.getMe_gusta() + "</me_gusta>");
 			out.println("<no_me_gusta>" + r.getNo_me_gusta() + "</no_me_gusta>");
 

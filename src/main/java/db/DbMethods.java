@@ -187,6 +187,8 @@ public class DbMethods {
 				rec.setId(id);
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
+				rec.setMe_gusta(getMeGusta(id,test));
+				rec.setNo_me_gusta(getNoMeGusta(id,test));
 				recetas.add(rec);
 			}
 			st.close();
@@ -797,6 +799,74 @@ public class DbMethods {
 			DbConnection.closeConnection();
 			return false;
 		}
+	}	
+	
+	/**
+	 * @param id identificador de la receta
+	 * @param test <true> si es test
+	 * @return numero de me gusta
+	 */
+	public static int getMeGusta(int id, boolean test){
+		DbConnection.initConnection();
+		Connection conn = DbConnection.getConnection();
+		PreparedStatement ps;
+		int numMeGusta = 0;
+		String tabla = "UsuarioValoraReceta";
+		if(test) tabla = tabla + "Test";
+		
+		try{
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				int valoracion = rs.getInt(1);
+				if(valoracion>0) numMeGusta++;
+			}
+			ps.close();
+			
+		}
+		catch(Exception e){
+			numMeGusta = 0;
+		}
+		DbConnection.closeConnection();
+		
+		return numMeGusta;
+	}
+	
+	/**
+	 * @param id identificador de la receta
+	 * @param test <true> si es test
+	 * @return numero de no me gusta
+	 */
+	public static int getNoMeGusta(int id, boolean test){
+		DbConnection.initConnection();
+		Connection conn = DbConnection.getConnection();
+		PreparedStatement ps;
+		int numNoMeGusta = 0;
+		String tabla = "UsuarioValoraReceta";
+		if(test) tabla = tabla + "Test";
+		
+		try{
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				int valoracion = rs.getInt(1);
+				if(valoracion<0) numNoMeGusta++;
+			}
+			ps.close();
+			
+		}
+		catch(Exception e){
+			numNoMeGusta = 0;
+		}
+		DbConnection.closeConnection();
+		
+		return numNoMeGusta;
 	}
 	
 	/**

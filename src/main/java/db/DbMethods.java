@@ -244,6 +244,8 @@ public class DbMethods {
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));
+				rec.setMe_gusta(getMeGusta(rec.getId(),test));
+				rec.setNo_me_gusta(getNoMeGusta(rec.getId(),test));
 				autor.setNick(res.getString("nick"));
 				autor.setMail(res.getString("mail"));
 				rec.setAutor(autor);

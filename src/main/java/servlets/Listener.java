@@ -327,6 +327,7 @@ public class Listener extends HttpServlet {
 	 * @version 1.1
 	 */
 	private void get_usuarios(Document doc, HttpServletResponse resp) {
+		
 		// parsear la consulta
 		String nick = null;
 		boolean test = false;

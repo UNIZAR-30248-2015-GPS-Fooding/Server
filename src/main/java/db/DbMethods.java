@@ -228,11 +228,11 @@ public class DbMethods {
 			+ " AND UsuarioPoseeRecetaTest.mail = UsuarioTest.mail";
 		}
 
-		Statement st, st2;
+		PreparedStatement st, st2;
 
 		try {
-			st = conexion.createStatement();
-			ResultSet res = st.executeQuery(query);
+			st = conexion.clientPrepareStatement(query);
+			ResultSet res = st.executeQuery();
 			Usuario autor;
 
 			// Obtiene toda la informacion de la receta
@@ -256,8 +256,8 @@ public class DbMethods {
 				if (test) {
 					query2 = "SELECT * FROM RecetaIngredienteTest" + " WHERE idReceta = " + id;
 				}
-				st2 = conexion.createStatement();
-				ResultSet res2 = st2.executeQuery(query2);
+				st2 = conexion.clientPrepareStatement(query2);
+				ResultSet res2 = st2.executeQuery();
 				Ingrediente ing;
 
 				while (res2.next()) {
@@ -844,21 +844,22 @@ public class DbMethods {
 	 * @return numero de me gusta
 	 */
 	public static int getMeGusta(Connection conn, int id, boolean test){
-		Statement st;
+		PreparedStatement ps;
 		int numMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
 		if(test) tabla = tabla + "Test";
 		
 		try{
-			String query = "select valoracion from " + tabla + " where idReceta="+id;
-			st = conn.createStatement();
-			ResultSet rs = st.executeQuery(query);
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
 			
+			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				int valoracion = rs.getInt(1);
 				if(valoracion>0) numMeGusta++;
 			}
-			st.close();
+			ps.close();
 			
 		}
 		catch(Exception e){
@@ -910,21 +911,22 @@ public class DbMethods {
 	 * @return numero de no me gusta
 	 */
 	public static int getNoMeGusta(Connection conn, int id, boolean test){
-		Statement st;
+		PreparedStatement ps;
 		int numNoMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
 		if(test) tabla = tabla + "Test";
 		
 		try{
-			String query = "select valoracion from " + tabla + " where idReceta="+id;
-			st = conn.createStatement();
-			ResultSet rs = st.executeQuery(query);
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
 			
+			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				int valoracion = rs.getInt(1);
 				if(valoracion<0) numNoMeGusta++;
 			}
-			st.close();
+			ps.close();
 			
 		}
 		catch(Exception e){

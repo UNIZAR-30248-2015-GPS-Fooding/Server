@@ -598,6 +598,7 @@ public class DbMethods {
 	 *         contrario
 	 */
 	private static boolean buscar_usuario(String mail, boolean test) {
+		
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

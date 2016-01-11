@@ -566,6 +566,7 @@ public class DbMethods {
 	 * @return true si se ha validado al usuario. false si no se ha encontrado.
 	 */
 	public static boolean search_for_validation(String key, boolean test) {
+		
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

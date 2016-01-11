@@ -844,22 +844,21 @@ public class DbMethods {
 	 * @return numero de me gusta
 	 */
 	public static int getMeGusta(Connection conn, int id, boolean test){
-		PreparedStatement ps;
+		Statement st;
 		int numMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
 		if(test) tabla = tabla + "Test";
 		
 		try{
-			String query = "select valoracion from " + tabla + " where idReceta=?";
-			ps = conn.clientPrepareStatement(query);
-			ps.setInt(1, id);
+			String query = "select valoracion from " + tabla + " where idReceta="+id;
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
 			
-			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				int valoracion = rs.getInt(1);
 				if(valoracion>0) numMeGusta++;
 			}
-			ps.close();
+			st.close();
 			
 		}
 		catch(Exception e){
@@ -911,22 +910,21 @@ public class DbMethods {
 	 * @return numero de no me gusta
 	 */
 	public static int getNoMeGusta(Connection conn, int id, boolean test){
-		PreparedStatement ps;
+		Statement st;
 		int numNoMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
 		if(test) tabla = tabla + "Test";
 		
 		try{
-			String query = "select valoracion from " + tabla + " where idReceta=?";
-			ps = conn.clientPrepareStatement(query);
-			ps.setInt(1, id);
+			String query = "select valoracion from " + tabla + " where idReceta="+id;
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
 			
-			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				int valoracion = rs.getInt(1);
 				if(valoracion<0) numNoMeGusta++;
 			}
-			ps.close();
+			st.close();
 			
 		}
 		catch(Exception e){

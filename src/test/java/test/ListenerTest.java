@@ -629,6 +629,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_get_valoracion_media() throws ServletException, IOException{
+		
 		/* crear usuario */
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);

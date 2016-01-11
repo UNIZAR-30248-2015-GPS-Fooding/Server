@@ -501,6 +501,7 @@ public class DbMethods {
 	 *         contrario
 	 */
 	public static Usuario get_usuario(String mail, boolean test) {
+		
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

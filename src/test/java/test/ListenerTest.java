@@ -188,7 +188,7 @@ public class ListenerTest{
 		String respuesta = resp.getContentAsString();
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.contains("receta"));
+				&& respuesta.contains("instrucciones"));
 	}
 	
 	/**
@@ -221,7 +221,7 @@ public class ListenerTest{
 		String respuesta = resp.getContentAsString();
 		
 		assertTrue(respuesta != null && !respuesta.isEmpty()
-				&& respuesta.contains("receta"));
+				&& respuesta.contains("instrucciones"));
 	}
 	
 	/**

@@ -244,8 +244,8 @@ public class DbMethods {
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));
-				rec.setMe_gusta(getMeGusta(rec.getId(),test));
-				rec.setNo_me_gusta(getNoMeGusta(rec.getId(),test));
+				rec.setMe_gusta(getMeGusta(conexion, rec.getId(),test));
+				rec.setNo_me_gusta(getNoMeGusta(conexion, rec.getId(),test));
 				autor.setNick(res.getString("nick"));
 				autor.setMail(res.getString("mail"));
 				rec.setAutor(autor);
@@ -839,6 +839,38 @@ public class DbMethods {
 	
 	/**
 	 * @param id identificador de la receta
+	 * @param conn conexion con la base de datos ya establecida
+	 * @param test <true> si es test
+	 * @return numero de me gusta
+	 */
+	public static int getMeGusta(Connection conn, int id, boolean test){
+		PreparedStatement ps;
+		int numMeGusta = 0;
+		String tabla = "UsuarioValoraReceta";
+		if(test) tabla = tabla + "Test";
+		
+		try{
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				int valoracion = rs.getInt(1);
+				if(valoracion>0) numMeGusta++;
+			}
+			ps.close();
+			
+		}
+		catch(Exception e){
+			numMeGusta = 0;
+		}
+		
+		return numMeGusta;
+	}
+	
+	/**
+	 * @param id identificador de la receta
 	 * @param test <true> si es test
 	 * @return numero de no me gusta
 	 */
@@ -867,6 +899,38 @@ public class DbMethods {
 			numNoMeGusta = 0;
 		}
 		DbConnection.closeConnection();
+		
+		return numNoMeGusta;
+	}
+	
+	/**
+	 * @param id identificador de la receta
+	 * @param conn conexion con la base de datos ya establecida
+	 * @param test <true> si es test
+	 * @return numero de no me gusta
+	 */
+	public static int getNoMeGusta(Connection conn, int id, boolean test){
+		PreparedStatement ps;
+		int numNoMeGusta = 0;
+		String tabla = "UsuarioValoraReceta";
+		if(test) tabla = tabla + "Test";
+		
+		try{
+			String query = "select valoracion from " + tabla + " where idReceta=?";
+			ps = conn.clientPrepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				int valoracion = rs.getInt(1);
+				if(valoracion<0) numNoMeGusta++;
+			}
+			ps.close();
+			
+		}
+		catch(Exception e){
+			numNoMeGusta = 0;
+		}
 		
 		return numNoMeGusta;
 	}

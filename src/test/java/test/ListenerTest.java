@@ -178,6 +178,7 @@ public class ListenerTest{
 		
 		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\">"
 				+ "<id>" + idRecetaPrueba + "</id>"
+				+ "<test>yes</test>"
 				+ "</request>";
 		
 		req.addParameter("xml", xml);
@@ -208,7 +209,10 @@ public class ListenerTest{
 		
 		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\">"
 				+ "<id>" + idRecetaPrueba + "</id>"
+				+ "<test>yes</test>"
 				+ "</request>";
+		
+		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		
 		req.setContent(xml.getBytes());
 		

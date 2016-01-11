@@ -82,14 +82,14 @@ public class DbMethodsTest {
 	@Test
 	public void test_get_receta() {
 		List<Receta> lista_recetas = DbMethods.get_lista_recetas(null, null, null, true);
-//		if (lista_recetas != null && lista_recetas.size() > 0) {
+		if (lista_recetas != null && lista_recetas.size() > 0) {
 			int idRecetaPrueba = lista_recetas.get(0).getId();
 			Receta receta = DbMethods.get_receta(idRecetaPrueba, true);
 			assertTrue(receta != null);
-//		}
-//		else {
-//			assertTrue(false);
-//		}
+		}
+		else {
+			assertTrue(false);
+		}
 	}
 
 	/**

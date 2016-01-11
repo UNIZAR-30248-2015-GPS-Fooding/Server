@@ -612,6 +612,7 @@ public class Listener extends HttpServlet {
 			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
 		}
 
+		
 		boolean hecho = db.DbMethods.votar(id, mail, voto, test);
 		// informar al usuario
 		try {

@@ -600,7 +600,9 @@ public class Listener extends HttpServlet {
 		}
 
 		if (doc.getElementsByTagName("voto") != null && doc.getElementsByTagName("voto").getLength() > 0) {
-			voto = Integer.parseInt(doc.getElementsByTagName("voto").item(0).getTextContent().replace("\"", ""));
+			String quotesRemover = doc.getElementsByTagName("voto").item(0).getTextContent();
+			quotesRemover = quotesRemover.substring(1, quotesRemover.length()-1);
+			voto = Integer.parseInt(quotesRemover);
 		}
 
 		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {

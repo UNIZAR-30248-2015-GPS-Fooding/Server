@@ -218,6 +218,7 @@ public class Listener extends HttpServlet {
 		// parsear la consulta
 		String nombre = null;
 		String tipo = null;
+		boolean test = false;
 
 		if (doc.getElementsByTagName("nombre") != null && doc.getElementsByTagName("nombre").getLength() > 0) {
 			nombre = doc.getElementsByTagName("nombre").item(0).getTextContent();
@@ -225,6 +226,10 @@ public class Listener extends HttpServlet {
 
 		if (doc.getElementsByTagName("tipo") != null && doc.getElementsByTagName("tipo").getLength() > 0) {
 			tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
+		}
+		
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
 		}
 
 		List<String> ings = new LinkedList<String>();
@@ -237,7 +242,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// conseguir las recetas de la bd
-		List<Receta> recetas = db.DbMethods.get_lista_recetas(nombre, tipo, ings, false);
+		List<Receta> recetas = db.DbMethods.get_lista_recetas(nombre, tipo, ings, test);
 
 		// escribir las recetas en la respuesta
 		try {

@@ -203,6 +203,14 @@ public class DbMethods {
 		return recetas;
 	}
 	
+	/**
+	 * 
+	 * @param id identificador de una receta
+	 * 
+	 * @return la informacion completa de la receta con  id id
+	 * 
+	 * @version 1.1
+	 */
 	public static Receta get_receta(int id, boolean test) {
 		
 		// abrir conexion

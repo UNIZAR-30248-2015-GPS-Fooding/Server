@@ -162,12 +162,71 @@ public class ListenerTest{
 	}
 	
 	/**
+	 * Testea que devuelve la informacion de una receta (GET)
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_get_receta() throws ServletException, IOException{
+		
+		/* Obtiene el id de una receta de test */
+		List<Receta> lista_recetas = DbMethods.get_lista_recetas(null, null, null, true);
+		int idRecetaPrueba = 0;
+		if (lista_recetas != null && lista_recetas.size() > 0) {
+			idRecetaPrueba = lista_recetas.get(0).getId();
+		}
+		
+		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\">"
+				+ "<id>" + idRecetaPrueba + "</id>"
+				+ "</request>";
+		
+		req.addParameter("xml", xml);
+		
+		servlet.doGet(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("receta"));
+	}
+	
+	/**
+	 * Testea que devuelve la informacion de una receta (POST)
+	 * 
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	@Test
+	public void test_post_receta() throws ServletException, IOException{
+		
+		/* Obtiene el id de una receta de test */
+		List<Receta> lista_recetas = DbMethods.get_lista_recetas(null, null, null, true);
+		int idRecetaPrueba = 0;
+		if (lista_recetas != null && lista_recetas.size() > 0) {
+			idRecetaPrueba = lista_recetas.get(0).getId();
+		}
+		
+		String xml = "<request id=\"" + data.Data.RECETA_CODE +"\">"
+				+ "<id>" + idRecetaPrueba + "</id>"
+				+ "</request>";
+		
+		req.setContent(xml.getBytes());
+		
+		servlet.doPost(req, resp);
+		
+		String respuesta = resp.getContentAsString();
+		
+		assertTrue(respuesta != null && !respuesta.isEmpty()
+				&& respuesta.contains("receta"));
+	}
+	
+	/**
 	 * Testea que devuelve una lista de recetas (GET)
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
 	@Test
-	public void test_get_recetas() throws ServletException, IOException{
+	public void test_get_lista_recetas() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LIST_RECETA_CODE +"\"></request>";
 		req.addParameter("xml", xml);
 		
@@ -186,7 +245,7 @@ public class ListenerTest{
 	 * @throws ServletException 
 	 */
 	@Test
-	public void test_post_recetas() throws ServletException, IOException{
+	public void test_post_lista_recetas() throws ServletException, IOException{
 		String xml = "<request id=\"" + data.Data.LIST_RECETA_CODE +"\"></request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		

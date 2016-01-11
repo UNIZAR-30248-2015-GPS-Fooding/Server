@@ -901,7 +901,6 @@ public class DbMethods {
 		if(test) tabla = tabla + "Test";
 		
 		try{
-			
 			String query = "select valoracion from " + tabla + " where idReceta=?";
 			ps = conn.clientPrepareStatement(query);
 			ps.setInt(1, id);

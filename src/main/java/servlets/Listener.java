@@ -594,7 +594,7 @@ public class Listener extends HttpServlet {
 		}
 
 		if (doc.getElementsByTagName("voto") != null && doc.getElementsByTagName("voto").getLength() > 0) {
-			id = Integer.parseInt(doc.getElementsByTagName("voto").item(0).getTextContent());
+			voto = Integer.parseInt(doc.getElementsByTagName("voto").item(0).getTextContent());
 		}
 
 		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {

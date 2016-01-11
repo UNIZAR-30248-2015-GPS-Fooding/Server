@@ -469,7 +469,7 @@ public class DbMethods {
 			query = query + " WHERE nick LIKE '%" + nombre + "%'";
 		}
 		
-		Statement st, st2;
+		Statement st;
 
 		try {
 			st = conexion.createStatement();
@@ -477,36 +477,10 @@ public class DbMethods {
 
 			while (res.next()) {
 				usuario = new Usuario();
-				String mail = res.getString("mail");
+				usuario.setMail(res.getString("mail"));
 				usuario.setNick(res.getString("nick"));
 				usuario.setScore(res.getInt("score"));
 				
-				/* Obtiene las recetas de cada usuario */
-				String query2 = "SELECT idReceta, nombre" +
-						" FROM Receta, UsuarioPoseeReceta" +
-						" WHERE Receta.id = UsuarioPoseeReceta.idReceta" +
-						" AND UsuarioPoseeReceta.mail = '" + mail + "'";
-				if (test) {
-					query2 = "SELECT idReceta, nombre" +
-							" FROM Receta, UsuarioPoseeRecetaTest" +
-							" WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta" +
-							" AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
-				}
-				
-				st2 = conexion.createStatement();
-				ResultSet res2 = st2.executeQuery(query2);
-				List<Receta> recetas = new LinkedList<Receta>();
-				
-				while (res2.next()) {
-					Receta r = new Receta();
-					int id = res2.getInt("idReceta");
-					String nombreReceta = res2.getString("nombre");
-					r.setId(id);
-					r.setNombre(nombreReceta);
-					recetas.add(r);
-				}
-				
-				usuario.setRecetas(recetas);
 				usuarios.add(usuario);
 			}
 			st.close();

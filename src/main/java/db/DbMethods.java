@@ -661,6 +661,38 @@ public class DbMethods {
 
 		return (mods > 0);
 	}
+	
+	/**
+	 * @param key
+	 *            : unique key del usuario que se registra
+	 * @return true si se ha validado al usuario. false si no se ha encontrado.
+	 */
+	public static String search_validated(String key, boolean test) {
+
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		// encontrar usuario
+		String nick = null;
+		try {
+			String query = "select nick from Usuario where uniqueKey=?";
+			if (test) {
+				query = "select nick from UsuarioTest WHERE uniqueKey=?";
+			}
+			PreparedStatement st = conexion.prepareStatement(query);
+			st.setString(1, key);
+			ResultSet rs = st.executeQuery();
+			nick = rs.getString("nick");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// cerrar conexion
+		DbConnection.closeConnection();
+
+		return nick;
+	}
 
 	/**
 	 * @param mail

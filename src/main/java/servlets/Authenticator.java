@@ -48,7 +48,7 @@ public class Authenticator extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		
 		boolean exito = DbMethods.search_for_validation(key, false);	// true si se ha verificado al user o/w
-		String mail = null;
+		String nick = DbMethods.search_validated(key, false);
 		
 		if(exito){
 			out.println("<html>");
@@ -59,7 +59,7 @@ public class Authenticator extends HttpServlet {
 			
 			out.println("<body>");
 			out.println("<h1>Exito al verificar</h1>");
-			out.println("<p>Se ha verificado al usuario " + mail + "</p>");
+			out.println("<p>Se ha verificado con exito, " + nick + ".</p>");
 			out.println("</body>");
 			out.println("</html>");
 		}
@@ -72,8 +72,7 @@ public class Authenticator extends HttpServlet {
 			
 			out.println("<body>");
 			out.println("<h1>Fallo al verificar</h1>");
-			out.println("<p>No se ha podido verificar al usuario "
-					+ mail + "</p>");
+			out.println("<p>No se ha podido verificar con exito, " + nick + ".</p>");
 			out.println("</body>");
 			out.println("</html>");
 		}

@@ -322,10 +322,12 @@ public class DbMethodsTest {
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue(false);
 		}
+		
 		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
 		if(!exito){
 			assertTrue(false);
 		}
+		
 		exito = DbMethods.checkFav(recetas.get(0).getId(), mailUsuario, true);
 		assertTrue(exito);
 	}

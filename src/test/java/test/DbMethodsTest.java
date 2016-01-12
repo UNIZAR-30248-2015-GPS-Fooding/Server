@@ -301,7 +301,6 @@ public class DbMethodsTest {
 		if(recetas == null || recetas.isEmpty()){
 			assertTrue(false);
 		}
-		
 		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
 		assertTrue(exito);
 	}

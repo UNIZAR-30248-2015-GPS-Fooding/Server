@@ -51,7 +51,7 @@ public class ListenerTest{
 	 * bien formada (GET)
 	 * 
 	 * @throws ServletException
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 	@Test
 	public void test_get_default_message() throws ServletException, IOException{

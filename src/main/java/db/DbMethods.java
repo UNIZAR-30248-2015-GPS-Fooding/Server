@@ -1088,6 +1088,7 @@ public class DbMethods {
 			DbConnection.closeConnection();
 
 			return recetas;
+			// El mejor comentario de la historia
 		} catch (SQLException e) {
 			DbConnection.closeConnection();
 			return null;

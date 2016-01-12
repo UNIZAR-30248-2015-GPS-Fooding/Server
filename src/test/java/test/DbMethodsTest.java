@@ -258,4 +258,75 @@ public class DbMethodsTest {
 		assertTrue(DbMethods.valoracion_media(idReceta, true) == 1);
 		
 	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener favoritos de un
+	 * usuario en la BD funciona
+	 */
+	@Test
+	public void test_get_favs_user() {
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue(false);
+		}
+		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		if(!exito){
+			assertTrue(false);
+		}
+		recetas = DbMethods.getFavs(mailUsuario, true);
+		assertTrue(recetas != null && !recetas.isEmpty());
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para setear favoritos de un
+	 * usuario en la BD funciona
+	 */
+	@Test
+	public void test_set_favs_user() {
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue(false);
+		}
+		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		assertTrue(exito);
+	}
+	
+	/**
+	 * Test para comprobar que el metodo para obtener un favorito de un
+	 * usuario en la BD funciona
+	 */
+	@Test
+	public void test_check_favs_user() {
+		
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+		
+		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
+		if(recetas == null || recetas.isEmpty()){
+			assertTrue(false);
+		}
+		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		if(!exito){
+			assertTrue(false);
+		}
+		exito = DbMethods.checkFav(recetas.get(0).getId(), mailUsuario, true);
+		assertTrue(exito);
+	}
 }

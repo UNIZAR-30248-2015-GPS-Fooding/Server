@@ -1092,12 +1092,7 @@ public class DbMethods {
 			select.setInt(2, id);
 			ResultSet rs = select.executeQuery();
 
-			boolean returned = false;
-			if (rs.next()) {
-				returned = true;
-			} else {
-				returned = false;
-			}
+			boolean returned = rs.next();
 
 			select.close();
 			DbConnection.closeConnection();

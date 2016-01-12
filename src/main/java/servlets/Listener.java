@@ -743,7 +743,7 @@ public class Listener extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Comprobar el favorito del usuario
 	 */
@@ -759,6 +759,7 @@ public class Listener extends HttpServlet {
 		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
 			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
 		}
+
 		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
 			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
 		}

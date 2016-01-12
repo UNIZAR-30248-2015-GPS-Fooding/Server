@@ -129,6 +129,15 @@ public class Listener extends HttpServlet {
 			case Data.LIST_RECETA_CODE: /* lista recetas */
 				get_recetas(doc, resp);
 				break;
+			case Data.LIST_FAV_CODE:
+				getFavs(doc, resp);
+				break;
+			case Data.FAV_CODE:
+				setFav(doc, resp);
+				break;
+			case Data.CHECK_FAV_CODE:
+				checkFav(doc, resp);
+				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
 			}
@@ -227,7 +236,7 @@ public class Listener extends HttpServlet {
 		if (doc.getElementsByTagName("tipo") != null && doc.getElementsByTagName("tipo").getLength() > 0) {
 			tipo = doc.getElementsByTagName("tipo").item(0).getTextContent();
 		}
-		
+
 		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
 			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
 		}
@@ -327,7 +336,7 @@ public class Listener extends HttpServlet {
 	 * @version 1.1
 	 */
 	private void get_usuarios(Document doc, HttpServletResponse resp) {
-		
+
 		// parsear la consulta
 		String nick = null;
 		boolean test = false;
@@ -600,10 +609,9 @@ public class Listener extends HttpServlet {
 		}
 
 		if (doc.getElementsByTagName("voto") != null && doc.getElementsByTagName("voto").getLength() > 0) {
-			if(doc.getElementsByTagName("voto").item(0).getTextContent().equals("mg")){
+			if (doc.getElementsByTagName("voto").item(0).getTextContent().equals("mg")) {
 				voto = 1;
-			}
-			else if(doc.getElementsByTagName("voto").item(0).getTextContent().equals("nmg")){
+			} else if (doc.getElementsByTagName("voto").item(0).getTextContent().equals("nmg")) {
 				voto = -1;
 			}
 		}
@@ -653,6 +661,120 @@ public class Listener extends HttpServlet {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.VALORACION_CODE + "\">");
 			out.println("<valoracion>" + valoracion + "</valoracion>");
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Devolver los favoritos de un usuario
+	 */
+	private void getFavs(Document doc, HttpServletResponse resp) {
+		String mail = null;
+		boolean test = false;
+
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+
+		// conseguir las recetas de la bd
+		List<Receta> recetas = db.DbMethods.getFavs(mail, test);
+
+		// escribir las recetas en la respuesta
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.LIST_FAV_CODE + "\">");
+
+			for (Receta r : recetas) {
+				out.println("<receta>");
+
+				out.println("<id>" + r.getId() + "</id>");
+				out.println("<nombre>" + r.getNombre() + "</nombre>");
+				out.println("<tipo>" + r.getTipo() + "</tipo>");
+				out.println("<me_gusta>" + r.getMe_gusta() + "</me_gusta>");
+				out.println("<no_me_gusta>" + r.getNo_me_gusta() + "</no_me_gusta>");
+
+				out.println("</receta>");
+			}
+
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Registrar el favorito del usuario
+	 */
+	private void setFav(Document doc, HttpServletResponse resp) {
+		int id = -1;
+		String mail = null;
+		boolean test = false;
+
+		if (doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0) {
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+
+		// Booleanito
+		boolean hecho = db.DbMethods.setFav(id, mail, test);
+
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.FAV_CODE + "\">");
+			if (hecho) {
+				out.println("<hecho>yes</hecho>");
+			} else {
+				out.println("<hecho>no</hecho>");
+			}
+			out.println("</response>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Comprobar el favorito del usuario
+	 */
+	private void checkFav(Document doc, HttpServletResponse resp) {
+		int id = -1;
+		String mail = null;
+		boolean test = false;
+
+		if (doc.getElementsByTagName("id") != null && doc.getElementsByTagName("id").getLength() > 0) {
+			id = Integer.parseInt(doc.getElementsByTagName("id").item(0).getTextContent());
+		}
+
+		if (doc.getElementsByTagName("mail") != null && doc.getElementsByTagName("mail").getLength() > 0) {
+			mail = doc.getElementsByTagName("mail").item(0).getTextContent();
+		}
+		if (doc.getElementsByTagName("test") != null && doc.getElementsByTagName("test").getLength() > 0) {
+			test = doc.getElementsByTagName("test").item(0).getTextContent().equals("yes");
+		}
+
+		// Booleanito
+		boolean hecho = db.DbMethods.checkFav(id, mail, test);
+
+		// informar al usuario
+		try {
+			PrintWriter out = resp.getWriter();
+			out.println("<response id=\"" + Data.CHECK_FAV_CODE + "\">");
+			if (hecho) {
+				out.println("<favorita>yes</favorita>");
+			} else {
+				out.println("<favorita>no</favorita>");
+			}
 			out.println("</response>");
 		} catch (IOException e) {
 			e.printStackTrace();

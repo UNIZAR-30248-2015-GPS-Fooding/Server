@@ -122,12 +122,10 @@ public class DbMethods {
 
 		// obtener lista de recetas
 		List<Receta> recetas = new LinkedList<Receta>();
-		String query = "SELECT DISTINCT id, nombre, tipo" 
-				+ " FROM Receta, RecetaIngrediente"
+		String query = "SELECT DISTINCT id, nombre, tipo" + " FROM Receta, RecetaIngrediente"
 				+ " WHERE Receta.id = RecetaIngrediente.idReceta";
 		if (test) {
-			query = "SELECT DISTINCT id, nombre, tipo" 
-					+ " FROM RecetaTest, RecetaIngredienteTest"
+			query = "SELECT DISTINCT id, nombre, tipo" + " FROM RecetaTest, RecetaIngredienteTest"
 					+ " WHERE RecetaTest.id = RecetaIngredienteTest.idReceta";
 		}
 
@@ -187,8 +185,8 @@ public class DbMethods {
 				rec.setId(id);
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
-				rec.setMe_gusta(getMeGusta(id,test));
-				rec.setNo_me_gusta(getNoMeGusta(id,test));
+				rec.setMe_gusta(getMeGusta(id, test));
+				rec.setNo_me_gusta(getNoMeGusta(id, test));
 				recetas.add(rec);
 			}
 			st.close();
@@ -202,38 +200,34 @@ public class DbMethods {
 
 		return recetas;
 	}
-	
+
 	/**
 	 * 
-	 * @param id identificador de una receta
+	 * @param id
+	 *            identificador de una receta
 	 * 
-	 * @return la informacion completa de la receta con  id id
+	 * @return la informacion completa de la receta con id id
 	 * 
 	 * @version 1.1
 	 */
 	public static Receta get_receta(int id, boolean test) {
-		
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
 
 		// obtener lista de recetas
 		Receta rec = null;
-		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, "
-						+ "Usuario.nick, Usuario.mail" 
-				+ " FROM Receta, RecetaIngrediente, UsuarioPoseeReceta, Usuario"
-				+ " WHERE Receta.id = '" + id + "'"
-				+ " AND Receta.id = RecetaIngrediente.idReceta"
-				+ " AND Receta.id = UsuarioPoseeReceta.idReceta"
+		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, " + "Usuario.nick, Usuario.mail"
+				+ " FROM Receta, RecetaIngrediente, UsuarioPoseeReceta, Usuario" + " WHERE Receta.id = '" + id + "'"
+				+ " AND Receta.id = RecetaIngrediente.idReceta" + " AND Receta.id = UsuarioPoseeReceta.idReceta"
 				+ " AND UsuarioPoseeReceta.mail = Usuario.mail";
 		if (test) {
-			query = "SELECT DISTINCT id, nombre, tipo, instrucciones, "
-					+ "UsuarioTest.nick, UsuarioTest.mail" 
-			+ " FROM RecetaTest, RecetaIngredienteTest, UsuarioPoseeRecetaTest, UsuarioTest"
-			+ " WHERE RecetaTest.id = '" + id + "'"
-			+ " AND RecetaTest.id = RecetaIngredienteTest.idReceta"
-			+ " AND RecetaTest.id = UsuarioPoseeRecetaTest.idReceta"
-			+ " AND UsuarioPoseeRecetaTest.mail = UsuarioTest.mail";
+			query = "SELECT DISTINCT id, nombre, tipo, instrucciones, " + "UsuarioTest.nick, UsuarioTest.mail"
+					+ " FROM RecetaTest, RecetaIngredienteTest, UsuarioPoseeRecetaTest, UsuarioTest"
+					+ " WHERE RecetaTest.id = '" + id + "'" + " AND RecetaTest.id = RecetaIngredienteTest.idReceta"
+					+ " AND RecetaTest.id = UsuarioPoseeRecetaTest.idReceta"
+					+ " AND UsuarioPoseeRecetaTest.mail = UsuarioTest.mail";
 		}
 
 		Statement st, st2;
@@ -252,8 +246,8 @@ public class DbMethods {
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));
-				rec.setMe_gusta(getMeGusta(conexion, rec.getId(),test));
-				rec.setNo_me_gusta(getNoMeGusta(conexion, rec.getId(),test));
+				rec.setMe_gusta(getMeGusta(conexion, rec.getId(), test));
+				rec.setNo_me_gusta(getNoMeGusta(conexion, rec.getId(), test));
 				autor.setNick(res.getString("nick"));
 				autor.setMail(res.getString("mail"));
 				rec.setAutor(autor);
@@ -287,7 +281,7 @@ public class DbMethods {
 
 		// cerrar conexion
 		DbConnection.closeConnection();
-		
+
 		return rec;
 	}
 
@@ -444,12 +438,11 @@ public class DbMethods {
 
 		return deleted;
 	}
-	
+
 	/**
 	 * @param test:
 	 *            <true> si es prueba/test
-	 * @return lista con los nombres de todos los usuarios de la
-	 * base de datos
+	 * @return lista con los nombres de todos los usuarios de la base de datos
 	 */
 	public static List<Usuario> get_lista_usuarios(String nombre, boolean test) {
 		// abrir conexion
@@ -463,12 +456,12 @@ public class DbMethods {
 		if (test) {
 			query = "SELECT mail, nick, score FROM UsuarioTest";
 		}
-		
+
 		// aplica el filtro de nombre de usuario (parcial o completo)
 		if (nombre != null) {
 			query = query + " WHERE nick LIKE '%" + nombre + "%'";
 		}
-		
+
 		Statement st;
 
 		try {
@@ -480,7 +473,7 @@ public class DbMethods {
 				usuario.setMail(res.getString("mail"));
 				usuario.setNick(res.getString("nick"));
 				usuario.setScore(res.getInt("score"));
-				
+
 				usuarios.add(usuario);
 			}
 			st.close();
@@ -501,7 +494,7 @@ public class DbMethods {
 	 *         contrario
 	 */
 	public static Usuario get_usuario(String mail, boolean test) {
-		
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -523,30 +516,28 @@ public class DbMethods {
 				usuario.setMail(res.getString("mail"));
 				usuario.setNick(res.getString("nick"));
 				usuario.setScore(res.getInt("score"));
-				
+
 				/* Obtiene las recetas del usuario */
-				String query2 = "SELECT idReceta, nombre" +
-						" FROM Receta, UsuarioPoseeReceta" +
-						" WHERE Receta.id = UsuarioPoseeReceta.idReceta" +
-						" AND UsuarioPoseeReceta.mail = '" + mail + "'";
+				String query2 = "SELECT idReceta, nombre" + " FROM Receta, UsuarioPoseeReceta"
+						+ " WHERE Receta.id = UsuarioPoseeReceta.idReceta" + " AND UsuarioPoseeReceta.mail = '" + mail
+						+ "'";
 				if (test) {
-					query2 = "SELECT idReceta, nombre" +
-							" FROM Receta, UsuarioPoseeRecetaTest" +
-							" WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta" +
-							" AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
+					query2 = "SELECT idReceta, nombre" + " FROM Receta, UsuarioPoseeRecetaTest"
+							+ " WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta"
+							+ " AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
 				}
-				
+
 				st2 = conexion.createStatement();
 				ResultSet res2 = st2.executeQuery(query2);
 				List<Receta> recetas = new LinkedList<Receta>();
-				
+
 				while (res2.next()) {
 					Receta r = new Receta();
 					r.setId(res2.getInt("idReceta"));
 					r.setNombre(res2.getString("nombre"));
 					recetas.add(r);
 				}
-				
+
 				usuario.setRecetas(recetas);
 			}
 			st.close();
@@ -566,7 +557,7 @@ public class DbMethods {
 	 * @return true si se ha validado al usuario. false si no se ha encontrado.
 	 */
 	public static boolean search_for_validation(String key, boolean test) {
-		
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -598,7 +589,7 @@ public class DbMethods {
 	 *         contrario
 	 */
 	private static boolean buscar_usuario(String mail, boolean test) {
-		
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -644,8 +635,8 @@ public class DbMethods {
 	 * @return <true> si se ha creado la nueva receta, <false> si no se ha
 	 *         podido crear
 	 */
-	public static boolean crear_receta(String mail, String nombre, String tipo, String instrucciones, List<Ingrediente> ings,
-			boolean test) {
+	public static boolean crear_receta(String mail, String nombre, String tipo, String instrucciones,
+			List<Ingrediente> ings, boolean test) {
 		boolean creado = false;
 		String tabla = "Receta";
 		if (test) {
@@ -678,9 +669,9 @@ public class DbMethods {
 				r.setId(rs.getInt("id"));
 			}
 			int id = r.getId();
-			
+
 			tabla = "UsuarioPoseeReceta";
-			if (test){
+			if (test) {
 				tabla = tabla + "Test";
 			}
 			query = "insert into " + tabla + " (mail, idReceta) values (?,?)";
@@ -688,7 +679,7 @@ public class DbMethods {
 			upr.setString(1, mail);
 			upr.setInt(2, id);
 			upr.executeUpdate();
-			
+
 			if (ings != null && ings.size() > 0) {
 				for (Ingrediente i : ings) {
 					tabla = "Ingrediente";
@@ -697,7 +688,7 @@ public class DbMethods {
 					}
 					query = "SELECT * from " + tabla + " where nombre ='" + i.getNombre() + "'";
 
-					PreparedStatement prepStat= conexion.clientPrepareStatement(query);
+					PreparedStatement prepStat = conexion.clientPrepareStatement(query);
 					rs = prepStat.executeQuery();
 
 					if (!rs.next()) {
@@ -736,39 +727,42 @@ public class DbMethods {
 
 		return creado;
 	}
-	
+
 	/**
-	 * @param id identificador de la receta
-	 * @param voto voto del usuario
-	 * @param test <true> si es test
+	 * @param id
+	 *            identificador de la receta
+	 * @param voto
+	 *            voto del usuario
+	 * @param test
+	 *            <true> si es test
 	 * @return <true> si se ha podido votar
 	 */
-	public static boolean votar(int id, String mail, int voto, boolean test){
+	public static boolean votar(int id, String mail, int voto, boolean test) {
 		String tabla = "UsuarioValoraReceta";
-		if(test) tabla = tabla + "Test";
-		
+		if (test)
+			tabla = tabla + "Test";
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
-		
+
 		String query_select = "select * from " + tabla + " where mail=? and idReceta=?";
-		try{
+		try {
 			PreparedStatement select = conexion.clientPrepareStatement(query_select);
 			select.setString(1, mail);
 			select.setInt(2, id);
-			
+
 			ResultSet rs = select.executeQuery();
-			
+
 			PreparedStatement insert_update;
-			if(rs.next()){
+			if (rs.next()) {
 				String query = "update " + tabla + " set valoracion=? where mail=? and idReceta=?";
 				insert_update = conexion.clientPrepareStatement(query);
 				insert_update.setInt(1, voto);
 				insert_update.setString(2, mail);
 				insert_update.setInt(3, id);
-				
-			}
-			else{
+
+			} else {
 				String query = "insert into " + tabla + " (mail, idReceta, valoracion) values (?,?,?)";
 				insert_update = conexion.clientPrepareStatement(query);
 				insert_update.setString(1, mail);
@@ -776,187 +770,342 @@ public class DbMethods {
 				insert_update.setInt(3, voto);
 			}
 			int returned = insert_update.executeUpdate();
-			
+
 			select.close();
 			insert_update.close();
 			DbConnection.closeConnection();
-			
+
 			return returned > 0;
-		} catch(SQLException e){
+		} catch (SQLException e) {
 			DbConnection.closeConnection();
 			return false;
 		}
-	}	
-	
+	}
+
 	/**
-	 * @param id identificador de la receta
-	 * @param test <true> si es test
+	 * @param id
+	 *            identificador de la receta
+	 * @param test
+	 *            <true> si es test
 	 * @return numero de me gusta
 	 */
-	public static int getMeGusta(int id, boolean test){
+	public static int getMeGusta(int id, boolean test) {
 		DbConnection.initConnection();
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement ps;
 		int numMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
-		if(test) tabla = tabla + "Test";
-		
-		try{
+		if (test)
+			tabla = tabla + "Test";
+
+		try {
 			String query = "select valoracion from " + tabla + " where idReceta=?";
 			ps = conn.clientPrepareStatement(query);
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				int valoracion = rs.getInt(1);
-				if(valoracion>0) numMeGusta++;
+				if (valoracion > 0)
+					numMeGusta++;
 			}
 			ps.close();
-			
-		}
-		catch(Exception e){
+
+		} catch (Exception e) {
 			numMeGusta = 0;
 		}
 		DbConnection.closeConnection();
-		
+
 		return numMeGusta;
 	}
-	
+
 	/**
-	 * @param id identificador de la receta
-	 * @param conn conexion con la base de datos ya establecida
-	 * @param test <true> si es test
+	 * @param id
+	 *            identificador de la receta
+	 * @param conn
+	 *            conexion con la base de datos ya establecida
+	 * @param test
+	 *            <true> si es test
 	 * @return numero de me gusta
 	 */
-	public static int getMeGusta(Connection conn, int id, boolean test){
+	public static int getMeGusta(Connection conn, int id, boolean test) {
 		PreparedStatement ps;
 		int numMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
-		if(test) tabla = tabla + "Test";
-		
-		try{
+		if (test)
+			tabla = tabla + "Test";
+
+		try {
 			String query = "select valoracion from " + tabla + " where idReceta=?";
 			ps = conn.clientPrepareStatement(query);
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				int valoracion = rs.getInt(1);
-				if(valoracion>0) numMeGusta++;
+				if (valoracion > 0)
+					numMeGusta++;
 			}
 			ps.close();
-			
-		}
-		catch(Exception e){
+
+		} catch (Exception e) {
 			numMeGusta = 0;
 		}
-		
+
 		return numMeGusta;
 	}
-	
+
 	/**
-	 * @param id identificador de la receta
-	 * @param test <true> si es test
+	 * @param id
+	 *            identificador de la receta
+	 * @param test
+	 *            <true> si es test
 	 * @return numero de no me gusta
 	 */
-	public static int getNoMeGusta(int id, boolean test){
+	public static int getNoMeGusta(int id, boolean test) {
 		DbConnection.initConnection();
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement ps;
 		int numNoMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
-		if(test) tabla = tabla + "Test";
-		
-		try{
+		if (test)
+			tabla = tabla + "Test";
+
+		try {
 			String query = "select valoracion from " + tabla + " where idReceta=?";
 			ps = conn.clientPrepareStatement(query);
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				int valoracion = rs.getInt(1);
-				if(valoracion<0) numNoMeGusta++;
+				if (valoracion < 0)
+					numNoMeGusta++;
 			}
 			ps.close();
-			
-		}
-		catch(Exception e){
+
+		} catch (Exception e) {
 			numNoMeGusta = 0;
 		}
 		DbConnection.closeConnection();
-		
+
 		return numNoMeGusta;
 	}
-	
+
 	/**
-	 * @param id identificador de la receta
-	 * @param conn conexion con la base de datos ya establecida
-	 * @param test <true> si es test
+	 * @param id
+	 *            identificador de la receta
+	 * @param conn
+	 *            conexion con la base de datos ya establecida
+	 * @param test
+	 *            <true> si es test
 	 * @return numero de no me gusta
 	 */
-	public static int getNoMeGusta(Connection conn, int id, boolean test){
+	public static int getNoMeGusta(Connection conn, int id, boolean test) {
 		PreparedStatement ps;
 		int numNoMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
-		if(test) tabla = tabla + "Test";
-		
-		try{
-			
+		if (test)
+			tabla = tabla + "Test";
+
+		try {
+
 			String query = "select valoracion from " + tabla + " where idReceta=?";
 			ps = conn.clientPrepareStatement(query);
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				int valoracion = rs.getInt(1);
-				if(valoracion<0) numNoMeGusta++;
+				if (valoracion < 0)
+					numNoMeGusta++;
 			}
 			ps.close();
-			
-		}
-		catch(Exception e){
+
+		} catch (Exception e) {
 			numNoMeGusta = 0;
 		}
-		
+
 		return numNoMeGusta;
 	}
-	
+
 	/**
-	 * @param id identificador de la receta
-	 * @param test <true> si es test
+	 * @param id
+	 *            identificador de la receta
+	 * @param test
+	 *            <true> si es test
 	 * @return media de valoraciones
 	 */
-	public static double valoracion_media(int id, boolean test){
+	public static double valoracion_media(int id, boolean test) {
 		DbConnection.initConnection();
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement ps;
 		double media = 0;
-		
+
 		String tabla = "UsuarioValoraReceta";
-		if(test) tabla = tabla + "Test";
-		
-		try{
-			
+		if (test)
+			tabla = tabla + "Test";
+
+		try {
+
 			String query = "select valoracion from " + tabla + " where idReceta=?";
 			ps = conn.clientPrepareStatement(query);
 			ps.setInt(1, id);
-			
+
 			ResultSet rs = ps.executeQuery();
 			int numValoraciones = 0;
-			while(rs.next()){
+			while (rs.next()) {
 				int valoracion = rs.getInt(1);
 				numValoraciones++;
 				media = media + valoracion;
 			}
 			ps.close();
-			
+
 			media = (double) ((double) media / (double) numValoraciones);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			media = -2;
 		}
 		DbConnection.closeConnection();
-		
+
 		return media;
+	}
+
+	/**
+	 * @param mail
+	 *            email del usuario
+	 * @param test
+	 *            <true> si es test
+	 * @return <true> si se ha podido votar
+	 */
+	public static LinkedList<Receta> getFavs(String mail, boolean test) {
+		String tabla = "Favoritos";
+		if (test)
+			tabla = tabla + "Test";
+
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		String query_select = "select * from " + tabla + " where mail=?";
+		try {
+			PreparedStatement select = conexion.clientPrepareStatement(query_select);
+			select.setString(1, mail);
+
+			ResultSet rs = select.executeQuery();
+			Receta rec = null;
+			LinkedList<Receta> recetas = new LinkedList<Receta>();
+			// Obtiene toda la informacion de cada receta
+			while (rs.next()) {
+				rec = new Receta();
+				int id = rs.getInt("id");
+				rec.setId(id);
+				rec.setNombre(rs.getString("nombre"));
+				rec.setTipo(rs.getString("tipo"));
+				rec.setMe_gusta(getMeGusta(id, test));
+				rec.setNo_me_gusta(getNoMeGusta(id, test));
+				recetas.add(rec);
+			}
+
+			select.close();
+			DbConnection.closeConnection();
+
+			return recetas;
+		} catch (SQLException e) {
+			DbConnection.closeConnection();
+			return null;
+		}
+	}
+
+	/**
+	 * @param id
+	 *            identificador de la receta
+	 * @param test
+	 *            <true> si es test
+	 * @return <true> si se ha podido favoritear
+	 */
+	public static boolean setFav(int id, String mail, boolean test) {
+		String tabla = "Favoritos";
+		if (test)
+			tabla = tabla + "Test";
+
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		String query_select = "select * from " + tabla + " where mail=? and idReceta=?";
+		try {
+			PreparedStatement select = conexion.clientPrepareStatement(query_select);
+			select.setString(1, mail);
+			select.setInt(2, id);
+
+			ResultSet rs = select.executeQuery();
+
+			PreparedStatement insert_update;
+			if (rs.next()) {
+				String query = "delete from " + tabla + " where mail=? and idReceta=?";
+				;
+				insert_update = conexion.clientPrepareStatement(query);
+				insert_update.setString(1, mail);
+				insert_update.setInt(2, id);
+
+			} else {
+				String query = "insert into " + tabla + " (mail, idReceta) values (?,?)";
+				insert_update = conexion.clientPrepareStatement(query);
+				insert_update.setString(1, mail);
+				insert_update.setInt(2, id);
+			}
+			int returned = insert_update.executeUpdate();
+
+			select.close();
+			insert_update.close();
+			DbConnection.closeConnection();
+
+			return returned > 0;
+		} catch (SQLException e) {
+			DbConnection.closeConnection();
+			return false;
+		}
+	}
+
+	/**
+	 * @param id
+	 *            identificador de la receta
+	 * @param mail
+	 *            el mail del usuario
+	 * @param test
+	 *            <true> si es test
+	 * @return <true> si esa receta es favorita para ese usuario
+	 */
+	public static boolean checkFav(int id, String mail, boolean test) {
+		String tabla = "Favoritos";
+		if (test)
+			tabla = tabla + "Test";
+
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		String query_select = "select * from " + tabla + " where mail=? and idReceta=?";
+		try {
+			PreparedStatement select = conexion.clientPrepareStatement(query_select);
+			select.setString(1, mail);
+			select.setInt(2, id);
+			ResultSet rs = select.executeQuery();
+
+			boolean returned = false;
+			if (rs.next()) {
+				returned = true;
+			} else {
+				returned = false;
+			}
+
+			select.close();
+			DbConnection.closeConnection();
+
+			return returned;
+		} catch (SQLException e) {
+			DbConnection.closeConnection();
+			return false;
+		}
 	}
 }

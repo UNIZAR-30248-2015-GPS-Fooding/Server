@@ -27,4 +27,7 @@ public class Data {
 	public static final int VALORACION_CODE = 9;
 	public static final int LIST_USER_CODE = 10;
 	public static final int LIST_RECETA_CODE = 11;
+	public static final int LIST_FAV_CODE = 12;
+	public static final int FAV_CODE = 13;
+	public static final int CHECK_FAV_CODE = 14;
 }

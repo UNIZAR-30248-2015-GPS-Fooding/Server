@@ -689,6 +689,7 @@ public class Listener extends HttpServlet {
 			PrintWriter out = resp.getWriter();
 			out.println("<response id=\"" + Data.LIST_FAV_CODE + "\">");
 
+			if(recetas != null){
 			for (Receta r : recetas) {
 				out.println("<receta>");
 
@@ -699,6 +700,7 @@ public class Listener extends HttpServlet {
 				out.println("<no_me_gusta>" + r.getNo_me_gusta() + "</no_me_gusta>");
 
 				out.println("</receta>");
+			}
 			}
 
 			out.println("</response>");

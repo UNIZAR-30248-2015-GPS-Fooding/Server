@@ -286,6 +286,86 @@ public class DbMethods {
 	}
 
 	/**
+	 * 
+	 * @param id
+	 *            identificador de una receta
+	 * 
+	 * @param conexion
+	 *            conexion con la base de datos
+	 * 
+	 * @return la informacion completa de la receta con id id
+	 * 
+	 * @version 1.1
+	 */
+	public static Receta get_receta(Connection conexion, int id, boolean test) {
+
+		// obtener lista de recetas
+		Receta rec = null;
+		String query = "SELECT DISTINCT id, nombre, tipo, instrucciones, " + "Usuario.nick, Usuario.mail"
+				+ " FROM Receta, RecetaIngrediente, UsuarioPoseeReceta, Usuario" + " WHERE Receta.id = '" + id + "'"
+				+ " AND Receta.id = RecetaIngrediente.idReceta" + " AND Receta.id = UsuarioPoseeReceta.idReceta"
+				+ " AND UsuarioPoseeReceta.mail = Usuario.mail";
+		if (test) {
+			query = "SELECT DISTINCT id, nombre, tipo, instrucciones, " + "UsuarioTest.nick, UsuarioTest.mail"
+					+ " FROM RecetaTest, RecetaIngredienteTest, UsuarioPoseeRecetaTest, UsuarioTest"
+					+ " WHERE RecetaTest.id = '" + id + "'" + " AND RecetaTest.id = RecetaIngredienteTest.idReceta"
+					+ " AND RecetaTest.id = UsuarioPoseeRecetaTest.idReceta"
+					+ " AND UsuarioPoseeRecetaTest.mail = UsuarioTest.mail";
+		}
+
+		Statement st, st2;
+
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+			Usuario autor;
+
+			// Obtiene toda la informacion de la receta
+			if (res.next()) {
+
+				rec = new Receta();
+				autor = new Usuario();
+				rec.setId(res.getInt("id"));
+				rec.setNombre(res.getString("nombre"));
+				rec.setTipo(res.getString("tipo"));
+				rec.setInstrucciones(res.getString("instrucciones"));
+				rec.setMe_gusta(getMeGusta(conexion, rec.getId(), test));
+				rec.setNo_me_gusta(getNoMeGusta(conexion, rec.getId(), test));
+				autor.setNick(res.getString("nick"));
+				autor.setMail(res.getString("mail"));
+				rec.setAutor(autor);
+
+				// Obtiene la informacion de los ingredientes de cada receta
+				List<Ingrediente> ingredientes = new LinkedList<Ingrediente>();
+				String query2 = "SELECT * FROM RecetaIngrediente" + " WHERE idReceta = " + id;
+				if (test) {
+					query2 = "SELECT * FROM RecetaIngredienteTest" + " WHERE idReceta = " + id;
+				}
+				st2 = conexion.createStatement();
+				ResultSet res2 = st2.executeQuery(query2);
+				Ingrediente ing;
+
+				while (res2.next()) {
+					ing = new Ingrediente();
+					ing.setNombre(res2.getString("nombreIngrediente"));
+					ing.setCantidad(res2.getInt("cantidad"));
+					ing.setUds(res2.getString("medida"));
+					ingredientes.add(ing);
+				}
+				rec.setIngredientes(ingredientes);
+				st2.close();
+			}
+
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rec;
+	}
+
+	/**
 	 * @param mail
 	 *            : email con el que el usuario inicia sesion
 	 * @param pw
@@ -994,15 +1074,13 @@ public class DbMethods {
 			ResultSet rs = select.executeQuery();
 			Receta rec = null;
 			LinkedList<Receta> recetas = new LinkedList<Receta>();
+
 			// Obtiene toda la informacion de cada receta
 			while (rs.next()) {
-				rec = new Receta();
-				int id = rs.getInt("id");
-				rec.setId(id);
-				rec.setNombre(rs.getString("nombre"));
-				rec.setTipo(rs.getString("tipo"));
-				rec.setMe_gusta(getMeGusta(id, test));
-				rec.setNo_me_gusta(getNoMeGusta(id, test));
+				int id = rs.getInt("idReceta");
+				rec = get_receta(conexion, id, test);
+				rec.setMe_gusta(getMeGusta(conexion, id, test));
+				rec.setNo_me_gusta(getNoMeGusta(conexion, id, test));
 				recetas.add(rec);
 			}
 

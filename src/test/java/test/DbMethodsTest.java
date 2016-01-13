@@ -97,7 +97,6 @@ public class DbMethodsTest {
 	 * Test para comprobar que el metodo para registrar al usuario funciona.
 	 */
 	@Test
-	@Ignore
 	public void test_registrar_usuario() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		boolean registrado = DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL",

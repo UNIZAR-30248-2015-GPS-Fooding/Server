@@ -186,7 +186,6 @@ public class DbMethodsTest {
 	 * funciona.
 	 */
 	@Test
-	@Ignore
 	public void test_valorar_receta() {
 		
 		/* crear usuario */

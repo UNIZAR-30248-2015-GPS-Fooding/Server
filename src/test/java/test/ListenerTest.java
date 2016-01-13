@@ -688,6 +688,7 @@ public class ListenerTest{
 	 */
 	@Test
 	public void test_post_valoracion_media() throws ServletException, IOException{
+		
 		/* crear usuario */
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
@@ -828,7 +829,7 @@ public class ListenerTest{
 				+ "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<","<");
 		
-		req.addParameter("xml", xml);
+		req.setContent(xml.getBytes());
 		
 		servlet.doPost(req, resp);
 		

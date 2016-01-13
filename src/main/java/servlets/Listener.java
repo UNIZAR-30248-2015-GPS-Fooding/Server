@@ -648,7 +648,6 @@ public class Listener extends HttpServlet {
 				for(Usuario u : usrs){
 					DbMethods.update_valoracion_user(conexion, u.getMail(), false);
 				}
-				DbConnection.closeConnection();
 			}
 		}
 	}

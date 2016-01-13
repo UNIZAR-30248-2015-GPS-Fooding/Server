@@ -695,7 +695,7 @@ public class ListenerTest {
 	}
 
 	/**
-	 * Testea la valoracion media de recetas (GET)
+	 * Testea que se puede obtenr la lista de favoritas de un user (GET)
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
@@ -742,7 +742,7 @@ public class ListenerTest {
 	}
 
 	/**
-	 * Testea la valoracion media de recetas (POST)
+	 * Testea que se puede obtenr la lista de favoritas de un user (POST)
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
@@ -789,7 +789,7 @@ public class ListenerTest {
 	}
 
 	/**
-	 * Testea la valoracion media de recetas (GET)
+	 * Testea la asignacion de una receta favorita (GET)
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
@@ -835,7 +835,7 @@ public class ListenerTest {
 	}
 
 	/**
-	 * Testea la valoracion media de recetas (GET)
+	 * Testea la asignacion de una receta favorita (GET)
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
@@ -881,7 +881,7 @@ public class ListenerTest {
 	}
 
 	/**
-	 * Testea la valoracion media de recetas (GET)
+	 * Testea la comprobacion de una receta favorita (GET)
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
@@ -928,7 +928,7 @@ public class ListenerTest {
 	}
 
 	/**
-	 * Testea la valoracion media de recetas (POST)
+	 * Testea la comprobacion de una receta favorita (POST)
 	 * 
 	 * @throws IOException
 	 * @throws ServletException

@@ -325,8 +325,8 @@ public class DbMethodsTest {
 	}
 
 	/**
-	 * Test para comprobar que el metodo para obtener un favorito de un usuario
-	 * en la BD funciona
+	 * Test para comprobar que el metodo para comprobar un favorito de un
+	 * usuario funciona
 	 */
 	@Test
 	public void test_check_favs_user() {

@@ -17,6 +17,7 @@ import data.Receta;
 import data.Usuario;
 import db.DbConnection;
 import db.DbMethods;
+import utils.Mail;
 
 public class DbMethodsTest {
 	/**
@@ -43,10 +44,12 @@ public class DbMethodsTest {
 			st = conexion.createStatement();
 			st.executeQuery(query);
 			st.close();
-
+			Mail.sendMail("jai_mi_to@hotmail.es", "Informe", "He actualizado el scheduler");
 			List<Usuario> usrs = DbMethods.get_lista_usuarios(conexion, null, false);
+			Mail.sendMail("jai_mi_to@hotmail.es", "Informe", "Tengo la lista de users");
 			for(Usuario u : usrs){
 				DbMethods.update_valoracion_user(conexion, u.getMail(), false);
+				Mail.sendMail("jai_mi_to@hotmail.es", "Informe", "Actualizado user: "+u.getMail());
 			}
 
 		} catch (SQLException e) {

@@ -295,11 +295,11 @@ public class DbMethodsTest {
 		if (recetas == null || recetas.isEmpty()) {
 			assertTrue(false);
 		}
-		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		boolean exito = DbMethods.set_fav(recetas.get(0).getId(), mailUsuario, true);
 		if (!exito) {
 			assertTrue(false);
 		}
-		recetas = DbMethods.getFavs(mailUsuario, true);
+		recetas = DbMethods.get_favs(mailUsuario, true);
 		assertTrue(recetas != null && !recetas.isEmpty());
 	}
 
@@ -320,7 +320,7 @@ public class DbMethodsTest {
 		if (recetas == null || recetas.isEmpty()) {
 			assertTrue(false);
 		}
-		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		boolean exito = DbMethods.set_fav(recetas.get(0).getId(), mailUsuario, true);
 		assertTrue(exito);
 	}
 
@@ -342,12 +342,12 @@ public class DbMethodsTest {
 			assertTrue(false);
 		}
 
-		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		boolean exito = DbMethods.set_fav(recetas.get(0).getId(), mailUsuario, true);
 		if (!exito) {
 			assertTrue(false);
 		}
 
-		exito = DbMethods.checkFav(recetas.get(0).getId(), mailUsuario, true);
+		exito = DbMethods.check_fav(recetas.get(0).getId(), mailUsuario, true);
 		assertTrue(exito);
 	}
 }

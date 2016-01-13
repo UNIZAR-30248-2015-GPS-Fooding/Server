@@ -69,7 +69,7 @@ public class DbMethods {
 	 * @version 1.1 -- Devuelve una lista de todos los tipos de recetas
 	 */
 	public static List<String> get_tipos(boolean test) {
-		
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -184,8 +184,8 @@ public class DbMethods {
 				rec.setId(id);
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
-				rec.setMe_gusta(getMeGusta(conexion, id, test));
-				rec.setNo_me_gusta(getNoMeGusta(conexion, id, test));
+				rec.setMe_gusta(get_me_gusta(conexion, id, test));
+				rec.setNo_me_gusta(get_no_me_gusta(conexion, id, test));
 				recetas.add(rec);
 			}
 			st.close();
@@ -245,8 +245,8 @@ public class DbMethods {
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));
-				rec.setMe_gusta(getMeGusta(conexion, rec.getId(), test));
-				rec.setNo_me_gusta(getNoMeGusta(conexion, rec.getId(), test));
+				rec.setMe_gusta(get_me_gusta(conexion, rec.getId(), test));
+				rec.setNo_me_gusta(get_no_me_gusta(conexion, rec.getId(), test));
 				autor.setNick(res.getString("nick"));
 				autor.setMail(res.getString("mail"));
 				rec.setAutor(autor);
@@ -328,8 +328,8 @@ public class DbMethods {
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
 				rec.setInstrucciones(res.getString("instrucciones"));
-				rec.setMe_gusta(getMeGusta(conexion, rec.getId(), test));
-				rec.setNo_me_gusta(getNoMeGusta(conexion, rec.getId(), test));
+				rec.setMe_gusta(get_me_gusta(conexion, rec.getId(), test));
+				rec.setNo_me_gusta(get_no_me_gusta(conexion, rec.getId(), test));
 				autor.setNick(res.getString("nick"));
 				autor.setMail(res.getString("mail"));
 				rec.setAutor(autor);
@@ -660,7 +660,7 @@ public class DbMethods {
 
 		return (mods > 0);
 	}
-	
+
 	/**
 	 * @param key
 	 *            : unique key del usuario que se registra
@@ -852,7 +852,7 @@ public class DbMethods {
 		String tabla = "UsuarioValoraReceta";
 		if (test)
 			tabla = tabla + "Test";
-		if (mail.equals("test@testfooding.test")){
+		if (mail.equals("test@testfooding.test")) {
 			activateScheduler();
 		}
 		// abrir conexion
@@ -916,7 +916,7 @@ public class DbMethods {
 		}
 
 	}
-	
+
 	/**
 	 * @param id
 	 *            identificador de la receta
@@ -924,7 +924,7 @@ public class DbMethods {
 	 *            <true> si es test
 	 * @return numero de me gusta
 	 */
-	public static int getMeGusta(int id, boolean test) {
+	public static int get_me_gusta(int id, boolean test) {
 		DbConnection.initConnection();
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement ps;
@@ -963,7 +963,7 @@ public class DbMethods {
 	 *            <true> si es test
 	 * @return numero de me gusta
 	 */
-	public static int getMeGusta(Connection conn, int id, boolean test) {
+	public static int get_me_gusta(Connection conn, int id, boolean test) {
 		PreparedStatement ps;
 		int numMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
@@ -997,7 +997,7 @@ public class DbMethods {
 	 *            <true> si es test
 	 * @return numero de no me gusta
 	 */
-	public static int getNoMeGusta(int id, boolean test) {
+	public static int get_no_me_gusta(int id, boolean test) {
 		DbConnection.initConnection();
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement ps;
@@ -1036,7 +1036,7 @@ public class DbMethods {
 	 *            <true> si es test
 	 * @return numero de no me gusta
 	 */
-	public static int getNoMeGusta(Connection conn, int id, boolean test) {
+	public static int get_no_me_gusta(Connection conn, int id, boolean test) {
 		PreparedStatement ps;
 		int numNoMeGusta = 0;
 		String tabla = "UsuarioValoraReceta";
@@ -1107,12 +1107,12 @@ public class DbMethods {
 
 	/**
 	 * @param mail
-	 *            email del usuario
+	 *            correo del usuario del que obtener favoritos
 	 * @param test
-	 *            <true> si es test
-	 * @return <true> si se ha podido votar
+	 *            true si es test
+	 * @return lista de favoritos del usuario
 	 */
-	public static LinkedList<Receta> getFavs(String mail, boolean test) {
+	public static LinkedList<Receta> get_favs(String mail, boolean test) {
 		String tabla = "Favoritos";
 		if (test)
 			tabla = tabla + "Test";
@@ -1134,8 +1134,8 @@ public class DbMethods {
 			while (rs.next()) {
 				int id = rs.getInt("idReceta");
 				rec = get_receta(conexion, id, test);
-				rec.setMe_gusta(getMeGusta(conexion, id, test));
-				rec.setNo_me_gusta(getNoMeGusta(conexion, id, test));
+				rec.setMe_gusta(get_me_gusta(conexion, id, test));
+				rec.setNo_me_gusta(get_no_me_gusta(conexion, id, test));
 				recetas.add(rec);
 			}
 
@@ -1153,11 +1153,14 @@ public class DbMethods {
 	/**
 	 * @param id
 	 *            identificador de la receta
+	 * 
+	 * @param mail
+	 *            correo del usuario
 	 * @param test
 	 *            <true> si es test
 	 * @return <true> si se ha podido favoritear
 	 */
-	public static boolean setFav(int id, String mail, boolean test) {
+	public static boolean set_fav(int id, String mail, boolean test) {
 		String tabla = "Favoritos";
 		if (test)
 			tabla = tabla + "Test";
@@ -1210,7 +1213,7 @@ public class DbMethods {
 	 *            <true> si es test
 	 * @return <true> si esa receta es favorita para ese usuario
 	 */
-	public static boolean checkFav(int id, String mail, boolean test) {
+	public static boolean check_fav(int id, String mail, boolean test) {
 		String tabla = "Favoritos";
 		if (test)
 			tabla = tabla + "Test";

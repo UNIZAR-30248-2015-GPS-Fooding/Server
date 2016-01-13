@@ -682,7 +682,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// conseguir las recetas de la bd
-		List<Receta> recetas = db.DbMethods.getFavs(mail, test);
+		List<Receta> recetas = db.DbMethods.get_favs(mail, test);
 
 		// escribir las recetas en la respuesta
 		try {
@@ -729,7 +729,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// Booleanito
-		boolean hecho = db.DbMethods.setFav(id, mail, test);
+		boolean hecho = db.DbMethods.set_fav(id, mail, test);
 
 		// informar al usuario
 		try {
@@ -767,7 +767,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// Booleanito
-		boolean hecho = db.DbMethods.checkFav(id, mail, test);
+		boolean hecho = db.DbMethods.check_fav(id, mail, test);
 
 		// informar al usuario
 		try {

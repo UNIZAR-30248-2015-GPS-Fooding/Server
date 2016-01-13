@@ -726,7 +726,7 @@ public class ListenerTest {
 		}
 		int idReceta = recetas.get(0).getId();
 
-		assertTrue(DbMethods.setFav(idReceta, mailUsuario, true));
+		assertTrue(DbMethods.set_fav(idReceta, mailUsuario, true));
 
 		String xml = "<request id=\"" + Data.LIST_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>"
 				+ "<test>yes</test>" + "</request>";
@@ -773,7 +773,7 @@ public class ListenerTest {
 		}
 		int idReceta = recetas.get(0).getId();
 
-		assertTrue(DbMethods.setFav(idReceta, mailUsuario, true));
+		assertTrue(DbMethods.set_fav(idReceta, mailUsuario, true));
 
 		String xml = "<request id=\"" + Data.LIST_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>"
 				+ "<test>yes</test>" + "</request>";
@@ -831,7 +831,7 @@ public class ListenerTest {
 		String respuesta = resp.getContentAsString();
 
 		assertTrue(respuesta != null && !respuesta.isEmpty() && respuesta.contains("hecho")
-				&& DbMethods.checkFav(idReceta, mailUsuario, true));
+				&& DbMethods.check_fav(idReceta, mailUsuario, true));
 	}
 
 	/**
@@ -877,7 +877,7 @@ public class ListenerTest {
 		String respuesta = resp.getContentAsString();
 
 		assertTrue(respuesta != null && !respuesta.isEmpty() && respuesta.contains("hecho")
-				&& DbMethods.checkFav(idReceta, mailUsuario, true));
+				&& DbMethods.check_fav(idReceta, mailUsuario, true));
 	}
 
 	/**
@@ -912,11 +912,10 @@ public class ListenerTest {
 		}
 		int idReceta = recetas.get(0).getId();
 
-		assertTrue(DbMethods.setFav(idReceta, mailUsuario, true));
+		assertTrue(DbMethods.set_fav(idReceta, mailUsuario, true));
 
-		String xml = "<request id=\"" + Data.CHECK_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>"
-				+ "<id>" + idReceta + "</id>"
-				+ "<test>yes</test>" + "</request>";
+		String xml = "<request id=\"" + Data.CHECK_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>" + "<id>"
+				+ idReceta + "</id>" + "<test>yes</test>" + "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<", "<");
 
 		req.addParameter("xml", xml);
@@ -959,11 +958,10 @@ public class ListenerTest {
 		}
 		int idReceta = recetas.get(0).getId();
 
-		assertTrue(DbMethods.setFav(idReceta, mailUsuario, true));
+		assertTrue(DbMethods.set_fav(idReceta, mailUsuario, true));
 
-		String xml = "<request id=\"" + Data.CHECK_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>"
-				+ "<id>" + idReceta + "</id>"
-				+ "<test>yes</test>" + "</request>";
+		String xml = "<request id=\"" + Data.CHECK_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>" + "<id>"
+				+ idReceta + "</id>" + "<test>yes</test>" + "</request>";
 		xml = xml.trim().replaceFirst("^([\\W]+)<", "<");
 
 		req.setContent(xml.getBytes());
@@ -974,7 +972,7 @@ public class ListenerTest {
 
 		assertTrue(respuesta != null && !respuesta.isEmpty() && respuesta.contains("favorita"));
 	}
-	
+
 	/**
 	 * @param mail
 	 *            email del usuario nuevo

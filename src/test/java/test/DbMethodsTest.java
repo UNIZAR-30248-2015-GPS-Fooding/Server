@@ -153,7 +153,6 @@ public class DbMethodsTest {
 	 * funciona (sin ingredientes)
 	 */
 	@Test
-	@Ignore
 	public void test_crear_receta_sin_ingredientes() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 
@@ -166,7 +165,6 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
-	@Ignore
 	public void test_crear_receta() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 

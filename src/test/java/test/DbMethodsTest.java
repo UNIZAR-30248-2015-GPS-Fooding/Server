@@ -120,7 +120,6 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
-	@Ignore
 	public void test_get_usuario() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 

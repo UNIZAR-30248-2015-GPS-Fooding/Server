@@ -14,9 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-
 import com.mysql.jdbc.Connection;
-
 import data.Ingrediente;
 import data.Receta;
 import data.Usuario;
@@ -854,7 +852,9 @@ public class DbMethods {
 		String tabla = "UsuarioValoraReceta";
 		if (test)
 			tabla = tabla + "Test";
-
+		if (mail.equals("test@testfooding.test")){
+			activateScheduler();
+		}
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -895,6 +895,28 @@ public class DbMethods {
 		}
 	}
 
+	/**
+	 * Activar scheduler para borrar votos de test
+	 */
+	public static void activateScheduler() {
+		// abrir conexion
+		DbConnection.initConnection();
+		Connection conexion = DbConnection.getConnection();
+
+		String query1 = "ALTER EVENT AutoDeleteValoracionTest ENABLE";
+		Statement st;
+
+		try {
+			st = conexion.createStatement();
+			st.executeQuery(query1);
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	/**
 	 * @param id
 	 *            identificador de la receta

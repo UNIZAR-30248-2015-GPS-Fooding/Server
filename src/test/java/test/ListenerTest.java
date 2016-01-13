@@ -881,6 +881,102 @@ public class ListenerTest {
 	}
 
 	/**
+	 * Testea la valoracion media de recetas (GET)
+	 * 
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	@Test
+	public void test_get_check_favorita() throws ServletException, IOException {
+
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+
+		/* crear receta */
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		ings.add(ing);
+		String nombreReceta = "nombreDB" + System.nanoTime();
+		if (!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)) {
+			assertTrue("receta no creada", false);
+		}
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombreReceta, null, null, true);
+		if (recetas == null || recetas.isEmpty()) {
+			assertTrue("receta no encontrada", false);
+		}
+		int idReceta = recetas.get(0).getId();
+
+		assertTrue(DbMethods.setFav(idReceta, mailUsuario, true));
+
+		String xml = "<request id=\"" + Data.CHECK_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>"
+				+ "<id>" + idReceta + "</id>"
+				+ "<test>yes</test>" + "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<", "<");
+
+		req.addParameter("xml", xml);
+
+		servlet.doGet(req, resp);
+
+		String respuesta = resp.getContentAsString();
+
+		assertTrue(respuesta != null && !respuesta.isEmpty() && respuesta.contains("favorita"));
+	}
+
+	/**
+	 * Testea la valoracion media de recetas (POST)
+	 * 
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	@Test
+	public void test_post_check_favorita() throws ServletException, IOException {
+
+		/* crear usuario */
+		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
+		DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL", true);
+		Usuario user = DbMethods.get_usuario(nombre, true);
+		String mailUsuario = user.getMail();
+
+		/* crear receta */
+		List<Ingrediente> ings = new LinkedList<Ingrediente>();
+		Ingrediente ing = new Ingrediente();
+		ing.setCantidad(3);
+		ing.setUds("uds");
+		ing.setNombre("Ingrediente" + System.nanoTime());
+		ings.add(ing);
+		String nombreReceta = "nombreDB" + System.nanoTime();
+		if (!DbMethods.crear_receta(nombre, nombreReceta, "Pasta", "instrucciones", ings, true)) {
+			assertTrue("receta no creada", false);
+		}
+		List<Receta> recetas = DbMethods.get_lista_recetas(nombreReceta, null, null, true);
+		if (recetas == null || recetas.isEmpty()) {
+			assertTrue("receta no encontrada", false);
+		}
+		int idReceta = recetas.get(0).getId();
+
+		assertTrue(DbMethods.setFav(idReceta, mailUsuario, true));
+
+		String xml = "<request id=\"" + Data.CHECK_FAV_CODE + "\">" + "<mail>" + mailUsuario + "</mail>"
+				+ "<id>" + idReceta + "</id>"
+				+ "<test>yes</test>" + "</request>";
+		xml = xml.trim().replaceFirst("^([\\W]+)<", "<");
+
+		req.setContent(xml.getBytes());
+
+		servlet.doPost(req, resp);
+
+		String respuesta = resp.getContentAsString();
+
+		assertTrue(respuesta != null && !respuesta.isEmpty() && respuesta.contains("favorita"));
+	}
+	
+	/**
 	 * @param mail
 	 *            email del usuario nuevo
 	 * @return respuesta del servidor

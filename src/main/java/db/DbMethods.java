@@ -71,6 +71,7 @@ public class DbMethods {
 	 * @version 1.1 -- Devuelve una lista de todos los tipos de recetas
 	 */
 	public static List<String> get_tipos(boolean test) {
+		
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();

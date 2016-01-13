@@ -49,7 +49,6 @@ public class DbMethodsTest {
 				DbMethods.update_valoracion_user(conexion, u.getMail(), false);
 			}
 
-			DbConnection.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

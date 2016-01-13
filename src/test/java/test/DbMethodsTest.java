@@ -61,7 +61,6 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
-	@Ignore
 	public void test_recetas_nombre() {
 		List<Receta> recetas = DbMethods.get_lista_recetas("mac", null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
@@ -72,7 +71,6 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
-	@Ignore
 	public void test_recetas_tipo() {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
 		assertTrue(recetas != null && recetas.size() > 0);

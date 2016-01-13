@@ -853,7 +853,7 @@ public class DbMethods {
 		if (test)
 			tabla = tabla + "Test";
 		if (mail.equals("test@testfooding.test")) {
-			activateScheduler();
+			activate_scheduler("val");
 		}
 		// abrir conexion
 		DbConnection.initConnection();
@@ -898,12 +898,16 @@ public class DbMethods {
 	/**
 	 * Activar scheduler para borrar votos de test
 	 */
-	public static void activateScheduler() {
+	public static void activate_scheduler(String command) {
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
 
-		String query1 = "ALTER EVENT AutoDeleteValoracionTest ENABLE";
+		String query1 = "";
+		if(command.equals("val"))
+			query1 = "ALTER EVENT AutoDeleteValoracionTest ENABLE";
+		else if(command.equals("fav"))
+			query1 = "ALTER EVENT AutoDeleteFavoritosTest ENABLE";
 		Statement st;
 
 		try {
@@ -1190,6 +1194,8 @@ public class DbMethods {
 				insert_update = conexion.clientPrepareStatement(query);
 				insert_update.setString(1, mail);
 				insert_update.setInt(2, id);
+				if(mail.equals("test@testfooding.test"))
+					activate_scheduler("fav");
 			}
 			int returned = insert_update.executeUpdate();
 

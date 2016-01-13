@@ -1404,7 +1404,6 @@ public class DbMethods {
 				return returned > 0;
 
 			} catch (Exception e) {
-				Mail.sendMail("jai_mi_to@hotmail.es", "Error on server", e.getMessage());
 				return false;
 			}
 		} else {

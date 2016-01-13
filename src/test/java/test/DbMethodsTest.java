@@ -48,7 +48,7 @@ public class DbMethodsTest {
 
 	/**
 	 * Test para comprobar que el metodo para obtener recetas (de forma
-	 * generica, sin filtrados) no devuelve <null> o lista vacia.
+	 * generica, sin filtrados) no devuelve <null> o lista vacia
 	 */
 	@Test
 	public void test_recetas() {

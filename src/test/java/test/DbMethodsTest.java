@@ -183,7 +183,7 @@ public class DbMethodsTest {
 	
 	/**
 	 * Test para comprobar que el metodo para valorar una receta en la BD
-	 * funciona
+	 * funciona.
 	 */
 	@Test
 	@Ignore

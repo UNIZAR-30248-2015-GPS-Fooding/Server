@@ -221,7 +221,6 @@ public class DbMethodsTest {
 	 * receta en la BD funciona
 	 */
 	@Test
-	@Ignore
 	public void test_valoracion_media_receta() {
 		
 		/* crear usuario */

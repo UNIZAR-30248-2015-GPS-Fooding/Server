@@ -909,7 +909,7 @@ public class DbMethods {
 
 		try {
 			st = conexion.createStatement();
-			st.executeQuery(query1);
+			st.executeUpdate(query1);
 			st.close();
 
 		} catch (SQLException e) {

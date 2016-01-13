@@ -1399,6 +1399,8 @@ public class DbMethods {
 				insert_update.setInt(1, sumaTotal);
 				insert_update.setString(2, mail);
 				int returned = insert_update.executeUpdate();
+				insert_update.close();
+				
 				return returned > 0;
 
 			} catch (Exception e) {
@@ -1406,7 +1408,7 @@ public class DbMethods {
 				return false;
 			}
 		} else {
-			return false;
+			return true;
 		}
 	}
 

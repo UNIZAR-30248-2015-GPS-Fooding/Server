@@ -28,7 +28,7 @@ public class DbMethodsTest {
 
 	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes
-	 * no devuelve <null> o lista vacia
+	 * no devuelve <null> o lista vacia.
 	 */
 	@Test
 	public void test_lista_ingredientes() {

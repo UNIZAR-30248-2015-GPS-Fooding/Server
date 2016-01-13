@@ -44,16 +44,26 @@ public class DbMethodsTest {
 			st.executeQuery(query);
 			st.close();
 
-			DbConnection.initConnection();
-			List<Usuario> usrs = DbMethods.get_lista_usuarios(conexion, null, false);
-			for (Usuario u : usrs) {
-				DbMethods.update_valoracion_user(conexion, u.getMail(), false);
-			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * Test para comprobar que todos los usuarios se actualizan correctamente
+	 * sus puntuaciones
+	 */
+	@Test
+	public void test_update_usuarios() {
+		DbConnection.initConnection();
+		Connection conn = DbConnection.getConnection();
+		List<Usuario> usrs = DbMethods.get_lista_usuarios(conn, null, false);
+		boolean assertion = true;
+		for (Usuario u : usrs) {
+			assertion = assertion && DbMethods.update_valoracion_user(conn, u.getMail(), false);
+		}
+		assertTrue(assertion);
 	}
 
 	/**

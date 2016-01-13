@@ -1368,7 +1368,7 @@ public class DbMethods {
 		if (!mail.equals("fooding@fooding.com")) {
 			List<Receta> recetasUser = get_usuario(conn, mail, test).getRecetas();
 			int sumaTotal = 0;
-			String tabla = "Usuario";
+			String tabla = "UsuarioValoraReceta";
 			if (test)
 				tabla = tabla + "Test";
 
@@ -1390,6 +1390,9 @@ public class DbMethods {
 					sumaTotal = 0;
 
 				// Update user
+				tabla = "Usuario";
+				if(test)
+					tabla = tabla + "Test";
 				PreparedStatement insert_update;
 				String query = "update " + tabla + " set score=? where mail=?";
 				insert_update = conn.clientPrepareStatement(query);

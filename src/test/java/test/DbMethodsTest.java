@@ -265,7 +265,6 @@ public class DbMethodsTest {
 	 * usuario en la BD funciona
 	 */
 	@Test
-	@Ignore
 	public void test_get_favs_user() {
 		
 		/* crear usuario */

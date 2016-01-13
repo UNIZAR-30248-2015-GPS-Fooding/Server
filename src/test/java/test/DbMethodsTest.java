@@ -5,13 +5,9 @@
 package test;
 
 import static org.junit.Assert.assertTrue;
-
 import java.util.LinkedList;
 import java.util.List;
-
-import org.junit.Ignore;
 import org.junit.Test;
-
 import data.Ingrediente;
 import data.Receta;
 import data.Usuario;
@@ -290,7 +286,6 @@ public class DbMethodsTest {
 	 * usuario en la BD funciona
 	 */
 	@Test
-	@Ignore
 	public void test_set_favs_user() {
 		
 		/* crear usuario */
@@ -312,7 +307,6 @@ public class DbMethodsTest {
 	 * usuario en la BD funciona 
 	 */
 	@Test
-	@Ignore
 	public void test_check_favs_user() {
 		
 		/* crear usuario */

@@ -51,7 +51,6 @@ public class DbMethodsTest {
 	 * generica, sin filtrados) no devuelve <null> o lista vacia
 	 */
 	@Test
-	@Ignore
 	public void test_recetas() {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);

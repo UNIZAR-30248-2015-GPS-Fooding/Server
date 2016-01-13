@@ -186,8 +186,8 @@ public class DbMethods {
 				rec.setId(id);
 				rec.setNombre(res.getString("nombre"));
 				rec.setTipo(res.getString("tipo"));
-				rec.setMe_gusta(getMeGusta(id, test));
-				rec.setNo_me_gusta(getNoMeGusta(id, test));
+				rec.setMe_gusta(getMeGusta(conexion, id, test));
+				rec.setNo_me_gusta(getNoMeGusta(conexion, id, test));
 				recetas.add(rec);
 			}
 			st.close();

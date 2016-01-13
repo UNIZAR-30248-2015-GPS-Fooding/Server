@@ -1368,7 +1368,7 @@ public class DbMethods {
 		if (!mail.equals("fooding@fooding.com")) {
 			List<Receta> recetasUser = get_usuario(conn, mail, test).getRecetas();
 			int sumaTotal = 0;
-			String tabla = "UsuarioValoraReceta";
+			String tabla = "Usuario";
 			if (test)
 				tabla = tabla + "Test";
 

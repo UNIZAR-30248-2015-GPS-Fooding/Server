@@ -23,15 +23,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import com.mysql.jdbc.Connection;
-
 import data.Data;
 import data.Ingrediente;
 import data.Receta;
 import data.Usuario;
-import db.DbConnection;
-import db.DbMethods;
 import utils.Mail;
 import utils.Security;
 
@@ -640,16 +635,7 @@ public class Listener extends HttpServlet {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally{
-			if(hecho){
-				DbConnection.initConnection();
-				Connection conexion = DbConnection.getConnection();
-				List<Usuario> usrs = DbMethods.get_lista_usuarios(conexion, null, false);
-				for(Usuario u : usrs){
-					DbMethods.update_valoracion_user(conexion, u.getMail(), false);
-				}
-			}
-		}
+		} 
 	}
 
 	/**

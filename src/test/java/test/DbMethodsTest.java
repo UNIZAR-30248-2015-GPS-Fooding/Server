@@ -108,7 +108,6 @@ public class DbMethodsTest {
 	 * Test para comprobar que el metodo para loguear al usuario funciona
 	 */
 	@Test
-	@Ignore
 	public void test_login_usuario() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 

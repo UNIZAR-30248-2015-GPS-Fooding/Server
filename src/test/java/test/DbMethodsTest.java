@@ -44,10 +44,16 @@ public class DbMethodsTest {
 			st.executeQuery(query);
 			st.close();
 
+			List<Usuario> usrs = DbMethods.get_lista_usuarios(conexion, null, false);
+			for(Usuario u : usrs){
+				DbMethods.update_valoracion_user(conexion, u.getMail(), false);
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+		DbConnection.closeConnection();
 	}
 
 	/**

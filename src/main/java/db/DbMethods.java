@@ -567,6 +567,51 @@ public class DbMethods {
 	}
 
 	/**
+	 * @param test:
+	 *            <true> si es prueba/test
+	 * @return lista con los nombres de todos los usuarios de la base de datos
+	 */
+	public static List<Usuario> get_lista_usuarios(Connection conexion, String nombre, boolean test) {
+
+		// obtener informacion del usuario
+		List<Usuario> usuarios = new LinkedList<Usuario>();
+		Usuario usuario = null;
+		String query = "SELECT mail, nick, score FROM Usuario";
+		if (test) {
+			query = "SELECT mail, nick, score FROM UsuarioTest";
+		}
+
+		// aplica el filtro de nombre de usuario (parcial o completo)
+		if (nombre != null) {
+			query = query + " WHERE nick LIKE '%" + nombre + "%'";
+		}
+
+		Statement st;
+
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+
+			while (res.next()) {
+				usuario = new Usuario();
+				usuario.setMail(res.getString("mail"));
+				usuario.setNick(res.getString("nick"));
+				usuario.setScore(res.getInt("score"));
+
+				usuarios.add(usuario);
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cerrar conexion
+		DbConnection.closeConnection();
+
+		return usuarios;
+	}
+
+	/**
 	 * @param mail
 	 *            : email con el que el usuario se registra
 	 * @return Usuario != null si se ha encontrado al usuario, o <null> en caso
@@ -1323,38 +1368,43 @@ public class DbMethods {
 	 * @return numero de me gusta
 	 */
 	public static boolean update_valoracion_user(Connection conn, String mail, boolean test) {
-		List<Receta> recetasUser = get_usuario(conn, mail, test).getRecetas();
-		int sumaTotal = 0;
-		String tabla = "UsuarioValoraReceta";
-		if (test)
-			tabla = tabla + "Test";
+		if (mail.equals("fooding@fooding.com")) {
+			List<Receta> recetasUser = get_usuario(conn, mail, test).getRecetas();
+			int sumaTotal = 0;
+			String tabla = "UsuarioValoraReceta";
+			if (test)
+				tabla = tabla + "Test";
 
-		try {
-			for (Receta r : recetasUser) {
-				PreparedStatement ps;
-				String query = "select valoracion from " + tabla + " where idReceta=?";
-				ps = conn.clientPrepareStatement(query);
-				ps.setInt(1, r.getId());
+			try {
+				for (Receta r : recetasUser) {
+					PreparedStatement ps;
+					String query = "select valoracion from " + tabla + " where idReceta=?";
+					ps = conn.clientPrepareStatement(query);
+					ps.setInt(1, r.getId());
 
-				ResultSet rs = ps.executeQuery();
-				while (rs.next()) {
-					int valoracion = rs.getInt(1);
-					sumaTotal = sumaTotal + valoracion;
+					ResultSet rs = ps.executeQuery();
+					while (rs.next()) {
+						int valoracion = rs.getInt(1);
+						sumaTotal = sumaTotal + valoracion;
+					}
+					ps.close();
 				}
-				ps.close();
+				if (sumaTotal < 0)
+					sumaTotal = 0;
+
+				// Update user
+				PreparedStatement insert_update;
+				String query = "update " + tabla + " set score=? where mail=?";
+				insert_update = conn.clientPrepareStatement(query);
+				insert_update.setInt(1, sumaTotal);
+				insert_update.setString(2, mail);
+				int returned = insert_update.executeUpdate();
+				return returned > 0;
+
+			} catch (Exception e) {
+				return false;
 			}
-			if (sumaTotal < 0)
-				sumaTotal = 0;
-
-			// Update user
-			PreparedStatement insert_update;
-			String query = "update " + tabla + " set score=?";
-			insert_update = conn.clientPrepareStatement(query);
-			insert_update.setInt(1, sumaTotal);
-			int returned = insert_update.executeUpdate();
-			return returned > 0;
-
-		} catch (Exception e) {
+		} else {
 			return false;
 		}
 	}

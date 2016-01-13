@@ -31,6 +31,7 @@ public class DbMethodsTest {
 	 * no devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_lista_ingredientes() {
 		List<String> ings = DbMethods.get_lista_ingredientes(true);
 		assertTrue(ings != null && ings.size() > 0);
@@ -41,6 +42,7 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_lista_tipos() {
 		List<String> ings = DbMethods.get_tipos(true);
 		assertTrue(ings != null && ings.size() > 0);
@@ -51,6 +53,7 @@ public class DbMethodsTest {
 	 * generica, sin filtrados) no devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_recetas() {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
@@ -72,6 +75,7 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_recetas_tipo() {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
@@ -99,6 +103,7 @@ public class DbMethodsTest {
 	 * Test para comprobar que el metodo para registrar al usuario funciona
 	 */
 	@Test
+	@Ignore
 	public void test_registrar_usuario() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		boolean registrado = DbMethods.registrar_usuario(nombre, "nick_prueba", "pw_prueba", "NULL",
@@ -110,6 +115,7 @@ public class DbMethodsTest {
 	 * Test para comprobar que el metodo para loguear al usuario funciona
 	 */
 	@Test
+	@Ignore
 	public void test_login_usuario() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 
@@ -122,6 +128,7 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
+	@Ignore
 	public void test_get_usuario() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 
@@ -135,6 +142,7 @@ public class DbMethodsTest {
 	 * usuarios no devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_lista_usuarios() {
 		List<Usuario> usuarios = DbMethods.get_lista_usuarios(null, true);
 		assertTrue(usuarios != null && usuarios.size() > 0);
@@ -145,6 +153,7 @@ public class DbMethodsTest {
 	 * usuarios con filtro por nombre no devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_lista_usuarios_nombre() {
 		List<Usuario> usuarios = DbMethods.get_lista_usuarios("nick_prueba", true);
 		assertTrue(usuarios != null && usuarios.size() > 0);
@@ -155,6 +164,7 @@ public class DbMethodsTest {
 	 * funciona (sin ingredientes)
 	 */
 	@Test
+	@Ignore
 	public void test_crear_receta_sin_ingredientes() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 
@@ -167,6 +177,7 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
+	@Ignore
 	public void test_crear_receta() {
 		String nombre = "mail_pruebaDbMethods" + System.nanoTime();
 		DbMethods.registrar_usuario(nombre, "nick_prueba", 

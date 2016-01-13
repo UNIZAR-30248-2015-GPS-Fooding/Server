@@ -94,7 +94,7 @@ public class DbMethodsTest {
 	}
 
 	/**
-	 * Test para comprobar que el metodo para registrar al usuario funciona
+	 * Test para comprobar que el metodo para registrar al usuario funciona.
 	 */
 	@Test
 	@Ignore

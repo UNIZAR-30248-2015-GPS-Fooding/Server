@@ -1362,7 +1362,7 @@ public class DbMethods {
 	 *            conexion con la base de datos ya establecida
 	 * @param test
 	 *            <true> si es test
-	 * @return numero de me gusta
+	 * @return numero de me gusta.
 	 */
 	public static boolean update_valoracion_user(Connection conn, String mail, boolean test) {
 		if (!mail.equals("fooding@fooding.com")) {

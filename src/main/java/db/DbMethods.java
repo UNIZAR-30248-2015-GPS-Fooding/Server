@@ -631,6 +631,68 @@ public class DbMethods {
 	}
 
 	/**
+	 * @param mail
+	 *            : email con el que el usuario se registra
+	 * @param conexion
+	 *            : Conexion con la bd ya establecida
+	 * @return Usuario != null si se ha encontrado al usuario, o <null> en caso
+	 *         contrario
+	 */
+	public static Usuario get_usuario(Connection conexion, String mail, boolean test) {
+
+		// obtener informacion del usuario
+		Usuario usuario = null;
+		String query = "SELECT * FROM Usuario WHERE mail='" + mail + "'";
+		if (test) {
+			query = "SELECT * FROM UsuarioTest WHERE mail='" + mail + "'";
+		}
+		Statement st, st2;
+
+		try {
+			st = conexion.createStatement();
+			ResultSet res = st.executeQuery(query);
+
+			if (res.next()) {
+				usuario = new Usuario();
+				usuario.setMail(res.getString("mail"));
+				usuario.setNick(res.getString("nick"));
+				usuario.setScore(res.getInt("score"));
+
+				/* Obtiene las recetas del usuario */
+				String query2 = "SELECT idReceta, nombre" + " FROM Receta, UsuarioPoseeReceta"
+						+ " WHERE Receta.id = UsuarioPoseeReceta.idReceta" + " AND UsuarioPoseeReceta.mail = '" + mail
+						+ "'";
+				if (test) {
+					query2 = "SELECT idReceta, nombre" + " FROM Receta, UsuarioPoseeRecetaTest"
+							+ " WHERE Receta.id = UsuarioPoseeRecetaTest.idReceta"
+							+ " AND UsuarioPoseeRecetaTest.mail = '" + mail + "'";
+				}
+
+				st2 = conexion.createStatement();
+				ResultSet res2 = st2.executeQuery(query2);
+				List<Receta> recetas = new LinkedList<Receta>();
+
+				while (res2.next()) {
+					Receta r = new Receta();
+					r.setId(res2.getInt("idReceta"));
+					r.setNombre(res2.getString("nombre"));
+					recetas.add(r);
+				}
+
+				usuario.setRecetas(recetas);
+			}
+			st.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cerrar conexion
+		DbConnection.closeConnection();
+
+		return usuario;
+	}
+
+	/**
 	 * @param key
 	 *            : unique key del usuario que se registra
 	 * @return true si se ha validado al usuario. false si no se ha encontrado.
@@ -852,9 +914,7 @@ public class DbMethods {
 		String tabla = "UsuarioValoraReceta";
 		if (test)
 			tabla = tabla + "Test";
-		if (mail.equals("test@testfooding.test")) {
-			activate_scheduler("val");
-		}
+
 		// abrir conexion
 		DbConnection.initConnection();
 		Connection conexion = DbConnection.getConnection();
@@ -884,6 +944,12 @@ public class DbMethods {
 			}
 			int returned = insert_update.executeUpdate();
 
+			if (mail.equals("test@testfooding.test")) {
+				activate_scheduler("val");
+			} else {
+				update_valoracion_user(conexion, get_receta(conexion, id, test).getAutor().getMail(), test);
+			}
+
 			select.close();
 			insert_update.close();
 			DbConnection.closeConnection();
@@ -904,9 +970,9 @@ public class DbMethods {
 		Connection conexion = DbConnection.getConnection();
 
 		String query1 = "";
-		if(command.equals("val"))
+		if (command.equals("val"))
 			query1 = "ALTER EVENT AutoDeleteValoracionTest ENABLE";
-		else if(command.equals("fav"))
+		else if (command.equals("fav"))
 			query1 = "ALTER EVENT AutoDeleteFavoritosTest ENABLE";
 		Statement st;
 
@@ -1194,7 +1260,7 @@ public class DbMethods {
 				insert_update = conexion.clientPrepareStatement(query);
 				insert_update.setString(1, mail);
 				insert_update.setInt(2, id);
-				if(mail.equals("test@testfooding.test"))
+				if (mail.equals("test@testfooding.test"))
 					activate_scheduler("fav");
 			}
 			int returned = insert_update.executeUpdate();
@@ -1246,4 +1312,51 @@ public class DbMethods {
 			return false;
 		}
 	}
+
+	/**
+	 * @param mail
+	 *            mail del user
+	 * @param conn
+	 *            conexion con la base de datos ya establecida
+	 * @param test
+	 *            <true> si es test
+	 * @return numero de me gusta
+	 */
+	public static boolean update_valoracion_user(Connection conn, String mail, boolean test) {
+		List<Receta> recetasUser = get_usuario(conn, mail, test).getRecetas();
+		int sumaTotal = 0;
+		String tabla = "UsuarioValoraReceta";
+		if (test)
+			tabla = tabla + "Test";
+
+		try {
+			for (Receta r : recetasUser) {
+				PreparedStatement ps;
+				String query = "select valoracion from " + tabla + " where idReceta=?";
+				ps = conn.clientPrepareStatement(query);
+				ps.setInt(1, r.getId());
+
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					int valoracion = rs.getInt(1);
+					sumaTotal = sumaTotal + valoracion;
+				}
+				ps.close();
+			}
+			if (sumaTotal < 0)
+				sumaTotal = 0;
+
+			// Update user
+			PreparedStatement insert_update;
+			String query = "update " + tabla + " set score=?";
+			insert_update = conn.clientPrepareStatement(query);
+			insert_update.setInt(1, sumaTotal);
+			int returned = insert_update.executeUpdate();
+			return returned > 0;
+
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }

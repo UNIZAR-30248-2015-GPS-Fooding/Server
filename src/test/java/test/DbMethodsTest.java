@@ -81,7 +81,6 @@ public class DbMethodsTest {
 	 * una receta no devuelve <null>
 	 */
 	@Test
-	@Ignore
 	public void test_get_receta() {
 		List<Receta> lista_recetas = DbMethods.get_lista_recetas(null, null, null, true);
 		if (lista_recetas != null && lista_recetas.size() > 0) {

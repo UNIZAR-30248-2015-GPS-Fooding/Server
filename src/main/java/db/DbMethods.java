@@ -18,6 +18,7 @@ import com.mysql.jdbc.Connection;
 import data.Ingrediente;
 import data.Receta;
 import data.Usuario;
+import utils.Mail;
 
 public class DbMethods {
 	/**
@@ -1366,7 +1367,7 @@ public class DbMethods {
 	 * @return numero de me gusta
 	 */
 	public static boolean update_valoracion_user(Connection conn, String mail, boolean test) {
-		if (mail.equals("fooding@fooding.com")) {
+		if (!mail.equals("fooding@fooding.com")) {
 			List<Receta> recetasUser = get_usuario(conn, mail, test).getRecetas();
 			int sumaTotal = 0;
 			String tabla = "UsuarioValoraReceta";
@@ -1400,6 +1401,7 @@ public class DbMethods {
 				return returned > 0;
 
 			} catch (Exception e) {
+				Mail.sendMail("jai_mi_to@hotmail.es", "Error on server", e.getStackTrace().toString());
 				return false;
 			}
 		} else {

@@ -70,7 +70,7 @@ public class ListenerTest{
 	 * bien formada (POST)
 	 * 
 	 * @throws ServletException
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 	@Test
 	public void test_post_default_message() throws ServletException, IOException{

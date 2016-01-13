@@ -730,8 +730,6 @@ public class DbMethods {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// cerrar conexion
-		DbConnection.closeConnection();
 
 		return usuario;
 	}

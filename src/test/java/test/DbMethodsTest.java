@@ -41,7 +41,6 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
-	@Ignore
 	public void test_lista_tipos() {
 		List<String> ings = DbMethods.get_tipos(true);
 		assertTrue(ings != null && ings.size() > 0);

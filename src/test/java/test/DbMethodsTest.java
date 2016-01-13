@@ -316,7 +316,7 @@ public class DbMethodsTest {
 	
 	/**
 	 * Test para comprobar que el metodo para obtener un favorito de un
-	 * usuario en la BD funciona
+	 * usuario en la BD funciona 
 	 */
 	@Test
 	@Ignore

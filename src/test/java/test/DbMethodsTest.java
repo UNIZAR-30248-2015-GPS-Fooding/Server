@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import data.Ingrediente;
@@ -50,6 +51,7 @@ public class DbMethodsTest {
 	 * generica, sin filtrados) no devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_recetas() {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
@@ -60,6 +62,7 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_recetas_nombre() {
 		List<Receta> recetas = DbMethods.get_lista_recetas("mac", null, null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
@@ -70,6 +73,7 @@ public class DbMethodsTest {
 	 * devuelve <null> o lista vacia
 	 */
 	@Test
+	@Ignore
 	public void test_recetas_tipo() {
 		List<Receta> recetas = DbMethods.get_lista_recetas(null, "Pasta", null, true);
 		assertTrue(recetas != null && recetas.size() > 0);
@@ -80,6 +84,7 @@ public class DbMethodsTest {
 	 * una receta no devuelve <null>
 	 */
 	@Test
+	@Ignore
 	public void test_get_receta() {
 		List<Receta> lista_recetas = DbMethods.get_lista_recetas(null, null, null, true);
 		if (lista_recetas != null && lista_recetas.size() > 0) {
@@ -185,6 +190,7 @@ public class DbMethodsTest {
 	 * funciona
 	 */
 	@Test
+	@Ignore
 	public void test_valorar_receta() {
 		
 		/* crear usuario */
@@ -220,6 +226,7 @@ public class DbMethodsTest {
 	 * receta en la BD funciona
 	 */
 	@Test
+	@Ignore
 	public void test_valoracion_media_receta() {
 		
 		/* crear usuario */
@@ -264,6 +271,7 @@ public class DbMethodsTest {
 	 * usuario en la BD funciona
 	 */
 	@Test
+	@Ignore
 	public void test_get_favs_user() {
 		
 		/* crear usuario */
@@ -289,6 +297,7 @@ public class DbMethodsTest {
 	 * usuario en la BD funciona
 	 */
 	@Test
+	@Ignore
 	public void test_set_favs_user() {
 		
 		/* crear usuario */
@@ -310,6 +319,7 @@ public class DbMethodsTest {
 	 * usuario en la BD funciona
 	 */
 	@Test
+	@Ignore
 	public void test_check_favs_user() {
 		
 		/* crear usuario */

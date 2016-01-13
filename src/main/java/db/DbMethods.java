@@ -18,7 +18,6 @@ import com.mysql.jdbc.Connection;
 import data.Ingrediente;
 import data.Receta;
 import data.Usuario;
-import utils.Mail;
 
 public class DbMethods {
 	/**
@@ -913,7 +912,6 @@ public class DbMethods {
 			st.close();
 
 		} catch (SQLException e) {
-			Mail.sendMail("jai_mi_to@hotmail.es", "Error on scheduler", e.getMessage());
 			e.printStackTrace();
 		}
 

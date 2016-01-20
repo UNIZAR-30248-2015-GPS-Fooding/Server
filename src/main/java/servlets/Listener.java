@@ -130,13 +130,13 @@ public class Listener extends HttpServlet {
 				get_recetas(doc, resp);
 				break;
 			case Data.LIST_FAV_CODE:
-				getFavs(doc, resp);
+				get_favs(doc, resp);
 				break;
 			case Data.FAV_CODE:
-				setFav(doc, resp);
+				set_fav(doc, resp);
 				break;
 			case Data.CHECK_FAV_CODE:
-				checkFav(doc, resp);
+				check_fav(doc, resp);
 				break;
 			default: /* no se reconoce el mensaje */
 				default_message(resp);
@@ -632,9 +632,10 @@ public class Listener extends HttpServlet {
 				out.println("<hecho>no</hecho>");
 			}
 			out.println("</response>");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	/**
@@ -670,7 +671,7 @@ public class Listener extends HttpServlet {
 	/**
 	 * Devolver los favoritos de un usuario
 	 */
-	private void getFavs(Document doc, HttpServletResponse resp) {
+	private void get_favs(Document doc, HttpServletResponse resp) {
 		String mail = null;
 		boolean test = false;
 
@@ -682,7 +683,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// conseguir las recetas de la bd
-		List<Receta> recetas = db.DbMethods.getFavs(mail, test);
+		List<Receta> recetas = db.DbMethods.get_favs(mail, test);
 
 		// escribir las recetas en la respuesta
 		try {
@@ -712,7 +713,7 @@ public class Listener extends HttpServlet {
 	/**
 	 * Registrar el favorito del usuario
 	 */
-	private void setFav(Document doc, HttpServletResponse resp) {
+	private void set_fav(Document doc, HttpServletResponse resp) {
 		int id = -1;
 		String mail = null;
 		boolean test = false;
@@ -729,7 +730,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// Booleanito
-		boolean hecho = db.DbMethods.setFav(id, mail, test);
+		boolean hecho = db.DbMethods.set_fav(id, mail, test);
 
 		// informar al usuario
 		try {
@@ -749,7 +750,7 @@ public class Listener extends HttpServlet {
 	/**
 	 * Comprobar el favorito del usuario
 	 */
-	private void checkFav(Document doc, HttpServletResponse resp) {
+	private void check_fav(Document doc, HttpServletResponse resp) {
 		int id = -1;
 		String mail = null;
 		boolean test = false;
@@ -767,7 +768,7 @@ public class Listener extends HttpServlet {
 		}
 
 		// Booleanito
-		boolean hecho = db.DbMethods.checkFav(id, mail, test);
+		boolean hecho = db.DbMethods.check_fav(id, mail, test);
 
 		// informar al usuario
 		try {

@@ -51,6 +51,22 @@ public class DbMethodsTest {
 	}
 
 	/**
+	 * Test para comprobar que todos los usuarios se actualizan correctamente
+	 * sus puntuaciones
+	 */
+	@Test
+	public void test_update_usuarios() {
+		DbConnection.initConnection();
+		Connection conn = DbConnection.getConnection();
+		List<Usuario> usrs = DbMethods.get_lista_usuarios(conn, null, false);
+		boolean assertion = true;
+		for (Usuario u : usrs) {
+			assertion = assertion && DbMethods.update_valoracion_user(conn, u.getMail(), false);
+		}
+		assertTrue(assertion);
+	}
+
+	/**
 	 * Test para comprobar que el metodo para obtener la lista de ingredientes
 	 * no devuelve <null> o lista vacia.
 	 */
@@ -295,11 +311,11 @@ public class DbMethodsTest {
 		if (recetas == null || recetas.isEmpty()) {
 			assertTrue(false);
 		}
-		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		boolean exito = DbMethods.set_fav(recetas.get(0).getId(), mailUsuario, true);
 		if (!exito) {
 			assertTrue(false);
 		}
-		recetas = DbMethods.getFavs(mailUsuario, true);
+		recetas = DbMethods.get_favs(mailUsuario, true);
 		assertTrue(recetas != null && !recetas.isEmpty());
 	}
 
@@ -320,13 +336,13 @@ public class DbMethodsTest {
 		if (recetas == null || recetas.isEmpty()) {
 			assertTrue(false);
 		}
-		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		boolean exito = DbMethods.set_fav(recetas.get(0).getId(), mailUsuario, true);
 		assertTrue(exito);
 	}
 
 	/**
-	 * Test para comprobar que el metodo para obtener un favorito de un usuario
-	 * en la BD funciona
+	 * Test para comprobar que el metodo para comprobar un favorito de un
+	 * usuario funciona
 	 */
 	@Test
 	public void test_check_favs_user() {
@@ -342,12 +358,12 @@ public class DbMethodsTest {
 			assertTrue(false);
 		}
 
-		boolean exito = DbMethods.setFav(recetas.get(0).getId(), mailUsuario, true);
+		boolean exito = DbMethods.set_fav(recetas.get(0).getId(), mailUsuario, true);
 		if (!exito) {
 			assertTrue(false);
 		}
 
-		exito = DbMethods.checkFav(recetas.get(0).getId(), mailUsuario, true);
+		exito = DbMethods.check_fav(recetas.get(0).getId(), mailUsuario, true);
 		assertTrue(exito);
 	}
 }

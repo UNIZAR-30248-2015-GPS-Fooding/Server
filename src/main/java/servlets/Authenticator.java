@@ -13,7 +13,7 @@ import db.DbMethods;
 public class Authenticator extends HttpServlet {
 
 	/**
-	 * 
+	 * Serial por defecto
 	 */
 	private static final long serialVersionUID = -4656698343123568633L;
 
